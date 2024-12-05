@@ -2,12 +2,8 @@ import { TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, ALERT_MESSAGES } from '../su
 
 describe('Login Tests', () => {
   beforeEach(() => {
-    const start = performance.now(); // Start time 
     cy.visit('/', { timeout: TIMEOUTS.pageLoad });
     cy.loadSelector('autoModalLoginButton').should('be.visible');
-    const end = performance.now(); // End time
-    const timeTaken = end - start;
-    cy.log(`Time taken to visit the Home page: ${timeTaken.toFixed(2)} ms`);
   });
 
   it('Should open the login modal when clicking the login button', () => {
