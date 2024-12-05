@@ -8,6 +8,7 @@ export const TIMEOUTS = {
 
 // URLs for visiting the sites
 export const URLS = {
+    home: '/',
     forms: 'https://rocket-forms.at/en/v1/forms/',
 }
 

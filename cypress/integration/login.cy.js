@@ -1,8 +1,8 @@
-import { TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, ALERT_MESSAGES } from '../support/constants';
+import { URLS, TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, ALERT_MESSAGES } from '../support/constants';
 
 describe('Login Tests', () => {
   beforeEach(() => {
-    cy.visit('/', { timeout: TIMEOUTS.pageLoad });
+    cy.visit(URLS.home, { timeout: TIMEOUTS.pageLoad });
     cy.loadSelector('autoModalLoginBtn').should('be.visible');
   });
 

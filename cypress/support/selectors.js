@@ -9,4 +9,6 @@ export const SELECTORS = {
     formElement: '.form-element',
     formTitle: '.el-input__inner',
     formDescription: '.el-textarea__inner',
+    dropdown: '.el-dropdown',
+    dropdownMenu: 'ul.el-dropdown-menu'
 };

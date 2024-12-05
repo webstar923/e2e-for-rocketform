@@ -1,7 +1,7 @@
 import { URLS, TIMEOUTS, LOG_OUT_TEXT, ALERT_MESSAGES } from '../support/constants';
 describe('RocketForm Management Tests', () => {
     beforeEach(() => {
-        cy.visit('/', { timeout: TIMEOUTS.pageLoad });
+        cy.visit(URLS.home, { timeout: TIMEOUTS.pageLoad });
         cy.loadSelector('autoModalLoginBtn').should('be.visible');
         cy.fixture('users.json').then((data) => {
             cy.clogin(data.validUser.email, data.validUser.password);
