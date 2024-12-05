@@ -1,9 +1,12 @@
 export const SELECTORS = {
-    autoModalLoginButton: 'button[id="id-auto-modal"]',
+    autoModalLoginBtn: 'button[id="id-auto-modal"]',
     emailField: 'input[placeholder="john@example.com"]',
     passwordField: 'input[type="password"]',
-    primaryButton: '.el-button--primary',
+    primaryBtn: 'button.el-button--primary',
     errorAlert: '.el-alert.el-alert--error',
     errorInputField: '.el-form-item__error',
-    formElement: 'form-element',
+    modalDialog: '.el-overlay',
+    formElement: '.form-element',
+    formTitle: '.el-input__inner',
+    formDescription: '.el-textarea__inner',
 };
