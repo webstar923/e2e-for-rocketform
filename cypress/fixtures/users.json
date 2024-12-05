@@ -1,0 +1,11 @@
+{
+    "validUser": {
+      "email": "secretstart1117@hotmail.com",
+      "password": "harrypoter19961117"
+    },
+    "invalidUser": {
+      "email": "wronguser@email.com",
+      "password": "wrongpassword"
+    }
+}
+  
