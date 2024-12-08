@@ -50,6 +50,20 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
     .contains('span', PAGE_OPERATIONS.confirm)
     .click();
 });
+
+// Cammand for draganddroping the form element
+Cypress.Commands.add('formDrag', (key, element) => {
+  cy.log(`"${key}" element drag and drop`);
+  cy.loadSelector('formElement')
+    .contains('span', element)
+    .parent()
+    .drag('form div');
+  cy.get('form div')
+    .children()
+    .should('exist');
+  cy.wait(1000);
+  cy.log(`"${key}" element successfully draged and droped`);
+});
 //   Cypress.Commands.add('createTestForm', () => {
 //     cy.get('button#createNewForm').click();
 //     cy.get('#formName').type('Test Form');

@@ -1,4 +1,17 @@
 {
     "title": "Sample Form",
-    "description": "This is a test form description"
+    "description": "This is a test form description",
+    "elements": [
+        { "key": "input", "value": "Input" },
+        { "key": "email", "value": "Email" },
+        { "key": "rating", "value": "Rating" },
+        { "key": "button", "value": "Button" },
+        { "key": "rating", "value": "Rating" },
+        { "key": "calc", "value": "Calculation" },
+        { "key": "switch", "value": "Switch" },
+        { "key": "divider", "value": "Divider" },
+        { "key": "text", "value": "Long text" },
+        { "key": "checkbox", "value": "Checkbox" }
+    ]
+
 }

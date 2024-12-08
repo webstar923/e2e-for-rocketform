@@ -9,6 +9,7 @@ export const TIMEOUTS = {
 // URLs for visiting the sites
 export const URLS = {
     home: '/',
+    api: 'https://udmformgenerator-dev-laravel-backend.azurewebsites.net/api',
     forms: 'https://rocket-forms.at/en/v1/forms/',
 }
 
@@ -17,7 +18,8 @@ export const ALERT_MESSAGES = {
     invalidCredentials: 'The provided credentials are incorrect.',
     emailRequired: 'email is required',
     passwordRequired: 'password is required',
-    nameRequired: 'name is required'
+    nameRequired: 'name is required',
+    formLimit: 'Subscribe to one of our plans to get access to all features and benefits.',
 };
 
 // This defines the form elements of the form page.
@@ -44,7 +46,7 @@ export const FORM_ELEMENTS = {
     upload: 'File upload',
     rating: 'Rating',
     sign: 'Signature',
-    selectColor: 'Select Colour',
+    selectColor: 'Select colour',
     stripe: 'Stripe Checkout'
 };
 
@@ -58,6 +60,7 @@ export const PAGE_OPERATIONS = {
     publish: "Publish",
     share: "Share",
     confirm: "Confirm",
+    ok: "OK",
 };
 
 // This defines variable for modal title.

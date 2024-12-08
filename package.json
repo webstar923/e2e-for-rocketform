@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.5",
     "cypress": "^13.16.0",
+    "cypress-real-events": "^1.13.0",
     "cypress-terminal-report": "^7.1.0",
     "mochawesome": "^7.1.3"
   }
