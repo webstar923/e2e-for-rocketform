@@ -107,7 +107,35 @@ describe('RocketForm Management Tests', () => {
     });
 
     // Set the Form to publish and call the form
-    it('Set the form to publish, call the form and fill out the form with test data', () => {
+    it.only('Set the form to publish, call the form and fill out the form with test data', () => {
         cy.openForm();
+        // Set the form to publish
+        cy.log('Set the form to publish')
+        cy.contains('a', PAGE_OPERATIONS.share)
+          .click();
+        cy.wait(30000);
+        cy.loadSelector('toggleBtn')
+          .click();
+        cy.intercept('POST', `${URLS.api}/publish/*`).as('publishFormRequest');
+            cy.wait('@publishFormRequest').then((interception) => {
+                const { response } = interception;
+                expect(response.statusCode).to.eq(200);
+                expect(response.body).to.have.property('success', 1);
+            });
+        cy.loadSelector('formDescription')
+          .invoke('val')
+          .then((publishLink) => {
+            // Call the form
+            const relativeLink = new URL(publishLink).pathname;
+            cy.loadSelector('defaultBtn')
+              .contains('a', PAGE_OPERATIONS.openNewTab).as('openNewTabLink');
+            cy.get('@openNewTabLink')
+              .should('have.attr', 'href')
+              .then((linkHref) => {
+                expect(relativeLink).to.eq(linkHref);
+              });
+            cy.visit(publishLink);
+            cy.url().should('eq', publishLink);
+          });
     });
 });

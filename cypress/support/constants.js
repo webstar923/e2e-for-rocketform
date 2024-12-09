@@ -61,6 +61,7 @@ export const PAGE_OPERATIONS = {
     share: "Share",
     confirm: "Confirm",
     ok: "OK",
+    openNewTab: 'Open in New Tab',
 };
 
 // This defines variable for modal title.
