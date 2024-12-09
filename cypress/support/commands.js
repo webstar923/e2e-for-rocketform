@@ -72,14 +72,14 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.wait(1000);
   cy.log(`"${key}" element successfully draged and droped`);
 });
-//   Cypress.Commands.add('createTestForm', () => {
-//     cy.get('button#createNewForm').click();
-//     cy.get('#formName').type('Test Form');
-//     cy.get('#addElement').click();
-//   });
-  
-//   Cypress.Commands.add('publishTestForm', () => {
-//     cy.get('button#publishForm').click();
-//     cy.contains('Form published successfully').should('be.visible');
-//   });
+
+// Command to open a form by title
+Cypress.Commands.add('openForm', () => {
+  cy.wait(50000);
+  cy.fixture('formData.json').then((data) => {
+    cy.get(`a[title="${data.title}"]`).click();
+    cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
+  });
+  cy.wait(30000);
+});
   

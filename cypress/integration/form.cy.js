@@ -29,19 +29,12 @@ describe('RocketForm Management Tests', () => {
 
     // Create a Form with a Element
     it('Create a form with each element', () => {
-        cy.wait(50000);
-        cy.fixture('formData.json').then((data) => {
-            cy.get(`a[title="${data.title}"]`).click();
-            cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
-        });
-        cy.wait(30000);
+        cy.openForm();
         Object.entries(FORM_ELEMENTS).forEach(([key, element]) => {
             // Drag and drop the form element
-            if(key == 'calc') {
-                cy.loadSelector('formAdvance').click();
-            } else if(key == 'stripe') {
-                cy.loadSelector('formPayment').click();
-            };
+            if (key === 'calc') cy.loadSelector('formAdvance').click();
+            if (key === 'stripe') cy.loadSelector('formPayment').click();
+
             cy.formDrag(key, element, 1);
             // Remove the form element
             cy.log(`"${key}" element delete`);
@@ -72,37 +65,28 @@ describe('RocketForm Management Tests', () => {
 
     // Create a form with 10 elements and verify warning alert and save the created form.
     it('Create a form with 10 random elements, verify warning alert and save the created form', () => {
-        cy.wait(50000);
-        cy.fixture('formData.json').then((data) => {
-            cy.get(`a[title="${data.title}"]`).click();
-            cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
-        });
-        cy.wait(30000);
-        let baseClicked    = true;
-        let advanceClicked = false;
-        let paymentClicked = false;
+        cy.openForm();
+        let tabStatus = {
+            base: true,
+            advance: false,
+            payment: false
+        };
         cy.fixture('formData.json').then((data) => {
             const formElements = Object.entries(data.elements);
             formElements.forEach(([key, element], index) => {
-                if (!baseClicked) {
+                if (!tabStatus.base && !['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(element.key) && element.key !== 'stripe') {
                     cy.loadSelector('formBase').click();
-                    baseClicked    = true;
-                    advanceClicked = false;
-                    paymentClicked = false;
+                    tabStatus = { base: true, advance: false, payment: false };
                 } 
-                if (!advanceClicked && ['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(element.key)) {
+                if (!tabStatus.advance && ['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(element.key)) {
                     cy.log('Clicking Advanced for advanced elements');
                     cy.loadSelector('formAdvance').click();
-                    baseClicked    = false;
-                    advanceClicked = true;
-                    paymentClicked = false;
+                    tabStatus = { base: false, advance: true, payment: false };
                 } 
-                if (!paymentClicked && element.key === 'stripe') {
+                if (!tabStatus.payment && element.key === 'stripe') {
                     cy.log('Clicking Payment for Stripe');
                     cy.loadSelector('formPayment').click();
-                    baseClicked    = false;
-                    advanceClicked = false;
-                    paymentClicked = true;
+                    tabStatus = { base: false, advance: false, payment: true };
                 }
                 cy.formDrag(element.key, element.value, index+1);
             });
@@ -120,5 +104,10 @@ describe('RocketForm Management Tests', () => {
                 expect(response.body).to.have.property('success', 1);
             });
         });
+    });
+
+    // Set the Form to publish and call the form
+    it('Set the form to publish, call the form and fill out the form with test data', () => {
+        cy.openForm();
     });
 });

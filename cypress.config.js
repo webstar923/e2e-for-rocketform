@@ -15,7 +15,7 @@ module.exports = defineConfig({
     toConsole: true,
   },
   videosFolder: "cypress/videos",
-  video: false,
+  video: true,
   screenshotsFolder: "cypress/screenshots",
   screenshotOnRunFailure: true,
   viewportWidth: 1280,
