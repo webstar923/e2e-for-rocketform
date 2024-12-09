@@ -110,7 +110,7 @@ describe('RocketForm Management Tests', () => {
             cy.loadSelector('warnAlert')
               .should('be.visible')
               .find('span')
-              .should('contain', 'Subscribe to one of our plans to get access to all features and benefits.');
+              .should('contain', ALERT_MESSAGES.formLimit);
             cy.log('Saving the created form');
             cy.loadSelector('saveBtn').click();
             cy.intercept('PUT', `${URLS.api}/forms/*`).as('saveFormRequest');
