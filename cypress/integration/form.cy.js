@@ -107,7 +107,7 @@ describe('RocketForm Management Tests', () => {
     });
 
     // Set the Form to publish and call the form
-    it.only('Set the form to publish, call the form and fill out the form with test data', () => {
+    it('Set the form to publish, call the form and fill out the form with test data', () => {
         cy.openForm();
         // Set the form to publish
         cy.log('Set the form to publish')
