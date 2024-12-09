@@ -52,15 +52,23 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
 });
 
 // Cammand for draganddroping the form element
-Cypress.Commands.add('formDrag', (key, element) => {
+Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.log(`"${key}" element drag and drop`);
-  cy.loadSelector('formElement')
-    .contains('span', element)
-    .parent()
-    .drag('form div');
+  cy.wait(1000);
+  if(count == 1) {
+    cy.loadSelector('formElement')
+      .contains('span', element)
+      .parent()
+      .drag('form div');
+  } else {
+    cy.loadSelector('formElement')
+      .contains('span', element)
+      .parent()
+      .drag('form div .rud-drop-item:last-child');
+  }
   cy.get('form div')
-    .children()
-    .should('exist');
+    .find('.rud-drop-item')
+    .should('have.length', count);
   cy.wait(1000);
   cy.log(`"${key}" element successfully draged and droped`);
 });

@@ -42,7 +42,7 @@ describe('RocketForm Management Tests', () => {
             } else if(key == 'stripe') {
                 cy.loadSelector('formPayment').click();
             };
-            cy.formDrag(key, element);
+            cy.formDrag(key, element, 1);
             // Remove the form element
             cy.log(`"${key}" element delete`);
             cy.get('.list-group')
@@ -72,22 +72,39 @@ describe('RocketForm Management Tests', () => {
 
     // Create a form with 10 elements and verify warning alert and save the created form.
     it('Create a form with 10 random elements, verify warning alert and save the created form', () => {
+        cy.wait(50000);
+        cy.fixture('formData.json').then((data) => {
+            cy.get(`a[title="${data.title}"]`).click();
+            cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
+        });
+        cy.wait(30000);
+        let baseClicked    = true;
         let advanceClicked = false;
         let paymentClicked = false;
         cy.fixture('formData.json').then((data) => {
             const formElements = Object.entries(data.elements);
             formElements.forEach(([key, element], index) => {
-                if (!advanceClicked && ['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(key)) {
+                if (!baseClicked) {
+                    cy.loadSelector('formBase').click();
+                    baseClicked    = true;
+                    advanceClicked = false;
+                    paymentClicked = false;
+                } 
+                if (!advanceClicked && ['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(element.key)) {
                     cy.log('Clicking Advanced for advanced elements');
                     cy.loadSelector('formAdvance').click();
+                    baseClicked    = false;
                     advanceClicked = true;
-                }
-                if (!paymentClicked && key === 'stripe') {
+                    paymentClicked = false;
+                } 
+                if (!paymentClicked && element.key === 'stripe') {
                     cy.log('Clicking Payment for Stripe');
                     cy.loadSelector('formPayment').click();
+                    baseClicked    = false;
+                    advanceClicked = false;
                     paymentClicked = true;
                 }
-                cy.formDrag(key, element);
+                cy.formDrag(element.key, element.value, index+1);
             });
             cy.log('Verifying that form elements are disabled');
             cy.loadSelector('warnAlert')
