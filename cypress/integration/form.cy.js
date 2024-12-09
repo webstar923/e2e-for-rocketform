@@ -123,8 +123,8 @@ describe('RocketForm Management Tests', () => {
                 expect(response.body).to.have.property('success', 1);
             });
         cy.loadSelector('formDescription')
-          .invoke('val')
-          .then((publishLink) => {
+           .invoke('val')
+           .then((publishLink) => {
             // Call the form
             const relativeLink = new URL(publishLink).pathname;
             cy.loadSelector('defaultBtn')

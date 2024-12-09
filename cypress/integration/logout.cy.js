@@ -19,6 +19,7 @@ describe('Logout Tests', () => {
           .click();
         cy.contains(LOG_OUT_TEXT).click();
     });
+    cy.wait(20000);
     cy.url().should('eq', Cypress.config('baseUrl'));
     // cy.getCookie('session_id').should('not.exist');
   });
