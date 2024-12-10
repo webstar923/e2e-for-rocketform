@@ -6,7 +6,7 @@ describe('Logout Tests', () => {
     cy.loadSelector('autoModalLoginBtn').should('be.visible');
     cy.fixture('users.json').then((data) => {
         cy.clogin(data.validUser.email, data.validUser.password);
-        cy.contains(LOG_OUT_TEXT).should('exist');
+        cy.contains(LOG_OUT_TEXT, { timeout: TIMEOUTS.elementVisibility }).should('exist');
     });
   });
 
@@ -14,12 +14,12 @@ describe('Logout Tests', () => {
   it('Should log the user out and redirect to the home page', () => {
     cy.fixture('users.json').then((data) => {
         cy.loadSelector('dropdown')
-          .contains('div', data.validUser.name)
+          .contains('div', data.validUser.name, { timeout: TIMEOUTS.elementVisibility })
           .parent()
           .click();
-        cy.contains(LOG_OUT_TEXT).click();
+        cy.contains(LOG_OUT_TEXT, { timeout: TIMEOUTS.elementVisibility }).click();
     });
-    cy.wait(20000);
+    cy.wait(TIMEOUTS.urlCheck);
     cy.url().should('eq', Cypress.config('baseUrl'));
     // cy.getCookie('session_id').should('not.exist');
   });

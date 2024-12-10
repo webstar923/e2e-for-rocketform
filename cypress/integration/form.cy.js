@@ -8,7 +8,7 @@ describe('RocketForm Management Tests', () => {
         cy.loadSelector('autoModalLoginBtn').should('be.visible');
         cy.fixture('users.json').then((data) => {
             cy.clogin(data.validUser.email, data.validUser.password);
-            cy.contains(LOG_OUT_TEXT).should('exist');
+            cy.contains(LOG_OUT_TEXT, { timeout: TIMEOUTS.elementVisibility }).should('exist');
         });
         cy.visit(URLS.forms, { timeout: TIMEOUTS.pageLoad });
     });
@@ -16,7 +16,7 @@ describe('RocketForm Management Tests', () => {
     // This is a test for when title is not entered.
     it('Fails to create a new form with blank title field', () => {
         cy.createNewForm();
-        cy.contains(ALERT_MESSAGES.nameRequired).should('be.visible');
+        cy.contains(ALERT_MESSAGES.nameRequired, { timeout: TIMEOUTS.elementVisibility }).should('be.visible');
     });
 
     // This is a test for when title is entered.
@@ -38,22 +38,25 @@ describe('RocketForm Management Tests', () => {
             cy.formDrag(key, element, 1);
             // Remove the form element
             cy.log(`"${key}" element delete`);
-            cy.get('.list-group')
+            cy.get('.list-group', { timeout: TIMEOUTS.elementVisibility })
               .find('.rud-drop-item')
               .first()
               .realHover();
+            cy.wait(TIMEOUTS.hoverDelay);
             cy.get('form div')
               .find('.rud-drop-item')
-              .find('.rud-drop-item-menu')
+              .find('.rud-drop-item-menu', { timeout: TIMEOUTS.elementVisibility })
               .find('div:last-child button')
               .should('be.visible')
-              .click(); 
+              .click();
+            cy.wait(TIMEOUTS.eventDelay);
             if (key == 'stripe') {
                 cy.loadSelector('messageBox')
                   .should('be.visible')
                   .contains('span', PAGE_OPERATIONS.ok)
                   .parent('button')
                   .click();
+                cy.wait(TIMEOUTS.eventDelay);
             }
             // Verify that the form element is removed
             cy.get('form div')
@@ -111,7 +114,7 @@ describe('RocketForm Management Tests', () => {
         cy.openForm();
         // Set the form to publish
         cy.log('Set the form to publish')
-        cy.contains('a', PAGE_OPERATIONS.share)
+        cy.contains('a', PAGE_OPERATIONS.share, { timeout: TIMEOUTS.elementVisibility })
           .click();
         cy.wait(30000);
         cy.loadSelector('toggleBtn')

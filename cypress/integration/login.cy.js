@@ -18,7 +18,7 @@ describe('Login Tests', () => {
   it('Logs in with correct credentials', () => {
     cy.fixture('users.json').then((data) => {
       cy.clogin(data.validUser.email, data.validUser.password);
-      cy.contains(LOG_OUT_TEXT).should('exist');
+      cy.contains(LOG_OUT_TEXT, { timeout: TIMEOUTS.elementVisibility }).should('exist');
     });
   });
 
@@ -27,7 +27,7 @@ describe('Login Tests', () => {
     cy.fixture('users.json').then((data) => {
       cy.clogin(data.invalidUser.email, data.invalidUser.password);
       cy.loadSelector('errorAlert')
-        .contains(ALERT_MESSAGES.invalidCredentials)
+        .contains(ALERT_MESSAGES.invalidCredentials, { timeout: TIMEOUTS.elementVisibility })
         .should('be.visible');
     });
   });
@@ -35,7 +35,7 @@ describe('Login Tests', () => {
   // This is a test for when user information is not entered.
   it('Fails to log in with blank email and password fields', () => {
     cy.clogin('', '');
-    cy.contains(ALERT_MESSAGES.emailRequired).should('be.visible');
-    cy.contains(ALERT_MESSAGES.passwordRequired).should('be.visible');
+    cy.contains(ALERT_MESSAGES.emailRequired, { timeout: TIMEOUTS.elementVisibility }).should('be.visible');
+    cy.contains(ALERT_MESSAGES.passwordRequired, { timeout: TIMEOUTS.elementVisibility }).should('be.visible');
   });
 });

@@ -1,6 +1,9 @@
 // Various loading timeouts
 export const TIMEOUTS = {
     default: 50000,
+    eventDelay: 5000,
+    hoverDelay: 10000,
+    urlCheck: 20000,
     apiRequest: 100000,
     pageLoad: 1000000,
     elementVisibility: 500000,

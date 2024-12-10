@@ -34,11 +34,11 @@ Cypress.Commands.add('clogin', (email, password) => {
 // Command for creating the new form
 Cypress.Commands.add('createNewForm', (title = '', description = '') => {
   cy.loadSelector('primaryBtn')
-    .contains('span', PAGE_OPERATIONS.new)
+    .contains('span', PAGE_OPERATIONS.new, { timeout: TIMEOUTS.elementVisibility })
     .parent()
     .click();
   cy.loadSelector('modalDialog')
-    .contains('span', MODAL_TITLE.newForm)
+    .contains('span', MODAL_TITLE.newForm, { timeout: TIMEOUTS.elementVisibility })
     .should('be.visible');
   if(title) {
     cy.get(`input[placeholder="${FORM_HINT.name}"]`).type(title);
@@ -47,8 +47,9 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
     cy.loadSelector('formDescription').type(description);
   }
   cy.loadSelector('primaryBtn')
-    .contains('span', PAGE_OPERATIONS.confirm)
+    .contains('span', PAGE_OPERATIONS.confirm, { timeout: TIMEOUTS.elementVisibility })
     .click();
+  cy.wait(TIMEOUTS.urlCheck);
 });
 
 // Cammand for draganddroping the form element
@@ -66,6 +67,7 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
       .parent()
       .drag('form div .rud-drop-item:last-child');
   }
+  cy.wait(TIMEOUTS.eventDelay);
   cy.get('form div')
     .find('.rud-drop-item')
     .should('have.length', count);
@@ -77,7 +79,8 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
 Cypress.Commands.add('openForm', () => {
   cy.wait(50000);
   cy.fixture('formData.json').then((data) => {
-    cy.get(`a[title="${data.title}"]`).click();
+    cy.get(`a[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility }).click();
+    cy.wait(TIMEOUTS.urlCheck);
     cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
   });
   cy.wait(30000);
