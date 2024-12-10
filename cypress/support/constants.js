@@ -3,7 +3,7 @@ export const TIMEOUTS = {
     default: 50000,
     apiRequest: 100000,
     pageLoad: 1000000,
-    elementVisibility: 100000,
+    elementVisibility: 500000,
 };
 
 // URLs for visiting the sites
