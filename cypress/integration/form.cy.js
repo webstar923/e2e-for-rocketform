@@ -67,7 +67,7 @@ describe('RocketForm Management Tests', () => {
     });
 
     // Create a form with 10 elements and verify warning alert and save the created form.
-    it.only('Create a form with 10 random elements, verify warning alert and save the created form', () => {
+    it('Create a form with 10 random elements, verify warning alert and save the created form', () => {
         cy.openForm();
         let tabStatus = {
             base: true,
@@ -93,7 +93,7 @@ describe('RocketForm Management Tests', () => {
                 }
                 cy.formDrag(element.key, element.value, index+1);
             });
-            cy.log('Verifying that form elements are disabled');
+            // cy.log('Verifying that form elements are disabled');
             // cy.loadSelector('warnAlert')
             //   .should('be.visible')
             //   .find('span')
