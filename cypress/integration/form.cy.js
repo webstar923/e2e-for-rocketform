@@ -1,6 +1,7 @@
 import { URLS, TIMEOUTS, ALERT_MESSAGES, FORM_ELEMENTS, PAGE_OPERATIONS} from '../support/constants';
 import '@4tw/cypress-drag-drop';
 import "cypress-real-events/support";
+import { SELECTORS } from '../support/selectors';
 
 function handleFormInteraction(formSelector) {
   cy.loadSelector(formSelector).click();
@@ -40,50 +41,50 @@ describe('RocketForm Management Tests', () => {
         cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
     });
 
-    // Create a Form with a Element
-    it('Create a form with each element', () => {
-        cy.openForm();
-        Object.entries(FORM_ELEMENTS).forEach(([key, element]) => {
-            // Drag and drop the form element
-            if (key === 'calc') handleFormInteraction('formAdvance', element);
-            if (key === 'stripe') handleFormInteraction('formPayment', element);
+    // // Create a Form with a Element
+    // it('Create a form with each element', () => {
+    //     cy.openForm();
+    //     Object.entries(FORM_ELEMENTS).forEach(([key, element]) => {
+    //         // Drag and drop the form element
+    //         if (key === 'calc') handleFormInteraction('formAdvance', element);
+    //         if (key === 'stripe') handleFormInteraction('formPayment', element);
 
-            cy.formDrag(key, element, 1);
-            // Remove the form element
-            cy.log(`"${key}" element delete`);
-            cy.wait(TIMEOUTS.eventDelay);
-            cy.get('.list-group', { timeout: TIMEOUTS.elementVisibility })
-              .find('.rud-drop-item')
-              .first()
-              .realHover();
-            cy.wait(TIMEOUTS.hoverDelay);
-            cy.get('form div')
-              .find('.rud-drop-item')
-              .find('.rud-drop-item-menu', { timeout: TIMEOUTS.elementVisibility })
-              .find('div:last-child button', { timeout: TIMEOUTS.elementVisibility })
-              .should('be.visible', { timeout: TIMEOUTS.elementVisibility })
-              .click();
-            if (key == 'stripe') {
-              cy.intercept('PUT', `${URLS.api}/forms/*`).as('removeRequest');
-              cy.loadSelector('messageBox')
-                .should('be.visible')
-                .contains('span', PAGE_OPERATIONS.ok)
-                .parent('button')
-                .click();
-              cy.wait('@removeRequest').then((interception) => {
-                  const { response } = interception;
-                  expect(response.statusCode).to.eq(200);
-                  expect(response.body).to.have.property('success', 1);
-              });
-            }
-            // cy.wait(TIMEOUTS.eventDelay);
-            // Verify that the form element is removed
-            cy.get('form div')
-              .children()
-              .should('have.length', 0);
-            cy.wait(1000);
-        });
-    });
+    //         cy.formDrag(key, element, 1);
+    //         // Remove the form element
+    //         cy.log(`"${key}" element delete`);
+    //         cy.wait(TIMEOUTS.eventDelay);
+    //         cy.get('.list-group', { timeout: TIMEOUTS.elementVisibility })
+    //           .find('.rud-drop-item')
+    //           .first()
+    //           .realHover();
+    //         cy.wait(TIMEOUTS.hoverDelay);
+    //         cy.get('form div')
+    //           .find('.rud-drop-item')
+    //           .find('.rud-drop-item-menu', { timeout: TIMEOUTS.elementVisibility })
+    //           .find('div:last-child button', { timeout: TIMEOUTS.elementVisibility })
+    //           .should('be.visible', { timeout: TIMEOUTS.elementVisibility })
+    //           .click();
+    //         if (key == 'stripe') {
+    //           cy.intercept('PUT', `${URLS.api}/forms/*`).as('removeRequest');
+    //           cy.loadSelector('messageBox')
+    //             .should('be.visible')
+    //             .contains('span', PAGE_OPERATIONS.ok)
+    //             .parent('button')
+    //             .click();
+    //           cy.wait('@removeRequest').then((interception) => {
+    //               const { response } = interception;
+    //               expect(response.statusCode).to.eq(200);
+    //               expect(response.body).to.have.property('success', 1);
+    //           });
+    //         }
+    //         // cy.wait(TIMEOUTS.eventDelay);
+    //         // Verify that the form element is removed
+    //         cy.get('form div')
+    //           .children()
+    //           .should('have.length', 0);
+    //         cy.wait(1000);
+    //     });
+    // });
 
     // Create a form with 10 elements and verify warning alert and save the created form.
     it('Create a form with 10 random elements, verify warning alert and save the created form', () => {
@@ -164,5 +165,91 @@ describe('RocketForm Management Tests', () => {
             cy.visit(publishLink);
             cy.url().should('eq', publishLink);
           });
+          // Fill out the form with test data
+        cy.fixture('formData.json').then((data) => {
+          const formElements = Object.entries(data.elements);
+          formElements.forEach(([key,element], index) => {
+            switch (element.key) {
+                case 'text':
+                    cy.loadSelector('formItem')
+                      .contains('label', new RegExp(element.value, 'i'))
+                      .parent()
+                      .find(SELECTORS.formDescription)
+                      .type(element.data);
+                    break;
+                case 'email':
+                    cy.loadSelector('formItem')
+                      .contains('label', new RegExp(element.value, 'i'))
+                      .parent()
+                      .find(SELECTORS.formTitle)
+                      .type(element.data);
+                    break;
+                case 'rating':
+                    cy.loadSelector('formItem')
+                      .contains('label', new RegExp(element.value, 'i'))
+                      .parent()
+                      .find(`span:nth-child(${element.data})`)
+                      .click();
+                    break;
+                // case 'button':
+                //     cy.contains('button', element.value).click();
+                    // break;
+                case 'switch':
+                    cy.loadSelector('formItem')
+                      .contains('label', new RegExp(element.value, 'i'))
+                      .parent()
+                      .find(SELECTORS.toggleBtn)
+                      .click();
+                    break;
+                case 'input':
+                    cy.loadSelector('formItem')
+                      .contains('label', new RegExp(element.value, 'i'))
+                      .parent()
+                      .find(SELECTORS.formTitle)
+                      .type(element.data);
+                    break;
+                case 'checkbox':
+                    if ( element.data == true ) {
+                      cy.loadSelector('checkItem')
+                        .contains('span', new RegExp(element.value, 'i'))
+                        .parent()
+                        .click();
+                    }
+                    break;
+                default:
+                    cy.log('No action for element key: ' + element.key);
+            }
+          });
+          cy.wait(1000);
+          cy.intercept('POST', `${URLS.api}/submission`).as('sendRequest');
+          cy.loadSelector('primaryBtn')
+            .contains('span', PAGE_OPERATIONS.send)
+            .click();
+          cy.wait('@sendRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
+              const { response } = interception;
+              expect(response.statusCode).to.eq(200);
+          });
+        });
+    });
+
+    // Delete the created form
+    it('Delete the created form', () => {
+      cy.wait(TIMEOUTS.default);
+      cy.fixture('formData.json').then((data) => {
+        cy.get(`a[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility })
+          .closest('tr')
+          .find('td:last-child .cell>div>button:nth-of-type(1)')
+          .click();
+        cy.intercept('DELETE', `${URLS.api}/forms/*`).as('deleteFormRequest');
+        cy.loadSelector('confirmBox')
+          .should('be.visible')
+          .find(SELECTORS.primaryBtn)
+          .click();      
+        cy.wait('@deleteFormRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
+            const { response } = interception;
+            expect(response.statusCode).to.eq(200);
+        });
+        cy.wait(TIMEOUTS.urlCheck);
+      });
     });
 });

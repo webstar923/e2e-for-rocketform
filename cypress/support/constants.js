@@ -14,6 +14,7 @@ export const URLS = {
     home: '/',
     api: 'https://udmformgenerator-dev-laravel-backend.azurewebsites.net/api',
     forms: 'https://rocket-forms.at/en/v1/forms/',
+    submit: 'https://rocket-forms.at/form/',
 }
 
 // This defines the alert messages.
@@ -23,6 +24,7 @@ export const ALERT_MESSAGES = {
     passwordRequired: 'password is required',
     nameRequired: 'name is required',
     formLimit: 'Subscribe to one of our plans to get access to all features and benefits.',
+    deletForm: 'Are you sure to archive this?',
 };
 
 // This defines the form elements of the form page.
@@ -65,6 +67,7 @@ export const PAGE_OPERATIONS = {
     confirm: "Confirm",
     ok: "OK",
     openNewTab: 'Open in New Tab',
+    send: 'Send',
 };
 
 // This defines variable for modal title.

@@ -1,12 +1,12 @@
 {
-    "title": "Sample Form1",
+    "title": "Sample Form_A",
     "description": "This is a test form description",
     "elements": [
         { "key": "text", "value": "Long text", "data": "This is my Long text" },
         { "key": "email", "value": "Email", "data": "Sample@form.com" },
         { "key": "rating", "value": "Rating", "data": 5 },
         { "key": "button", "value": "Button" },
-        { "key": "rating", "value": "Rating", "data": 5 },
+        { "key": "dropdown", "value": "Dropdown" },
         { "key": "calc", "value": "Calculation" },
         { "key": "divider", "value": "Divider" },
         { "key": "switch", "value": "Switch", "data": true},
