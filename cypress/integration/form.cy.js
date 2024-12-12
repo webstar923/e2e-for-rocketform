@@ -1,16 +1,19 @@
-import { URLS, TIMEOUTS, LOG_OUT_TEXT, ALERT_MESSAGES, FORM_ELEMENTS, PAGE_OPERATIONS} from '../support/constants';
+import { URLS, TIMEOUTS, ALERT_MESSAGES, FORM_ELEMENTS, PAGE_OPERATIONS} from '../support/constants';
 import '@4tw/cypress-drag-drop';
 import "cypress-real-events/support";
 
+function handleFormInteraction(formSelector) {
+  cy.loadSelector(formSelector).click();
+}
+
 describe('RocketForm Management Tests', () => {
     beforeEach(() => {
-        cy.visit(URLS.home, { timeout: TIMEOUTS.pageLoad });
+        cy.visit(URLS.home);
         cy.loadSelector('autoModalLoginBtn').should('be.visible');
         cy.fixture('users.json').then((data) => {
-            cy.clogin(data.validUser.email, data.validUser.password);
-            cy.contains(LOG_OUT_TEXT, { timeout: TIMEOUTS.elementVisibility }).should('exist');
+            cy.clogin(data.validUser.email, data.validUser.password, 200);
         });
-        cy.visit(URLS.forms, { timeout: TIMEOUTS.pageLoad });
+        cy.visit(URLS.forms);
     });
 
     // This is a test for when title is not entered.
@@ -24,7 +27,17 @@ describe('RocketForm Management Tests', () => {
         cy.fixture('formData.json').then((data) => {
             cy.createNewForm(data.title, data.description);
         });
-        cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
+        cy.intercept('POST', `${URLS.api}/forms`).as('newformCreateRequest');
+        cy.intercept('GET', `${URLS.api}/forms/*`).as('newformOpenRequest');
+        cy.wait('@newformCreateRequest').then((interception) => {
+            const { response } = interception;
+            expect(response.statusCode).to.eq(201);
+        });
+        cy.wait('@newformOpenRequest').then((interception) => {
+            const { response } = interception;
+            expect(response.statusCode).to.eq(200);
+        });
+        cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
     });
 
     // Create a Form with a Element
@@ -32,12 +45,13 @@ describe('RocketForm Management Tests', () => {
         cy.openForm();
         Object.entries(FORM_ELEMENTS).forEach(([key, element]) => {
             // Drag and drop the form element
-            if (key === 'calc') cy.loadSelector('formAdvance').click();
-            if (key === 'stripe') cy.loadSelector('formPayment').click();
+            if (key === 'calc') handleFormInteraction('formAdvance', element);
+            if (key === 'stripe') handleFormInteraction('formPayment', element);
 
             cy.formDrag(key, element, 1);
             // Remove the form element
             cy.log(`"${key}" element delete`);
+            cy.wait(TIMEOUTS.eventDelay);
             cy.get('.list-group', { timeout: TIMEOUTS.elementVisibility })
               .find('.rud-drop-item')
               .first()
@@ -46,18 +60,23 @@ describe('RocketForm Management Tests', () => {
             cy.get('form div')
               .find('.rud-drop-item')
               .find('.rud-drop-item-menu', { timeout: TIMEOUTS.elementVisibility })
-              .find('div:last-child button')
-              .should('be.visible')
+              .find('div:last-child button', { timeout: TIMEOUTS.elementVisibility })
+              .should('be.visible', { timeout: TIMEOUTS.elementVisibility })
               .click();
-            cy.wait(TIMEOUTS.eventDelay);
             if (key == 'stripe') {
-                cy.loadSelector('messageBox')
-                  .should('be.visible')
-                  .contains('span', PAGE_OPERATIONS.ok)
-                  .parent('button')
-                  .click();
-                cy.wait(TIMEOUTS.eventDelay);
+              cy.intercept('PUT', `${URLS.api}/forms/*`).as('removeRequest');
+              cy.loadSelector('messageBox')
+                .should('be.visible')
+                .contains('span', PAGE_OPERATIONS.ok)
+                .parent('button')
+                .click();
+              cy.wait('@removeRequest').then((interception) => {
+                  const { response } = interception;
+                  expect(response.statusCode).to.eq(200);
+                  expect(response.body).to.have.property('success', 1);
+              });
             }
+            // cy.wait(TIMEOUTS.eventDelay);
             // Verify that the form element is removed
             cy.get('form div')
               .children()
@@ -78,19 +97,22 @@ describe('RocketForm Management Tests', () => {
             const formElements = Object.entries(data.elements);
             formElements.forEach(([key, element], index) => {
                 if (!tabStatus.base && !['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(element.key) && element.key !== 'stripe') {
-                    cy.loadSelector('formBase').click();
+                    handleFormInteraction('formBase');
                     tabStatus = { base: true, advance: false, payment: false };
                 } 
                 if (!tabStatus.advance && ['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(element.key)) {
                     cy.log('Clicking Advanced for advanced elements');
-                    cy.loadSelector('formAdvance').click();
+                    handleFormInteraction('formAdvance');
                     tabStatus = { base: false, advance: true, payment: false };
                 } 
                 if (!tabStatus.payment && element.key === 'stripe') {
                     cy.log('Clicking Payment for Stripe');
-                    cy.loadSelector('formPayment').click();
+                    handleFormInteraction('formPayment');
                     tabStatus = { base: false, advance: false, payment: true };
                 }
+                cy.loadSelector('formElement')
+                  .contains('span', element.value, { timeout: TIMEOUTS.elementVisibility })
+                  .should('exist', { timeout: TIMEOUTS.elementVisibility });
                 cy.formDrag(element.key, element.value, index+1);
             });
             // cy.log('Verifying that form elements are disabled');
@@ -99,8 +121,8 @@ describe('RocketForm Management Tests', () => {
             //   .find('span')
             //   .should('contain', ALERT_MESSAGES.formLimit);
             cy.log('Saving the created form');
-            cy.loadSelector('saveBtn').click();
             cy.intercept('PUT', `${URLS.api}/forms/*`).as('saveFormRequest');
+            cy.loadSelector('saveBtn').click();
             cy.wait('@saveFormRequest').then((interception) => {
                 const { response } = interception;
                 expect(response.statusCode).to.eq(200);
@@ -113,18 +135,20 @@ describe('RocketForm Management Tests', () => {
     it('Set the form to publish, call the form and fill out the form with test data', () => {
         cy.openForm();
         // Set the form to publish
-        cy.log('Set the form to publish')
+        cy.log('Set the form to publish');
         cy.contains('a', PAGE_OPERATIONS.share, { timeout: TIMEOUTS.elementVisibility })
-          .click();
-        cy.wait(30000);
+          .click()
+          .url({ timeout: TIMEOUTS.pageLoad })
+          .should('include', '/share');
+        // cy.wait(30000);
+        cy.intercept('POST', `${URLS.api}/publish/*`).as('publishFormRequest');
         cy.loadSelector('toggleBtn')
           .click();
-        cy.intercept('POST', `${URLS.api}/publish/*`).as('publishFormRequest');
-            cy.wait('@publishFormRequest').then((interception) => {
-                const { response } = interception;
-                expect(response.statusCode).to.eq(200);
-                expect(response.body).to.have.property('success', 1);
-            });
+        cy.wait('@publishFormRequest').then((interception) => {
+            const { response } = interception;
+            expect(response.statusCode).to.eq(200);
+            expect(response.body).to.have.property('success', 1);
+        });
         cy.loadSelector('formDescription')
            .invoke('val')
            .then((publishLink) => {
@@ -137,7 +161,7 @@ describe('RocketForm Management Tests', () => {
               .then((linkHref) => {
                 expect(relativeLink).to.eq(linkHref);
               });
-            cy.visit(publishLink, { timeout: TIMEOUTS.pageLoad });
+            cy.visit(publishLink);
             cy.url().should('eq', publishLink);
           });
     });

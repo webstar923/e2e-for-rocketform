@@ -1,5 +1,5 @@
 import { SELECTORS } from './selectors';
-import { TIMEOUTS, LOGIN_BUTTON_TEXT, PAGE_OPERATIONS, FORM_HINT, MODAL_TITLE  } from './constants';
+import { URLS, TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, PAGE_OPERATIONS, FORM_HINT, MODAL_TITLE  } from './constants';
 
 // Select the element
 Cypress.Commands.add('loadSelector', (selectorName, options = {}) => {
@@ -20,7 +20,7 @@ Cypress.Commands.add('loadSelector', (selectorName, options = {}) => {
 });
 
 // Command for log in 
-Cypress.Commands.add('clogin', (email, password) => {
+Cypress.Commands.add('clogin', (email, password, status) => {
   cy.loadSelector('autoModalLoginBtn').click();
   if (email) {
     cy.loadSelector('emailField').type(email);
@@ -28,7 +28,18 @@ Cypress.Commands.add('clogin', (email, password) => {
   if (password) {
     cy.loadSelector('passwordField').type(password);
   }
-  cy.loadSelector('primaryBtn').contains(LOGIN_BUTTON_TEXT).click();
+  
+  if( status != 100) {
+    cy.intercept('POST', `${URLS.api}/auth/login`).as('loginRequest');
+    cy.loadSelector('primaryBtn').contains(LOGIN_BUTTON_TEXT).click();
+    cy.wait('@loginRequest').then((interception) => {
+        const { response } = interception;
+        if (status == 200) expect(response.statusCode).to.eq(200);
+        else expect(response.statusCode).to.not.equal(200);
+    });
+    if (status == 200) cy.contains(LOG_OUT_TEXT, { timeout: TIMEOUTS.elementVisibility }).should('exist');
+  }
+  else cy.loadSelector('primaryBtn').contains(LOGIN_BUTTON_TEXT).click();
 });
   
 // Command for creating the new form
@@ -49,7 +60,7 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
   cy.loadSelector('primaryBtn')
     .contains('span', PAGE_OPERATIONS.confirm, { timeout: TIMEOUTS.elementVisibility })
     .click();
-  cy.wait(TIMEOUTS.urlCheck);
+  // cy.wait(TIMEOUTS.urlCheck);
 });
 
 // Cammand for draganddroping the form element
@@ -77,12 +88,17 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
 
 // Command to open a form by title
 Cypress.Commands.add('openForm', () => {
-  cy.wait(50000);
+  cy.wait(TIMEOUTS.default);
   cy.fixture('formData.json').then((data) => {
     cy.get(`a[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility }).click();
-    cy.wait(TIMEOUTS.urlCheck);
+    cy.intercept('GET', `${URLS.api}/forms/*`).as('openFormRequest');
+    cy.wait('@openFormRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
+        const { response } = interception;
+        expect(response.statusCode).to.eq(200);
+    });
+    // cy.wait(TIMEOUTS.urlCheck);
     cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
   });
-  cy.wait(30000);
+  // cy.wait(TIMEOUTS.default);
 });
   

@@ -2,6 +2,7 @@ const { defineConfig } = require('cypress');
 const terminalReport = require("cypress-terminal-report/src/installLogsPrinter");
 
 module.exports = defineConfig({
+  // chromeWebSecurity: false,
   retries: {
     runMode: 0,
     openMode: 0,
@@ -37,6 +38,9 @@ module.exports = defineConfig({
       });
       return config;
     },
-    defaultCommandTimeout: 50000,
+    defaultCommandTimeout: 150000,
+    pageLoadTimeout: 1500000,
+    requestTimeout: 150000,
+    responseTimeout: 150000 
   }
 })

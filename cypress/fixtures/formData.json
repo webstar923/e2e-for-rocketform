@@ -1,17 +1,16 @@
 {
-    "title": "Sample Form",
+    "title": "Sample Form1",
     "description": "This is a test form description",
     "elements": [
-        { "key": "text", "value": "Long text" },
-        { "key": "email", "value": "Email" },
-        { "key": "rating", "value": "Rating" },
+        { "key": "text", "value": "Long text", "data": "This is my Long text" },
+        { "key": "email", "value": "Email", "data": "Sample@form.com" },
+        { "key": "rating", "value": "Rating", "data": 5 },
         { "key": "button", "value": "Button" },
-        { "key": "rating", "value": "Rating" },
+        { "key": "rating", "value": "Rating", "data": 5 },
         { "key": "calc", "value": "Calculation" },
         { "key": "divider", "value": "Divider" },
-        { "key": "switch", "value": "Switch" },
-        { "key": "input", "value": "Input" },
-        { "key": "checkbox", "value": "Checkbox" }
+        { "key": "switch", "value": "Switch", "data": true},
+        { "key": "input", "value": "Input", "data": "This is my Input text" },
+        { "key": "checkbox", "value": "Checkbox", "data": true }
     ]
-
 }
