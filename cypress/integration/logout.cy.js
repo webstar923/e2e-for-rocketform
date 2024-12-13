@@ -13,8 +13,7 @@ describe('Logout Tests', () => {
   it('Should log the user out and redirect to the home page', () => {
     cy.fixture('users.json').then((data) => {
         cy.loadSelector('dropdown')
-          .contains('div', data.validUser.name, { timeout: TIMEOUTS.elementVisibility })
-          .parent()
+          .first()
           .click();
         // cy.intercept('POST', `${URLS.api}/auth/logout`).as('logoutRequest');
         cy.contains(LOG_OUT_TEXT, { timeout: TIMEOUTS.elementVisibility }).click();
@@ -24,7 +23,7 @@ describe('Logout Tests', () => {
         // });
     });
     cy.wait(TIMEOUTS.urlCheck);
-    // cy.url({ timeout: TIMEOUTS.urlCheck }).should('eq', Cypress.config('baseUrl'));
+    cy.url({ timeout: TIMEOUTS.elementVisibility }).should('eq', Cypress.config('baseUrl'));
     // cy.getCookie('session_id').should('not.exist');
   });
 });

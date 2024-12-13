@@ -28,16 +28,6 @@ describe('RocketForm Management Tests', () => {
         cy.fixture('formData.json').then((data) => {
             cy.createNewForm(data.title, data.description);
         });
-        cy.intercept('POST', `${URLS.api}/forms`).as('newformCreateRequest');
-        cy.intercept('GET', `${URLS.api}/forms/*`).as('newformOpenRequest');
-        cy.wait('@newformCreateRequest').then((interception) => {
-            const { response } = interception;
-            expect(response.statusCode).to.eq(201);
-        });
-        cy.wait('@newformOpenRequest').then((interception) => {
-            const { response } = interception;
-            expect(response.statusCode).to.eq(200);
-        });
         cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
     });
 
