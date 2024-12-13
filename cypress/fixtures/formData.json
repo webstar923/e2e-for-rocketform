@@ -1,5 +1,5 @@
 {
-    "title": "Sample Form_A VG 1",
+    "title": "Sample Form",
     "description": "This is a test form description",
     "elements": [
         { "key": "text", "value": "Long text", "data": "This is my Long text" },
