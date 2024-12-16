@@ -129,7 +129,10 @@ export const PAGE_OPERATIONS = {
     tagName: 'Tag Name',
     headingText: 'Heading Text',
     visible: 'Visibility',
-    hidden: 'Hidden'
+    hidden: 'Hidden',
+    lable: 'Label',
+    placeholder: 'Placeholder',
+    type: 'Type'
 };
 
 // This defines variable for modal title.

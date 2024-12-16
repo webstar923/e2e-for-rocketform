@@ -4,6 +4,60 @@
         "description": "This is a Advanced Sample Form",
         "elements": [
             {
+                "key": "input",
+                "settings": {
+                    "label": "company name",
+                    "placeholder": "Enter the company name",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "New address",
+                    "placeholder": "Enter the new address",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Postal code",
+                    "placeholder": "Enter the zip code",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "City",
+                    "placeholder": "Enter the city",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Land",
+                    "placeholder": "Enter the country",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "contact person",
+                    "placeholder": "Enter the name of the contact person",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
                 "key": "heading",
                 "settings": {
                     "tagName": "H2",
@@ -19,9 +73,9 @@
             {
                 "key": "input",
                 "settings": {
-                "label": "Full Name",
-                "placeholder": "Enter your full name",
-                "type": "text"
+                    "label": "Full Name",
+                    "placeholder": "Enter your full name",
+                    "type": "text"
                 },
                 "data": "This is my Input text"
             }

@@ -7,6 +7,7 @@ export const SELECTORS = {
     saveBtn: 'button.el-button--warning',
     warnBtn: 'button.el-button--warning',
     toggleBtn: '.el-switch',
+    closeBtn: '.el-drawer__close-btn',
     errorAlert: '.el-alert.el-alert--error',
     warnAlert: '.el-alert.el-alert--warning',
     errorInputField: '.el-form-item__error',

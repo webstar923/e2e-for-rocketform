@@ -35,6 +35,11 @@ describe('Form Builder Test', () => {
                         cy.setHeading(settings);
                         break;
                     }
+                    case 'input': {
+                        cy.formDrag(element.key, FORM_ELEMENTS[element.key], index+1);
+                        cy.setInput(settings);
+                        break;
+                    }
                     default:
                         throw new Error(`Unsupported element type: ${element.key}`);
                 }

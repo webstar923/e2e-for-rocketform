@@ -124,11 +124,35 @@ Cypress.Commands.add('setHeading', (settings) => {
       .type(settings.text);
   }
 
-  // if (settings.placeholder !== undefined) {
-  //   cy.get('[data-test="input-placeholder"]').clear().type(settings.placeholder);
-  // }
+  cy.loadSelector('closeBtn')
+  .click();
+});
 
-  // if (settings.type !== undefined) {
-  //   cy.get('[data-test="input-type"]').select(settings.type);
-  // }
+Cypress.Commands.add('setInput', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.input + '"))')
+    .last()
+    .dblclick();
+
+  if (settings.label !== undefined) {
+    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.lable}"]`)
+      .clear()
+      .type(settings.label);
+  }
+
+  if (settings.placeholder !== undefined) {
+    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.placeholder}"]`)
+      .clear()
+      .type(settings.placeholder);
+  }
+
+  if (settings.type !== undefined) {
+    cy.get(`.el-select:has(span:contains("${settings.type}"))`)
+      .click();
+    cy.get('.el-select-dropdown__item')
+      .contains('span', settings.type)
+      .click();
+  }
+  cy.loadSelector('closeBtn')
+    .click();
 });
