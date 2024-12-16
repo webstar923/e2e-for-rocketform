@@ -58,6 +58,24 @@
                 "data": "This is my Input text"
             },
             {
+                "key": "input",
+                "settings": {
+                    "label": "E-mail",
+                    "placeholder": "Enter the email address",
+                    "type": "text"
+                },
+                "data": "abc@abc.com"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Telephone number",
+                    "placeholder": "Enter the phone number",
+                    "type": "text"
+                },
+                "data": "abc@abc.com"
+            },
+            {
                 "key": "heading",
                 "settings": {
                     "tagName": "H2",

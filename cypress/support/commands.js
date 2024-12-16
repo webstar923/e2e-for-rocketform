@@ -67,17 +67,22 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
 Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.log(`"${key}" element drag and drop`);
   cy.wait(1000);
-  if(count == 1) {
-    cy.loadSelector('formElement')
-      .contains('span', element)
-      .parent()
-      .drag('form div');
-  } else {
-    cy.loadSelector('formElement')
-      .contains('span', element)
-      .parent()
-      .drag('form div .rud-drop-item:last-child');
-  }
+  const target = count === 1 ? 'form div' : `form div .rud-drop-item:nth-child(${count-1})`;
+  // if(count == 1) {
+  //   cy.loadSelector('formElement')
+  //     .contains('span', element)
+  //     .parent()
+  //     .drag('form div');
+  // } else {
+  //   cy.loadSelector('formElement')
+  //     .contains('span', element)
+  //     .parent()
+  //     .drag('form div .rud-drop-item:last-child');
+  // }
+  cy.loadSelector('formElement')
+    .contains('span', element)
+    .parent()
+    .drag(target);
   cy.wait(TIMEOUTS.eventDelay);
   cy.get('form div')
     .find('.rud-drop-item')
