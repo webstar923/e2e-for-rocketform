@@ -1,5 +1,5 @@
 import { SELECTORS } from './selectors';
-import { URLS, TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, PAGE_OPERATIONS, FORM_ELEMENTS, FORM_HINT, MODAL_TITLE  } from './constants';
+import { URLS, TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, PAGE_OPERATIONS, FORM_ELEMENTS, AVAILABLE_FORM_ELEMENTS, FORM_HINT, MODAL_TITLE  } from './constants';
 
 // Select the element
 Cypress.Commands.add('loadSelector', (selectorName, options = {}) => {
@@ -156,6 +156,27 @@ Cypress.Commands.add('setInput', (settings) => {
       .click();
     cy.get('.el-select-dropdown__item')
       .contains('span', settings.type)
+      .click();
+  }
+  cy.loadSelector('closeBtn')
+    .click();
+});
+
+Cypress.Commands.add('setSelection', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.selection.defaultSettings.label + '"))')
+    .last()
+    .dblclick();
+
+  if (settings.label !== undefined) {
+    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.lable}"]`)
+      .clear()
+      .type(settings.label);
+  }
+
+
+  if (settings.type !== undefined) {
+    cy.get(`.el-radio-button:has(span:contains("${settings.type}"))`)
       .click();
   }
   cy.loadSelector('closeBtn')

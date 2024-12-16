@@ -78,6 +78,16 @@ export const AVAILABLE_FORM_ELEMENTS = {
           maxLength: null,
         }  
     },
+    selection: {
+        defaultSettings: {
+          label: "Multiple Choice",
+          type: "Default",
+          option: {
+            option1: "Option1",
+            option2: "Option2"
+          }
+        }  
+    },
     // Input: {
     //   defaultSettings: {
     //     label: 'Input Field',
