@@ -90,7 +90,7 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
 Cypress.Commands.add('openForm', () => {
   cy.wait(TIMEOUTS.default);
   cy.fixture('formData.json').then((data) => {
-    cy.get(`a[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility }).click();
+    cy.get(`span[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility }).click();
     cy.intercept('GET', `${URLS.api}/forms/*`).as('openFormRequest');
     cy.wait('@openFormRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
         const { response } = interception;

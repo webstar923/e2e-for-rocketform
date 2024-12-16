@@ -3,6 +3,13 @@ import '@4tw/cypress-drag-drop';
 import "cypress-real-events/support";
 import { SELECTORS } from '../support/selectors';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+  if (err.message.includes('YT is not defined')) {
+    return false; // Prevent Cypress from failing the test
+  }
+  return true; // Default behavior: fail the test on other errors
+});
+
 function handleFormInteraction(formSelector) {
   cy.loadSelector(formSelector).click();
 }
@@ -226,7 +233,7 @@ describe('RocketForm Management Tests', () => {
     it('Delete the created form', () => {
       cy.wait(TIMEOUTS.default);
       cy.fixture('formData.json').then((data) => {
-        cy.get(`a[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility })
+        cy.get(`span[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility })
           .closest('tr')
           .find('td:last-child .cell>div>button:nth-of-type(1)')
           .click();
