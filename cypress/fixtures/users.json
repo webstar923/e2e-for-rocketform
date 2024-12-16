@@ -4,6 +4,13 @@
       "email": "secretstart1117@hotmail.com",
       "password": "harrypoter19961117"
     },
+
+    "paidUser": {
+      "name": "yongbin",
+      "email": "secretstart1117@hotmail.com",
+      "password": "harrypoter19961117"
+    },
+
     "invalidUser": {
       "name": "wrongname",
       "email": "wronguser@email.com",

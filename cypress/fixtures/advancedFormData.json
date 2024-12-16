@@ -1,0 +1,31 @@
+{
+    "userFormA": {
+        "title": "Advanded Sample Form_A",
+        "description": "This is a Advanced Sample Form",
+        "elements": [
+            {
+                "key": "heading",
+                "settings": {
+                    "tagName": "H2",
+                    "text": "This is my Form"
+                }
+            }
+        ]
+    },
+    "userFormB": {
+        "title": "Advanded Sample Form_B",
+        "description": "This is a Advanced Sample Form",
+        "elements": [
+            {
+                "key": "input",
+                "settings": {
+                "label": "Full Name",
+                "placeholder": "Enter your full name",
+                "type": "text"
+                },
+                "data": "This is my Input text"
+            }
+        ]
+    }
+}
+  

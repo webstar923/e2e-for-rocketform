@@ -22,8 +22,8 @@ module.exports = defineConfig({
   viewportWidth: 1280,
   viewportHeight: 720,
   e2e: {
-    baseUrl: 'https://rocket-forms.at/en', // production server
-    // baseUrl: 'https://dev.rocket-forms.at/en', // test server
+    // baseUrl: 'https://rocket-forms.at/en', // production server
+    baseUrl: 'https://dev.rocket-forms.at/en', // test server
     specPattern: 'cypress/integration',
     supportFile: 'cypress/support/index.js',
     setupNodeEvents(on, config) {
@@ -36,7 +36,9 @@ module.exports = defineConfig({
         printLogsToConsole: 'always',
         printLogsToFile: 'always',
       });
+
       return config;
+
     },
     defaultCommandTimeout: 150000,
     pageLoadTimeout: 1500000,

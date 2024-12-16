@@ -1,5 +1,5 @@
 import { SELECTORS } from './selectors';
-import { URLS, TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, PAGE_OPERATIONS, FORM_HINT, MODAL_TITLE  } from './constants';
+import { URLS, TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, PAGE_OPERATIONS, FORM_ELEMENTS, FORM_HINT, MODAL_TITLE  } from './constants';
 
 // Select the element
 Cypress.Commands.add('loadSelector', (selectorName, options = {}) => {
@@ -102,3 +102,33 @@ Cypress.Commands.add('openForm', () => {
   // cy.wait(TIMEOUTS.default);
 });
   
+// Commands for each form elements
+
+Cypress.Commands.add('setHeading', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(h3:contains("' + FORM_ELEMENTS.heading + '"))')
+    .last()
+    .dblclick();
+
+  if (settings.tagName !== undefined) {
+    cy.get(`.el-select[label="${PAGE_OPERATIONS.tagName}"]`)
+      .click();
+    cy.get('.el-select-dropdown__item')
+      .contains('span', settings.tagName)
+      .click();
+  }
+
+  if (settings.text !== undefined) {
+    cy.loadSelector('formDescription')
+      .clear()
+      .type(settings.text);
+  }
+
+  // if (settings.placeholder !== undefined) {
+  //   cy.get('[data-test="input-placeholder"]').clear().type(settings.placeholder);
+  // }
+
+  // if (settings.type !== undefined) {
+  //   cy.get('[data-test="input-type"]').select(settings.type);
+  // }
+});

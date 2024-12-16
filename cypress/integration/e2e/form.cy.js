@@ -1,14 +1,7 @@
-import { URLS, TIMEOUTS, ALERT_MESSAGES, FORM_ELEMENTS, PAGE_OPERATIONS} from '../support/constants';
+import { URLS, TIMEOUTS, ALERT_MESSAGES, FORM_ELEMENTS, PAGE_OPERATIONS} from '../../support/constants';
 import '@4tw/cypress-drag-drop';
 import "cypress-real-events/support";
-import { SELECTORS } from '../support/selectors';
-
-Cypress.on('uncaught:exception', (err, runnable) => {
-  if (err.message.includes('YT is not defined')) {
-    return false; // Prevent Cypress from failing the test
-  }
-  return true; // Default behavior: fail the test on other errors
-});
+import { SELECTORS } from '../../support/selectors';
 
 function handleFormInteraction(formSelector) {
   cy.loadSelector(formSelector).click();
@@ -38,52 +31,7 @@ describe('RocketForm Management Tests', () => {
         cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
     });
 
-    // // Create a Form with a Element
-    // it('Create a form with each element', () => {
-    //     cy.openForm();
-    //     Object.entries(FORM_ELEMENTS).forEach(([key, element]) => {
-    //         // Drag and drop the form element
-    //         if (key === 'calc') handleFormInteraction('formAdvance', element);
-    //         if (key === 'stripe') handleFormInteraction('formPayment', element);
-
-    //         cy.formDrag(key, element, 1);
-    //         // Remove the form element
-    //         cy.log(`"${key}" element delete`);
-    //         cy.wait(TIMEOUTS.eventDelay);
-    //         cy.get('.list-group', { timeout: TIMEOUTS.elementVisibility })
-    //           .find('.rud-drop-item')
-    //           .first()
-    //           .realHover();
-    //         cy.wait(TIMEOUTS.hoverDelay);
-    //         cy.get('form div')
-    //           .find('.rud-drop-item')
-    //           .find('.rud-drop-item-menu', { timeout: TIMEOUTS.elementVisibility })
-    //           .find('div:last-child button', { timeout: TIMEOUTS.elementVisibility })
-    //           .should('be.visible', { timeout: TIMEOUTS.elementVisibility })
-    //           .click();
-    //         if (key == 'stripe') {
-    //           cy.intercept('PUT', `${URLS.api}/forms/*`).as('removeRequest');
-    //           cy.loadSelector('messageBox')
-    //             .should('be.visible')
-    //             .contains('span', PAGE_OPERATIONS.ok)
-    //             .parent('button')
-    //             .click();
-    //           cy.wait('@removeRequest').then((interception) => {
-    //               const { response } = interception;
-    //               expect(response.statusCode).to.eq(200);
-    //               expect(response.body).to.have.property('success', 1);
-    //           });
-    //         }
-    //         // cy.wait(TIMEOUTS.eventDelay);
-    //         // Verify that the form element is removed
-    //         cy.get('form div')
-    //           .children()
-    //           .should('have.length', 0);
-    //         cy.wait(1000);
-    //     });
-    // });
-
-    // Create a form with 10 elements and verify warning alert and save the created form.
+    // Create a form with user defined 10 random elements
     it('Create a form with 10 random elements, verify warning alert and save the created form', () => {
         cy.openForm();
         let tabStatus = {

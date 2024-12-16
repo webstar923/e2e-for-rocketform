@@ -1,11 +1,4 @@
-import { URLS, TIMEOUTS, LOGIN_BUTTON_TEXT, ALERT_MESSAGES } from '../support/constants';
-
-Cypress.on('uncaught:exception', (err, runnable) => {
-  if (err.message.includes('YT is not defined')) {
-    return false; // Prevent Cypress from failing the test
-  }
-  return true; // Default behavior: fail the test on other errors
-});
+import { URLS, TIMEOUTS, LOGIN_BUTTON_TEXT, ALERT_MESSAGES } from '../../support/constants';
 
 describe('Login Tests', () => {
   beforeEach(() => {

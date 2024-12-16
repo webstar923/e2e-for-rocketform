@@ -12,9 +12,12 @@ export const TIMEOUTS = {
 // URLs for visiting the sites
 export const URLS = {
     home: '/',
-    api: 'https://udmformgenerator-dev-laravel-backend.azurewebsites.net/api',
-    forms: 'https://rocket-forms.at/en/v1/forms/',
-    submit: 'https://rocket-forms.at/form/',
+    // api: 'https://udmformgenerator-dev-laravel-backend.azurewebsites.net/api',
+    // forms: 'https://rocket-forms.at/en/v1/forms/',
+    // submit: 'https://rocket-forms.at/form/',
+    api: 'https://dev-udmformgenerator-laravel-backend-akfhhvh5afbcbtha.westeurope-01.azurewebsites.net/api',
+    forms: 'https://dev.rocket-forms.at/en/v1/forms/',
+    submit: 'https://dev.rocket-forms.at/form/',
 }
 
 // This defines the alert messages.
@@ -55,6 +58,61 @@ export const FORM_ELEMENTS = {
     stripe: 'Stripe Checkout'
 };
 
+export const AVAILABLE_FORM_ELEMENTS = {
+    heading: {
+      defaultSettings: {
+        tagName: "H3",
+        text: "Heading 3",
+        visible: true
+      }  
+    },
+    input: {
+        defaultSettings: {
+          label: "Input",
+          placeholder: "Text Input",
+          type: 'text',
+          clearable: false,
+          autocomplete: false,
+          showWordLimit: false,
+          minLength: null,
+          maxLength: null,
+        }  
+    },
+    // Input: {
+    //   defaultSettings: {
+    //     label: 'Input Field',
+    //     placeholder: 'Enter text here',
+    //     type: 'text'
+    //   }
+    // },
+    // Email: {
+    //   defaultSettings: {
+    //     label: 'Email Address',
+    //     placeholder: 'Enter your email',
+    //     required: true
+    //   }
+    // },
+    // Checkbox: {
+    //   defaultSettings: {
+    //     label: 'Accept Terms',
+    //     checked: false
+    //   }
+    // },
+    // Dropdown: {
+    //   defaultSettings: {
+    //     label: 'Select a Country',
+    //     options: ['USA', 'Canada', 'UK', 'Australia'],
+    //     default: 'USA'
+    //   }
+    // },
+    // Button: {
+    //   defaultSettings: {
+    //     label: 'Submit',
+    //     action: 'submitForm'
+    //   }
+    // },
+};
+
 // This defines variables for general operation of the page.
 export const PAGE_OPERATIONS = {
     new: "New",
@@ -68,6 +126,10 @@ export const PAGE_OPERATIONS = {
     ok: "OK",
     openNewTab: 'Open in New Tab',
     send: 'Send',
+    tagName: 'Tag Name',
+    headingText: 'Heading Text',
+    visible: 'Visibility',
+    hidden: 'Hidden'
 };
 
 // This defines variable for modal title.
