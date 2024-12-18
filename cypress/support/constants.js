@@ -31,6 +31,37 @@ export const ALERT_MESSAGES = {
     deletForm: 'Are you sure to archive this?',
 };
 
+// This defines variables for general operation of the page.
+export const PAGE_OPERATIONS = {
+  new: "New",
+  edit: "Edit",
+  delete: "Delete",
+  deleteForm: 'Delete this form',
+  add: 'Add',
+  archive: 'Archive',
+  archived: 'Archived',
+  publish: 'Publish',
+  share: 'Share',
+  confirm: 'Confirm',
+  connect: 'Connect',
+  ok: 'OK',
+  save: 'Save',
+  select: 'Select',
+  send: 'Send',
+  openNewTab: 'Open in New Tab',
+  tagName: 'Tag Name',
+  headingText: 'Heading Text',
+  visible: 'Visibility',
+  hidden: 'Hidden',
+  lable: 'Label',
+  placeholder: 'Placeholder',
+  type: 'Type',
+  general: 'General',
+  content: 'Content',
+  stripe: 'Stripe',
+  stripeProducts: 'My Products'
+};
+
 // This defines the form elements of the form page.
 export const FORM_ELEMENTS = {
     container: 'Container',
@@ -89,31 +120,13 @@ export const AVAILABLE_FORM_ELEMENTS = {
           }
         }  
     },
-};
-
-// This defines variables for general operation of the page.
-export const PAGE_OPERATIONS = {
-    new: "New",
-    edit: "Edit",
-    delete: "Delete",
-    deleteForm: "Delete this form",
-    add: "Add",
-    archive: "Archive",
-    archived: "Archived",
-    publish: "Publish",
-    share: "Share",
-    confirm: "Confirm",
-    ok: "OK",
-    save: "Save",
-    openNewTab: 'Open in New Tab',
-    send: 'Send',
-    tagName: 'Tag Name',
-    headingText: 'Heading Text',
-    visible: 'Visibility',
-    hidden: 'Hidden',
-    lable: 'Label',
-    placeholder: 'Placeholder',
-    type: 'Type'
+    stripe: {
+      defaultSettings: {
+        mode: "Test",
+        currency: "EUR - European Union Currency",
+        paymentType: "",
+      }  
+  },
 };
 
 // This defines variable for modal title.

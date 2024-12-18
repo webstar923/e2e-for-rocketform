@@ -45,6 +45,11 @@ describe('Form Builder Test', () => {
                         cy.setSelection(settings);
                         break;
                     }
+                    case 'stripe': {
+                        cy.formDrag(element.key, FORM_ELEMENTS[element.key], index+1);
+                        cy.setStripe(settings);
+                        break;
+                    }
                     default:
                         throw new Error(`Unsupported element type: ${element.key}`);
                 }

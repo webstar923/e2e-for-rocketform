@@ -68,21 +68,10 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.log(`"${key}" element drag and drop`);
   cy.wait(1000);
   const target = count === 1 ? 'form div' : `form div .rud-drop-item:nth-child(${count-1})`;
-  // if(count == 1) {
-  //   cy.loadSelector('formElement')
-  //     .contains('span', element)
-  //     .parent()
-  //     .drag('form div');
-  // } else {
-  //   cy.loadSelector('formElement')
-  //     .contains('span', element)
-  //     .parent()
-  //     .drag('form div .rud-drop-item:last-child');
-  // }
   cy.loadSelector('formElement')
     .contains('span', element)
     .parent()
-    .drag(target);
+    .drag(target, { force: true });
   cy.wait(TIMEOUTS.eventDelay);
   cy.get('form div')
     .find('.rud-drop-item')
@@ -276,8 +265,47 @@ Cypress.Commands.add('setSelection', (settings) => {
     
     cy.get('div[name="options"] button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
       .click();
-}
+  }
 
+  cy.loadSelector('closeBtn')
+    .click();
+});
+
+Cypress.Commands.add('setStripe', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(div:contains("' + PAGE_OPERATIONS.stripeProducts + '"))')
+    .last()
+    .dblclick();
+
+  cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.stripe + '")')
+    .click();
+
+  if (settings.mode !== undefined) {
+    cy.get(`.el-radio-button:has(span:contains("${settings.mode}"))`)
+      .click();
+  }
+
+  if (settings.currency !== undefined) {
+    cy.get(`.el-select:has(span:contains("${AVAILABLE_FORM_ELEMENTS.stripe.defaultSettings.currency}"))`)
+      .click();
+    cy.get('.el-select-dropdown__item')
+      .contains('span', settings.currency)
+      .click();
+  }
+
+  if (settings.paymentType !== undefined || settings.paymentType !== "") {
+    cy.get(`.el-select:has(span:contains("${PAGE_OPERATIONS.select}"))`)
+      .click();
+    cy.get('.el-select-dropdown__item')
+      .contains('span', settings.paymentType)
+      .click();
+  }
+
+  // cy.get('#pane-Stripe button:has(span:contains("' + PAGE_OPERATIONS.connect + '"))')
+  //   .click();
+
+  cy.get('#pane-Stripe button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
+    .click();
 
   cy.loadSelector('closeBtn')
     .click();

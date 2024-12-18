@@ -13,6 +13,14 @@
                 "data": "This is my Input text"
             },
             {
+                "key": "stripe",
+                "settings": {
+                    "mode": "Test",
+                    "currency": "USD - United States Dollars",
+                    "paymentType": "Sell Products"
+                }
+            },
+            {
                 "key": "selection",
                 "settings": {
                     "label": "Multiple Choice",
