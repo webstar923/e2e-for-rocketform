@@ -1,4 +1,4 @@
-import { FORM_ELEMENTS, URLS, TIMEOUTS, AVAILABLE_FORM_ELEMENTS } from '../../support/constants';
+import { FORM_ELEMENTS, URLS, TIMEOUTS, AVAILABLE_FORM_ELEMENTS, PAGE_OPERATIONS } from '../../support/constants';
 import '@4tw/cypress-drag-drop';
 import "cypress-real-events/support";
 import { SELECTORS } from '../../support/selectors';
@@ -50,28 +50,12 @@ describe('Form Builder Test', () => {
                 }
             });
         });
+    });
 
-
-        // FORM_ELEMENTS.forEach(element => {
-        // switch (element.type) {
-        //     case 'Input':
-        //     cy.addInput(element.settings);
-        //     break;
-        //     case 'Email':
-        //     cy.addEmail(element.settings);
-        //     break;
-        //     case 'Checkbox':
-        //     cy.addCheckbox(element.settings);
-        //     break;
-        //     case 'Dropdown':
-        //     cy.addDropdown(element.settings);
-        //     break;
-        //     case 'Button':
-        //     cy.addButton(element.settings);
-        //     break;
-        //     default:
-        //     throw new Error(`Unsupported element type: ${element.type}`);
-        // }
-        // });
+    // Delete the created form
+    it('Delete the user-defined form A', () => {
+        cy.get('@userDefinedForm').then((userDefinedForm) => {
+            cy.delForm(userDefinedForm.title);
+        });
     });
 });

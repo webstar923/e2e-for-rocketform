@@ -16,10 +16,11 @@
                 "key": "selection",
                 "settings": {
                     "label": "Multiple Choice",
-                    "type": "Button",
+                    "type": "Default",
                     "options": {
                         "option1": "Option1",
-                        "option2": "Option2"
+                        "option2": "Option2",
+                        "option3": "Option3"
                     }
                 },
                 "data": "option1"

@@ -25,4 +25,5 @@ export const SELECTORS = {
     formDescription: '.el-textarea__inner',
     dropdown: '.el-dropdown',
     dropdownMenu: 'ul.el-dropdown-menu',
+    listMenu: 'ul.el-menu',
 };

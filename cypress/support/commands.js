@@ -106,7 +106,51 @@ Cypress.Commands.add('openForm', () => {
   });
   // cy.wait(TIMEOUTS.default);
 });
-  
+
+
+// Cammand to save a built form
+Cypress.Commands.add('saveForm', () => {
+  cy.log('Saving the created form');
+  cy.intercept('PUT', `${URLS.api}/forms/*`).as('saveFormRequest');
+  cy.loadSelector('saveBtn').click();
+  cy.wait('@saveFormRequest').then((interception) => {
+      const { response } = interception;
+      expect(response.statusCode).to.eq(200);
+      expect(response.body).to.have.property('success', 1);
+  });
+});
+
+// Cammand to delete a form
+Cypress.Commands.add('delForm', (formName) => {
+  cy.wait(TIMEOUTS.default);
+  cy.get(`span[title="${formName}"]`, { timeout: TIMEOUTS.elementVisibility })
+    .closest('tr')
+    .find('td:last-child .cell>div>button:nth-of-type(1)')
+    .click(); 
+  cy.intercept('DELETE', `${URLS.api}/forms/*`).as('deleteFormRequest');
+  cy.loadSelector('confirmBox')
+    .should('be.visible')
+    .find(SELECTORS.primaryBtn)
+    .click();
+  cy.wait('@deleteFormRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
+      const { response } = interception;
+      expect(response.statusCode).to.eq(200);
+  });
+  cy.wait(TIMEOUTS.urlCheck);
+  cy.get('.el-menu .el-menu-item:has(span:contains("' + PAGE_OPERATIONS.archived + '"))')
+    .click({ force: true });
+  cy.get(`a:contains("${formName}")`, { timeout: TIMEOUTS.elementVisibility })
+    .closest('tr')
+    .find('td:last-child .cell>button:nth-of-type(2)')
+    .click();
+  cy.loadSelector('modalDialog')
+    .find('input')
+    .clear()
+    .type(formName)
+    .wait(TIMEOUTS.shortDelay);
+  cy.get('button:has(span:contains("' + PAGE_OPERATIONS.deleteForm + '"))')
+    .click();
+});
 // Commands for each form elements
 
 Cypress.Commands.add('setHeading', (settings) => {
@@ -179,6 +223,62 @@ Cypress.Commands.add('setSelection', (settings) => {
     cy.get(`.el-radio-button:has(span:contains("${settings.type}"))`)
       .click();
   }
+
+  if (settings.options !== undefined) {
+    const userOptions = Object.entries(settings.options);
+    let currentOptionsCount = 2;
+    cy.get('.option-editor-item-card')
+      .should('have.length.at.least', 1)
+      .then(($elements) => {
+        currentOptionsCount = $elements.length;
+    });
+
+    // **Add extra options if the user's options are more than the current options**
+    if (userOptions.length > currentOptionsCount) {
+        const optionsToAdd = userOptions.length - currentOptionsCount;
+        for (let i = 0; i < optionsToAdd; i++) {
+            cy.get('.option-editor-item-card:last-child')
+              .realHover()
+              .wait(TIMEOUTS.shortDelay)
+              .find('.rtw-card-action button')
+              .first() 
+              .click();
+            cy.wait(TIMEOUTS.shortDelay); // Wait for the new option to appear
+        }
+    }
+    
+    // **Remove extra options if the user's options are fewer than the current options**
+    if (userOptions.length < currentOptionsCount) {
+        const optionsToRemove = currentOptionsCount - userOptions.length;
+        for (let i = 0; i < optionsToRemove; i++) {
+            cy.get('.option-editor-item-card:last-child')
+              .realHover()
+              .wait(TIMEOUTS.shortDelay)
+              .find('.rtw-card-action button')
+              .last() 
+              .click();
+            cy.wait(TIMEOUTS.shortDelay);
+        }
+    }
+
+    userOptions.forEach(([key, option], index) => {
+        cy.get(`.option-editor-item-card:nth-child(${index + 1})`)
+          .find('input')
+          .first()
+          .clear()
+          .type(key);
+        cy.get(`.option-editor-item-card:nth-child(${index + 1})`)
+          .find('textarea')
+          .first()
+          .clear()
+          .type(option);
+    });
+    
+    cy.get('div[name="options"] button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
+      .click();
+}
+
+
   cy.loadSelector('closeBtn')
     .click();
 });

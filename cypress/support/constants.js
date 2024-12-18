@@ -1,6 +1,7 @@
 // Various loading timeouts
 export const TIMEOUTS = {
     default: 50000,
+    shortDelay: 2000,
     eventDelay: 5000,
     hoverDelay: 10000,
     urlCheck: 20000,
@@ -88,39 +89,6 @@ export const AVAILABLE_FORM_ELEMENTS = {
           }
         }  
     },
-    // Input: {
-    //   defaultSettings: {
-    //     label: 'Input Field',
-    //     placeholder: 'Enter text here',
-    //     type: 'text'
-    //   }
-    // },
-    // Email: {
-    //   defaultSettings: {
-    //     label: 'Email Address',
-    //     placeholder: 'Enter your email',
-    //     required: true
-    //   }
-    // },
-    // Checkbox: {
-    //   defaultSettings: {
-    //     label: 'Accept Terms',
-    //     checked: false
-    //   }
-    // },
-    // Dropdown: {
-    //   defaultSettings: {
-    //     label: 'Select a Country',
-    //     options: ['USA', 'Canada', 'UK', 'Australia'],
-    //     default: 'USA'
-    //   }
-    // },
-    // Button: {
-    //   defaultSettings: {
-    //     label: 'Submit',
-    //     action: 'submitForm'
-    //   }
-    // },
 };
 
 // This defines variables for general operation of the page.
@@ -128,12 +96,15 @@ export const PAGE_OPERATIONS = {
     new: "New",
     edit: "Edit",
     delete: "Delete",
+    deleteForm: "Delete this form",
     add: "Add",
     archive: "Archive",
+    archived: "Archived",
     publish: "Publish",
     share: "Share",
     confirm: "Confirm",
     ok: "OK",
+    save: "Save",
     openNewTab: 'Open in New Tab',
     send: 'Send',
     tagName: 'Tag Name',

@@ -66,14 +66,7 @@ describe('RocketForm Management Tests', () => {
             //   .should('be.visible')
             //   .find('span')
             //   .should('contain', ALERT_MESSAGES.formLimit);
-            cy.log('Saving the created form');
-            cy.intercept('PUT', `${URLS.api}/forms/*`).as('saveFormRequest');
-            cy.loadSelector('saveBtn').click();
-            cy.wait('@saveFormRequest').then((interception) => {
-                const { response } = interception;
-                expect(response.statusCode).to.eq(200);
-                expect(response.body).to.have.property('success', 1);
-            });
+            cy.saveForm();
         });
     });
 
@@ -179,22 +172,8 @@ describe('RocketForm Management Tests', () => {
 
     // Delete the created form
     it('Delete the created form', () => {
-      cy.wait(TIMEOUTS.default);
-      cy.fixture('formData.json').then((data) => {
-        cy.get(`span[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility })
-          .closest('tr')
-          .find('td:last-child .cell>div>button:nth-of-type(1)')
-          .click();
-        cy.intercept('DELETE', `${URLS.api}/forms/*`).as('deleteFormRequest');
-        cy.loadSelector('confirmBox')
-          .should('be.visible')
-          .find(SELECTORS.primaryBtn)
-          .click();      
-        cy.wait('@deleteFormRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
-            const { response } = interception;
-            expect(response.statusCode).to.eq(200);
-        });
-        cy.wait(TIMEOUTS.urlCheck);
+      cy.fixture('formData').then((data) => {
+        cy.delForm(data.title);
       });
     });
 });
