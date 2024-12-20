@@ -140,11 +140,39 @@ Cypress.Commands.add('delForm', (formName) => {
   cy.get('button:has(span:contains("' + PAGE_OPERATIONS.deleteForm + '"))')
     .click();
 });
+
+// Commands general setting for form element
+
+Cypress.Commands.add('setLabel', (val) => {
+  if (val !== undefined) {
+    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.label}"]`)
+      .clear()
+      .type(val);
+  }
+});
+
+Cypress.Commands.add('setPlaceholder', (val) => {
+  if (val !== undefined) {
+    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.placeholder}"]`)
+      .clear()
+      .type(val);
+  }
+});
+
+Cypress.Commands.add('setOption', (optionKey, val) => {
+  if (val == true) {
+    cy.loadSelector('checkItem')
+      .contains('span', PAGE_OPERATIONS[optionKey])
+      .parent()
+      .click();
+  }
+});
+
 // Commands for each form elements
 
 Cypress.Commands.add('setHeading', (settings) => {
   cy.get('form div')
-    .find('.rud-drop-item:has(h3:contains("' + FORM_ELEMENTS.heading + '"))')
+    .find('.rud-drop-item:has(h3:contains("' + FORM_ELEMENTS.heading[0] + '"))')
     .last()
     .dblclick();
 
@@ -168,21 +196,12 @@ Cypress.Commands.add('setHeading', (settings) => {
 
 Cypress.Commands.add('setInput', (settings) => {
   cy.get('form div')
-    .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.input + '"))')
+    .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.input[0] + '"))')
     .last()
     .dblclick();
 
-  if (settings.label !== undefined) {
-    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.lable}"]`)
-      .clear()
-      .type(settings.label);
-  }
-
-  if (settings.placeholder !== undefined) {
-    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.placeholder}"]`)
-      .clear()
-      .type(settings.placeholder);
-  }
+    cy.setLabel(settings.label);
+    cy.setPlaceholder(settings.placeholder);
 
   if (settings.type !== undefined) {
     cy.get(`.el-select:has(span:contains("${settings.type}"))`)
@@ -191,8 +210,46 @@ Cypress.Commands.add('setInput', (settings) => {
       .contains('span', settings.type)
       .click();
   }
+
   cy.loadSelector('closeBtn')
     .click();
+});
+
+Cypress.Commands.add('setText', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item')
+    .filter((index, element) => {
+        return new RegExp(element.value, 'i').test(Cypress.$(element).text());
+    })
+    .last()
+    .dblclick();
+  cy.setLabel(settings.label);
+  cy.setPlaceholder(settings.placeholder);
+  cy.setOption('clearable', settings.clearable);
+  cy.setOption('autoComplete', settings.autoComplete);
+  cy.setOption('showWordLimit', settings.showWordLimit);
+  
+  if(settings.autoSize == false)
+    cy.setOption('autoSize', true);
+
+  cy.loadSelector('closeBtn')
+    .click();
+});
+
+Cypress.Commands.add('setNumber', (settings) => {
+  
+});
+
+Cypress.Commands.add('setEmail', (settings) => {
+  
+});
+
+Cypress.Commands.add('setCheckbox', (settings) => {
+  
+});
+
+Cypress.Commands.add('setRadio', (settings) => {
+  
 });
 
 Cypress.Commands.add('setSelection', (settings) => {
@@ -201,12 +258,7 @@ Cypress.Commands.add('setSelection', (settings) => {
     .last()
     .dblclick();
 
-  if (settings.label !== undefined) {
-    cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.lable}"]`)
-      .clear()
-      .type(settings.label);
-  }
-
+  cy.setLabel(settings.label);
 
   if (settings.type !== undefined) {
     cy.get(`.el-radio-button:has(span:contains("${settings.type}"))`)
@@ -269,6 +321,38 @@ Cypress.Commands.add('setSelection', (settings) => {
 
   cy.loadSelector('closeBtn')
     .click();
+});
+
+Cypress.Commands.add('setDropdown', (settings) => {
+  
+});
+
+Cypress.Commands.add('setRange', (settings) => {
+  
+});
+
+Cypress.Commands.add('setDateTime', (settings) => {
+  
+});
+
+Cypress.Commands.add('setImage', (settings) => {
+  
+});
+
+Cypress.Commands.add('setSwitch', (settings) => {
+  
+});
+
+Cypress.Commands.add('setDivider', (settings) => {
+  
+});
+
+Cypress.Commands.add('setList', (settings) => {
+  
+});
+
+Cypress.Commands.add('setButton', (settings) => {
+  
 });
 
 Cypress.Commands.add('setStripe', (settings) => {

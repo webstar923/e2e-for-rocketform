@@ -13,17 +13,60 @@
                 "data": "This is my Input text"
             },
             {
-                "key": "stripe",
+                "key": "heading",
                 "settings": {
-                    "mode": "Test",
-                    "currency": "USD - United States Dollars",
-                    "paymentType": "Sell Products"
+                    "tagName": "H2",
+                    "text": "This is my Form"
                 }
             },
             {
-                "key": "selection",
+                "key": "text",
                 "settings": {
-                    "label": "Multiple Choice",
+                    "label": "Opinion",
+                    "placeholder": "Enter the text",
+                    "clearable": true,
+                    "autoComplete": true,
+                    "showWordLimit": true,
+                    "autoSize": true,
+                    "minLength": 2,
+                    "maxLength": 30,
+                    "rows": 3
+                },
+                "data": "I am a programmer. I like coding very well"
+            },
+            {
+                "key": "number",
+                "settings": {
+                    "label": "Count",
+                    "placeholder": "Enter the Count",
+                    "minValue": 0,
+                    "maxValue": 20,
+                    "step": 2
+                },
+                "data": 11
+            },
+            {
+                "key": "email",
+                "settings": {
+                    "label": "Your Email",
+                    "placeholder": "your email@hotmail.com",
+                    "recipient": true,
+                    "clearable": true,
+                    "autoComplete": true
+                },
+                "data": "secretstart1117@hotmail.com"
+            },
+            {
+                "key": "checkbox",
+                "settings": {
+                    "label": "Client"
+                },
+                "data": true
+            },
+            {
+                "key": "radio",
+                "settings": {
+                    "label": "Single Selection",
                     "type": "Default",
                     "options": {
                         "option1": "Option1",
@@ -32,6 +75,109 @@
                     }
                 },
                 "data": "option1"
+            },
+            {
+                "key": "selection",
+                "settings": {
+                    "label": "Multiple Selection",
+                    "type": "Default",
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": [
+                    "option1",
+                    "option2"
+                ]
+            },
+            {
+                "key": "dropdown",
+                "settings": {
+                    "label": "Products List",
+                    "placeholder": "Choose a product",
+                    "clearable": true,
+                    "filterable": true,
+                    "multiple": true,
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": "option2"
+            },
+            {
+                "key": "range",
+                "settings": {
+                    "label": "Price",
+                    "minValue": 5,
+                    "maxValue": 70,
+                    "step": 2,
+                    "breakpoint": true
+                },
+                "data": 25
+            },
+            {
+                "key": "dateTime",
+                "settings": {
+                    "label": "Birthday",
+                    "placeholder": "Pick a your bithday",
+                    "type": "week",
+                    "format": "YY-MM-DD HH:mm:ss",
+                    "valFormat": "YY-MM-DD HH:mm:ss"
+                },
+                "data": "24-12-25 00:00:00"
+            },
+            {
+                "key": "image",
+                "settings": {
+                    "label": "Product Image",
+                    "url": "19/asd/image/675c6772af9c3.png",
+                    "type": "none",
+                    "lazy": true,
+                    "alt": "my image"
+                }
+            },
+            {
+                "key": "switch",
+                "settings": {
+                    "label": "On/Off",
+                    "activeText": "change the status",
+                    "inactiveText": "change the status",
+                    "width": "30",
+                    "prompt": true
+                }
+            },
+            {
+                "key": "divider",
+                "settings": {
+                    "borderStyle": "Dashed",
+                    "label": "divider",
+                    "lazy1": "Right",
+                    "lazy2": "Vertical"
+                }
+            },
+            {
+                "key": "list",
+                "settings": {
+                    "label": "Products List",
+                    "type": "Decimal",
+                    "options": {
+                        "item1": "Item1",
+                        "item2": "Item2",
+                        "item3": "Item3"
+                    }
+                }
+            },
+            {
+                "key": "button",
+                "settings": {
+                    "label": "Save",
+                    "type": "Success",
+                    "className": "success-btn"
+                }
             },
             {
                 "key": "input",
@@ -97,10 +243,11 @@
                 "data": "abc@abc.com"
             },
             {
-                "key": "heading",
+                "key": "stripe",
                 "settings": {
-                    "tagName": "H2",
-                    "text": "This is my Form"
+                    "mode": "Test",
+                    "currency": "USD - United States Dollars",
+                    "paymentType": "Sell Products"
                 }
             }
         ]

@@ -29,32 +29,18 @@ describe('Form Builder Test', () => {
                 }
         
                 const settings = { ...defaultSettings, ...element.settings };
-                switch (element.key) {
-                    case 'heading': {
-                        cy.formDrag(element.key, FORM_ELEMENTS[element.key], index+1);
-                        cy.setHeading(settings);
-                        break;
-                    }
-                    case 'input': {
-                        cy.formDrag(element.key, FORM_ELEMENTS[element.key], index+1);
-                        cy.setInput(settings);
-                        break;
-                    }
-                    case 'selection': {
-                        cy.formDrag(element.key, FORM_ELEMENTS[element.key], index+1);
-                        cy.setSelection(settings);
-                        break;
-                    }
-                    case 'stripe': {
-                        cy.formDrag(element.key, FORM_ELEMENTS[element.key], index+1);
-                        cy.setStripe(settings);
-                        break;
-                    }
-                    default:
-                        throw new Error(`Unsupported element type: ${element.key}`);
+                if (FORM_ELEMENTS[element.key]) {
+                    cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);
+                    cy[FORM_ELEMENTS[element.key][1]](settings);
+                } else {
+                    throw new Error(`Unsupported element type: ${element.key}`);
                 }
+
             });
         });
+
+        // Save Form
+        cy.saveForm();
     });
 
     // Delete the created form
