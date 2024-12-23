@@ -34,36 +34,60 @@ export const ALERT_MESSAGES = {
 // This defines variables for general operation of the page.
 export const PAGE_OPERATIONS = {
   add: 'Add',
+  activeText: 'Active Text',
+  alt: 'Alt',
   archive: 'Archive',
   archived: 'Archived',
   autoComplete: 'Autocomplete',
   autoSize: 'Autosize',
+  breakpoint: 'Show Breakpoints',
   clearable: 'Clearable',
+  customClass: 'Custom Class',
   confirm: 'Confirm',
   connect: 'Connect',
   content: 'Content',
+  dateTime: 'DateTime',
   delete: "Delete",
   deleteForm: 'Delete this form',
   edit: "Edit",
+  emailRecipe: 'E-Mail as recipient',
+  extURL: 'External URL or Media library',
+  filterable: 'Filterable',
+  format: 'Format',
   general: 'General',
   headingText: 'Heading Text',
   hidden: 'Hidden',
+  inactiveText: 'Inactive Text',
+  items: 'Items',
   label: 'Label',
+  lazy: 'Lazy',
+  longText: 'Long Text',
+  minLength: 'Min Length',
+  minValue: 'Minimum Value',
+  maxLength: 'Max Length',
+  maxValue: 'Maximum Value',
+  multiple: 'Multiple',
   new: "New",
   ok: 'OK',
   openNewTab: 'Open in New Tab',
+  optLabel: 'Optional Label Backend',
   placeholder: 'Placeholder',
   publish: 'Publish',
+  prompt: 'Inline Prompt',
+  rows: 'Rows',
   save: 'Save',
   select: 'Select',
   send: 'Send',
   share: 'Share',
   showWordLimit: 'Show Word Limit',
+  step: 'Step',
   stripe: 'Stripe',
   stripeProducts: 'My Products',
   type: 'Type',
   tagName: 'Tag Name',
+  valFormat: 'Value Format',
   visible: 'Visibility',
+  width: 'Width'
 };
 
 // This defines the form elements of the form page.
@@ -152,7 +176,9 @@ export const AVAILABLE_FORM_ELEMENTS = {
 
     checkbox: {
       defaultSettings: {
-        label: "Checkbox"
+        label: "Checkbox",
+        optLabel: '',
+        customClass: ''
       }
     },
 
@@ -160,7 +186,7 @@ export const AVAILABLE_FORM_ELEMENTS = {
       defaultSettings: {
         label: "Radio",
         type: "Default",
-        option: {
+        options: {
           option1: "Option1",
           option2: "Option2"
         }
@@ -171,7 +197,7 @@ export const AVAILABLE_FORM_ELEMENTS = {
         defaultSettings: {
           label: "Multiple Choice",
           type: "Default",
-          option: {
+          options: {
             option1: "Option1",
             option2: "Option2"
           }
@@ -185,7 +211,7 @@ export const AVAILABLE_FORM_ELEMENTS = {
         clearable: false,
         filterable: false,
         multiple: false,
-        option: {
+        options: {
           option1: "Option1",
           option2: "Option2"
         }
@@ -245,7 +271,7 @@ export const AVAILABLE_FORM_ELEMENTS = {
       defaultSettings: {
         label: "List",
         type: "Disc",
-        option: {
+        items: {
           item1: "item"
         }
       }  
