@@ -592,28 +592,88 @@ Cypress.Commands.add('setButton', (settings) => {
 });
 
 Cypress.Commands.add('setStripe', (settings) => {
+  const {
+    mode,
+    currency,
+    paymentType,
+    paymentBoxLabel,
+    suggestedAmount,
+    setAsMinimum = false,
+    fixedAmount = false,
+  } = settings;
+
+  cy.log('Configuring Stripe element');
+
+  // Open the configuration modal
   cy.get('form div')
     .find('.rud-drop-item:has(div:contains("' + PAGE_OPERATIONS.stripeProducts + '"))')
     .last()
     .dblclick();
 
+  // Navigate to the Stripe tab
+  cy.log('Navigating to Stripe tab');
   cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.stripe + '")')
     .click();
 
-  if (settings.mode !== undefined) {
-    cy.get(`.el-radio-button:has(span:contains("${settings.mode}"))`)
+  if (mode !== undefined) {
+    cy.get(`.el-radio-button:has(span:contains("${mode}"))`)
       .click();
   }
 
-  cy.setTypeByListWithSpan(AVAILABLE_FORM_ELEMENTS.stripe.defaultSettings.currency, settings.currency);
-  cy.setTypeByListWithSpan(PAGE_OPERATIONS.select, settings.paymentType);
+  // Handle Connect
+  cy.log('Connecting Stripe');
+  cy.window().then((win) => {
+    cy.spy(win, 'open').as('windowOpen');
+    cy.get('button:contains("' + PAGE_OPERATIONS.connect + '")')
+      .click()
+    cy.get('@windowOpen').should('have.been.calledOnce');
+    cy.get('@windowOpen').its('lastCall.returnValue').then((stripeWindow) => {
+      // Assert that the window.open return value is not null or undefined
+      expect(stripeWindow).to.exist;
+      cy.contains(PAGE_OPERATIONS.connectmsg, { timeout: TIMEOUTS.elementVisibility }).should('be.visible');
+      cy.wrap(stripeWindow).invoke('close');
+    });
+  });
+  // Verify connection success
+  cy.get('button:contains("' + PAGE_OPERATIONS.connected + '")', { timeout: TIMEOUTS.elementVisibility }).should('exist');
 
-  // cy.get('#pane-Stripe button:has(span:contains("' + PAGE_OPERATIONS.connect + '"))')
-  //   .click();
+  // Set Mode (Test/Live)
+  cy.setTypeByListWithSpan(AVAILABLE_FORM_ELEMENTS.stripe.defaultSettings.currency, currency);
+  cy.setTypeByListWithSpan(PAGE_OPERATIONS.select, paymentType);
 
+  // Save Stripe settings
+  cy.log('Saving Stripe settings');
   cy.get('#pane-Stripe button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
     .click();
 
-  cy.loadSelector('closeBtn')
-    .click();
+  // Navigate to Content tab
+  cy.log('Navigating to Content tab');
+  cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.content + '")').click();
+
+  // Configure Content tab
+  cy.log('Configuring Content tab');
+  if (paymentBoxLabel) {
+    cy.get('input[placeholder="' + PAGE_OPERATIONS.paymentBoxLabel + '"]')
+      .clear()
+      .type(paymentBoxLabel);
+  }
+
+  if (suggestedAmount) {
+    cy.get('input[aria-label="' + PAGE_OPERATIONS.suggestAmount + '"]')
+      .clear()
+      .type(suggestedAmount);
+  }
+
+  if (setAsMinimum) {
+    cy.get('label:contains("' + PAGE_OPERATIONS.setSuggestAmount + '")').click();
+  }
+
+  if (fixedAmount) {
+    cy.get('label:contains("' + PAGE_OPERATIONS.fixedAmount + '")').click();
+  }
+
+  // Save Content settings
+  cy.log('Saving Content settings');
+  cy.get('button:has(span:contains("Save"))').click();
 });
+
