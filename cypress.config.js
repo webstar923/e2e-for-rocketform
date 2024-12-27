@@ -26,6 +26,7 @@ module.exports = defineConfig({
     baseUrl: 'https://dev.rocket-forms.at/en', // test server
     specPattern: 'cypress/integration',
     supportFile: 'cypress/support/index.js',
+    experimentalSessionAndOrigin: true,
     setupNodeEvents(on, config) {
       terminalReport(on, {
         outputRoot: require('path').resolve(__dirname, 'cypress/results'),
