@@ -80,6 +80,15 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.log(`"${key}" element successfully draged and droped`);
 });
 
+// Command for draganddroping the form element in pdf
+Cypress.Commands.add('formDragInPDF', (element, pdfTitle) => {
+  cy.log(`"${element.key}" element drag and drop`);
+  cy.get('#tab-forms').click();
+  const target = `div[label="${pdfTitle}"] .vue-pdf`;
+  cy.get('.form-element:has(span:contains("' + element.settings.label + '"))')
+    .drag(target);
+  cy.log(`"${element.key}" element successfully draged and droped`);
+});
 // Command to open a form by title
 Cypress.Commands.add('openForm', (formName) => {
   cy.wait(TIMEOUTS.default);
@@ -142,8 +151,10 @@ Cypress.Commands.add('publishAndLinkForm', () => {
 });
 
 // Command to assign pdf to the form
-Cypress.Commands.add('assignPDF', (document) =>{
+Cypress.Commands.add('assignPDF', (userForm) =>{
   // Assign PDF
+  const document = userForm.document;
+  const elements = userForm.elements;
   cy.log('Assign pdf to the Form');
   cy.contains('a', PAGE_OPERATIONS.assignPDF, { timeout: TIMEOUTS.elementVisibility })
     .click()
@@ -182,6 +193,9 @@ Cypress.Commands.add('assignPDF', (document) =>{
     cy.setOption('show', document.settings.eSign);
   }
   cy.get('button:has(span:contains("Save"))').click();
+  document.elementOrder.forEach((value) => {
+    cy.formDragInPDF(elements[value], document.settings.title);
+  });
 });
 
 // Command to delete a form
@@ -591,7 +605,7 @@ Cypress.Commands.add('setDateTime', (settings) => {
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + settings.label + '"))')
     .last()
-    .click();
+    .click({force: true});
 });
 
 Cypress.Commands.add('setImage', (settings) => {

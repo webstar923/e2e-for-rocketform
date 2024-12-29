@@ -68,7 +68,7 @@ describe('Form Builder Test', () => {
             });
             // Save Form
             cy.saveForm();
-            cy.assignPDF(userDefinedFormB.document);
+            cy.assignPDF(userDefinedFormB);
         });
     });
     // Delete the created form

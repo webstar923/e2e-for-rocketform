@@ -46,6 +46,46 @@
                     "type": "text"
                 },
                 "data": "This is my Input text"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Company Name",
+                    "placeholder": "Enter your full name",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "switch",
+                "settings": {
+                    "label": "On/Off",
+                    "activeText": "change the status",
+                    "inactiveText": "change the status",
+                    "width": "30",
+                    "prompt": true
+                }
+            },
+            {
+                "key": "divider",
+                "settings": {
+                    "borderStyle": "Dashed",
+                    "label": "divider",
+                    "lazy1": "Right",
+                    "lazy2": "Vertical"
+                }
+            },
+            {
+                "key": "list",
+                "settings": {
+                    "label": "Products List",
+                    "type": "Decimal",
+                    "items": {
+                        "item1": "Item1",
+                        "item2": "Item2",
+                        "item3": "Item3"
+                    }
+                }
             }
         ],
         "document": {
@@ -54,7 +94,8 @@
                 "file": "temp1",
                 "show": true,
                 "eSign": true
-            }
+            },
+            "elementOrder": [2, 1, 5]
         }
     }
 }
