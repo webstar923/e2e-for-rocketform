@@ -24,11 +24,19 @@
                     "fixedAmount": true
                 }
             }
-        ]
+        ],
+        "document": {
+            "settings": {
+                "title": "Test Document",
+                "file": "temp1",
+                "show": true,
+                "eSign": true
+            }
+        }
     },
     "userFormB": {
-        "title": "Advanded Sample Form_B",
-        "description": "This is a Advanced Sample Form",
+        "title": "Advanded Sample Form_B with connected Stripe",
+        "description": "This is a Advanced Sample Form with pre-connected Stripe",
         "elements": [
             {
                 "key": "input",
@@ -39,7 +47,15 @@
                 },
                 "data": "This is my Input text"
             }
-        ]
+        ],
+        "document": {
+            "settings": {
+                "title": "Test Document",
+                "file": "temp1",
+                "show": true,
+                "eSign": true
+            }
+        }
     }
 }
   

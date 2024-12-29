@@ -63,7 +63,7 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
   // cy.wait(TIMEOUTS.urlCheck);
 });
 
-// Cammand for draganddroping the form element
+// Command for draganddroping the form element
 Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.log(`"${key}" element drag and drop`);
   cy.wait(1000);
@@ -81,23 +81,21 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
 });
 
 // Command to open a form by title
-Cypress.Commands.add('openForm', () => {
+Cypress.Commands.add('openForm', (formName) => {
   cy.wait(TIMEOUTS.default);
-  cy.fixture('formData.json').then((data) => {
-    cy.get(`span[title="${data.title}"]`, { timeout: TIMEOUTS.elementVisibility }).click();
-    cy.intercept('GET', `${URLS.api}/forms/*`).as('openFormRequest');
-    cy.wait('@openFormRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
-        const { response } = interception;
-        expect(response.statusCode).to.eq(200);
-    });
-    // cy.wait(TIMEOUTS.urlCheck);
-    cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
+  cy.get(`span[title="${formName}"]`, { timeout: TIMEOUTS.elementVisibility }).click();
+  cy.intercept('GET', `${URLS.api}/forms/*`).as('openFormRequest');
+  cy.wait('@openFormRequest', { timeout: TIMEOUTS.elementVisibility }).then((interception) => {
+      const { response } = interception;
+      expect(response.statusCode).to.eq(200);
   });
+  // cy.wait(TIMEOUTS.urlCheck);
+  cy.url().should('match', /\/forms\/[a-f0-9-]{36}$/);
   // cy.wait(TIMEOUTS.default);
 });
 
 
-// Cammand to save a built form
+// Command to save a built form
 Cypress.Commands.add('saveForm', () => {
   cy.log('Saving the created form');
   cy.intercept('PUT', `${URLS.api}/forms/*`).as('saveFormRequest');
@@ -109,7 +107,84 @@ Cypress.Commands.add('saveForm', () => {
   });
 });
 
-// Cammand to delete a form
+// Command to publish and link a built form
+Cypress.Commands.add('publishAndLinkForm', () => {
+  // Set the form to publish
+  cy.log('Set the form to publish');
+  cy.contains('a', PAGE_OPERATIONS.share, { timeout: TIMEOUTS.elementVisibility })
+    .click()
+    .url({ timeout: TIMEOUTS.pageLoad })
+    .should('include', '/share');
+  // cy.wait(30000);
+  cy.intercept('POST', `${URLS.api}/publish/*`).as('publishFormRequest');
+  cy.loadSelector('toggleBtn')
+    .click();
+  cy.wait('@publishFormRequest').then((interception) => {
+      const { response } = interception;
+      expect(response.statusCode).to.eq(200);
+      expect(response.body).to.have.property('success', 1);
+  });
+  cy.loadSelector('formDescription')
+    .invoke('val')
+    .then((publishLink) => {
+      // Call the form
+      const relativeLink = new URL(publishLink).pathname;
+      cy.loadSelector('defaultBtn')
+        .contains('a', PAGE_OPERATIONS.openNewTab).as('openNewTabLink');
+      cy.get('@openNewTabLink')
+        .should('have.attr', 'href')
+        .then((linkHref) => {
+          expect(relativeLink).to.eq(linkHref);
+        });
+      cy.visit(publishLink);
+      cy.url().should('eq', publishLink);
+    });
+});
+
+// Command to assign pdf to the form
+Cypress.Commands.add('assignPDF', (document) =>{
+  // Assign PDF
+  cy.log('Assign pdf to the Form');
+  cy.contains('a', PAGE_OPERATIONS.assignPDF, { timeout: TIMEOUTS.elementVisibility })
+    .click()
+    .url({ timeout: TIMEOUTS.pageLoad })
+    .should('include', '/documents');
+  cy.contains('button', 'Add Document').click();
+  if (document.settings.title != undefined && document.settings.title != null) {
+    cy.contains('label', PAGE_OPERATIONS.title)
+      .parent()
+      .find('input.el-input__inner')
+      .clear()
+      .type(document.settings.title);
+  }
+  if (document.settings.file != undefined && document.settings.file != null) {
+    cy.fixture('mediaLib').then((mediaLib) => {
+      const documentName = mediaLib.documents[document.settings.file];
+      cy.get('button.el-button.el-button--info.is-circle')
+        .scrollIntoView()
+        .should('be.visible')
+        .click();
+      cy.contains('div.el-tree-node', PAGE_OPERATIONS.documents)
+        .should('exist')
+        .click({ force: true });
+      cy.get(`div[title="${documentName}.pdf"]`)
+        .should('exist')
+        .click();
+      cy.contains('button', PAGE_OPERATIONS.select)
+        .should('exist')
+        .click();
+    });
+  }
+  if (document.settings.show != undefined && document.settings.show != null) {
+    cy.setOption('show', document.settings.show);
+  }
+  if (document.settings.eSign != undefined && document.settings.eSign != null) {
+    cy.setOption('show', document.settings.eSign);
+  }
+  cy.get('button:has(span:contains("Save"))').click();
+});
+
+// Command to delete a form
 Cypress.Commands.add('delForm', (formName) => {
   cy.wait(TIMEOUTS.default);
   cy.get(`span[title="${formName}"]`, { timeout: TIMEOUTS.elementVisibility })
@@ -360,7 +435,7 @@ Cypress.Commands.add('setHeading', (settings) => {
   }
 
   cy.loadSelector('closeBtn')
-  .click();
+    .click();
 });
 
 Cypress.Commands.add('setInput', (settings) => {
@@ -716,34 +791,73 @@ cy.on('uncaught:exception', (err, runnable) => {
 
   // Verify connection success
   
+  // cy.window().then((win) => {
+  //   // Spy on the window.open method
+  //   cy.spy(win, 'open').as('windowOpen');
+  
+  //   // Click the button that triggers window.open
+  //   cy.get('button').contains(PAGE_OPERATIONS.connect).click();
+  
+  //   // Assert that window.open was called once
+  //   cy.get('@windowOpen').should('have.been.calledOnce');
+  //   cy.get('@windowOpen').its('lastCall.args').then((args) => {
+  //     const openedUrl = args[0]; // URL passed to window.open
+  //     cy.log('Opened URL:', openedUrl);
+  //     expect(openedUrl).to.include('connect.stripe.com');
+  //     cy.origin('https://connect.stripe.com', () => {
+  //       console.log(cy.url());
+  //       // Wait for the "Skip this form" button to appear
+  //       // cy.get('iframe').then(($iframe) => {
+  //       //   const body = $iframe.contents().find('body');
+  //       //   cy.wrap(body).find('span').contains('Skip this form').click();
+  //       // });
+  //       // // Verify successful interaction
+  //       // cy.contains('Test mode').should('be.visible');
+  //     });
+  //   });
+  // });
+  let mockPostRequestAlias;
   cy.window().then((win) => {
-    // Spy on the window.open method
-    cy.spy(win, 'open').as('windowOpen');
-  
-    // Click the button that triggers window.open
-    cy.get('button').contains(PAGE_OPERATIONS.connect).click();
-  
-    // Assert that window.open was called once
-    cy.get('@windowOpen').should('have.been.calledOnce');
-    cy.get('@windowOpen').its('lastCall.args').then((args) => {
-      const openedUrl = args[0]; // URL passed to window.open
-      cy.log('Opened URL:', openedUrl);
-      expect(openedUrl).to.include('connect.stripe.com');
-      cy.origin('https://connect.stripe.com', () => {
-        console.log(cy.url());
-        // Wait for the "Skip this form" button to appear
-        // cy.get('iframe').then(($iframe) => {
-        //   const body = $iframe.contents().find('body');
-        //   cy.wrap(body).find('span').contains('Skip this form').click();
-        // });
-        // // Verify successful interaction
-        // cy.contains('Test mode').should('be.visible');
-      });
+    cy.stub(win, 'open').callsFake((url) => {
+      expect(url).to.include('https://connect.stripe.com/oauth/authorize');
+      const urlParams = new URL(url).searchParams;
+      const client_id = urlParams.get('client_id');
+      const redirect_uri = urlParams.get('redirect_uri');
+      const country = urlParams.get('country') || 'US';
+      const scope = urlParams.get('scope');
+      const state = urlParams.get('state');
+      cy.log(`Extracted Parameters:
+        client_id: ${client_id}
+        redirect_uri: ${redirect_uri}
+        country: ${country}
+        scope: ${scope}
+        state: ${state}`);
+        cy.intercept('POST', '**/ajax/connect/standard_oauth/create_testmode_connection', (req) => {
+          // Validate the request body contains the expected parameters
+          expect(req.body).to.deep.equal({
+            client_id,
+            redirect_uri,
+            country,
+            scope,
+            state,
+          });
+
+          // Respond with a success status
+          req.reply({
+            statusCode: 200, // Simulate a success response
+            body: {}, // Simulate an empty response body
+          });
+        }).as('mockPostRequest');
+        cy.visit(redirect_uri); // Redirect to the callback URL
     });
   });
-  
-  
-  cy.get('button:contains("' + PAGE_OPERATIONS.connected + '")', { timeout: TIMEOUTS.elementVisibility }).should('exist');
+  mockPostRequestAlias = '@mockPostRequest';
+  cy.get('button').contains(PAGE_OPERATIONS.connect).click();
+  // cy.wait('@skipFormRequest').its('response.statusCode').should('eq', 200);
+  cy.wait('@mockPostRequest').its('response.statusCode').should('eq', 200);
+
+  cy.url().should('include', 'https://dev.rocket-forms.at');
+  // cy.get('button:contains("' + PAGE_OPERATIONS.connected + '")', { timeout: TIMEOUTS.elementVisibility }).should('exist');
 
   // Set Mode (Test/Live)
   cy.setTypeByListWithSpan(AVAILABLE_FORM_ELEMENTS.stripe.defaultSettings.currency, currency);

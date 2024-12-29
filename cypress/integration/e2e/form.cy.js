@@ -33,13 +33,13 @@ describe('RocketForm Management Tests', () => {
 
     // Create a form with user defined 10 random elements
     it('Create a form with 10 random elements, verify warning alert and save the created form', () => {
-        cy.openForm();
         let tabStatus = {
             base: true,
             advance: false,
             payment: false
         };
         cy.fixture('formData.json').then((data) => {
+          cy.openForm(data.title);
             const formElements = Object.entries(data.elements);
             formElements.forEach(([key, element], index) => {
                 if (!tabStatus.base && !['calc', 'country', 'upload', 'rating', 'sign', 'selectColor'].includes(element.key) && element.key !== 'stripe') {
@@ -72,38 +72,14 @@ describe('RocketForm Management Tests', () => {
 
     // Set the Form to publish and call the form
     it('Set the form to publish, call the form and fill out the form with test data', () => {
-        cy.openForm();
-        // Set the form to publish
-        cy.log('Set the form to publish');
-        cy.contains('a', PAGE_OPERATIONS.share, { timeout: TIMEOUTS.elementVisibility })
-          .click()
-          .url({ timeout: TIMEOUTS.pageLoad })
-          .should('include', '/share');
-        // cy.wait(30000);
-        cy.intercept('POST', `${URLS.api}/publish/*`).as('publishFormRequest');
-        cy.loadSelector('toggleBtn')
-          .click();
-        cy.wait('@publishFormRequest').then((interception) => {
-            const { response } = interception;
-            expect(response.statusCode).to.eq(200);
-            expect(response.body).to.have.property('success', 1);
+        cy.fixture('formData.json').then((data) => {
+          cy.openForm(data.title);
         });
-        cy.loadSelector('formDescription')
-           .invoke('val')
-           .then((publishLink) => {
-            // Call the form
-            const relativeLink = new URL(publishLink).pathname;
-            cy.loadSelector('defaultBtn')
-              .contains('a', PAGE_OPERATIONS.openNewTab).as('openNewTabLink');
-            cy.get('@openNewTabLink')
-              .should('have.attr', 'href')
-              .then((linkHref) => {
-                expect(relativeLink).to.eq(linkHref);
-              });
-            cy.visit(publishLink);
-            cy.url().should('eq', publishLink);
-          });
-          // Fill out the form with test data
+        
+        // Publish Form
+        cy.publishAndLinkForm();
+
+        // Fill out the form with test data
         cy.fixture('formData.json').then((data) => {
           const formElements = Object.entries(data.elements);
           formElements.forEach(([key,element], index) => {
