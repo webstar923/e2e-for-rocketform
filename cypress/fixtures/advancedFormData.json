@@ -57,6 +57,17 @@
                 "data": "This is my Input text"
             },
             {
+                "key": "dateTime",
+                "settings": {
+                    "label": "Birthday",
+                    "placeholder": "Pick a your bithday",
+                    "type": "week",
+                    "format": "YY-MM-DD HH:mm:ss",
+                    "valFormat": "YY-MM-DD HH:mm:ss"
+                },
+                "data": "24-12-25 00:00:00"
+            },
+            {
                 "key": "switch",
                 "settings": {
                     "label": "On/Off",
@@ -95,7 +106,7 @@
                 "show": true,
                 "eSign": true
             },
-            "elementOrder": [2, 1, 5]
+            "elementOrder": [2, 1, 0]
         }
     }
 }
