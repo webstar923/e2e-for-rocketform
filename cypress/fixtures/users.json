@@ -2,13 +2,13 @@
     "validUser": {
       "name": "yongbin",
       "email": "secretstart1117@hotmail.com",
-      "password": "harrypoter19961117"
+      "password": "12345678"
     },
 
     "paidUser": {
       "name": "yongbin",
       "email": "secretstart1117@hotmail.com",
-      "password": "harrypoter19961117"
+      "password": "12345678"
     },
 
     "invalidUser": {

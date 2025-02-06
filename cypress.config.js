@@ -2,7 +2,8 @@ const { defineConfig } = require('cypress');
 const terminalReport = require("cypress-terminal-report/src/installLogsPrinter");
 
 module.exports = defineConfig({
-  // chromeWebSecurity: false,
+  chromeWebSecurity: false,
+  experimentalModifyObstructiveThirdPartyCode: true,
   retries: {
     runMode: 0,
     openMode: 0,
@@ -26,7 +27,6 @@ module.exports = defineConfig({
     baseUrl: 'https://dev.rocket-forms.at/en', // test server
     specPattern: 'cypress/integration',
     supportFile: 'cypress/support/index.js',
-    experimentalSessionAndOrigin: true,
     setupNodeEvents(on, config) {
       terminalReport(on, {
         outputRoot: require('path').resolve(__dirname, 'cypress/results'),

@@ -4,7 +4,7 @@ export const SELECTORS = {
     passwordField: 'input[type="password"]',
     defaultBtn: '.el-button.el-button--default',
     primaryBtn: 'button.el-button--primary',
-    saveBtn: 'button.el-button--warning',
+    saveBtn: 'button.el-button--warning:has(svg[name="save"])',
     warnBtn: 'button.el-button--warning',
     toggleBtn: '.el-switch',
     closeBtn: '.el-drawer__close-btn',

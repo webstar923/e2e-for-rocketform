@@ -75,7 +75,8 @@
                     "inactiveText": "change the status",
                     "width": "30",
                     "prompt": true
-                }
+                },
+                "data": true
             },
             {
                 "key": "divider",
@@ -106,7 +107,19 @@
                 "show": true,
                 "eSign": true
             },
-            "elementOrder": [2, 1, 0]
+            "elementOrder": [2, 1, 0],
+            "signature": "Standard A-Trust"
+        },
+        "stripeInfo": {
+            "userName": "TestUser-8776166834",
+            "PW": "123456",
+            "email": "test@test.at",
+            "cardNumber": "4242424242424242",
+            "expireDate": "12/34",
+            "cvc": "123",
+            "cardholderName": "Test Name",
+            "country": "Austria",
+            "zip": ""
         }
     }
 }

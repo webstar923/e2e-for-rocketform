@@ -57,9 +57,9 @@ describe('RocketForm Management Tests', () => {
                     tabStatus = { base: false, advance: false, payment: true };
                 }
                 cy.loadSelector('formElement')
-                  .contains('span', element.value, { timeout: TIMEOUTS.elementVisibility })
+                  .contains('span', element.settings.label, { timeout: TIMEOUTS.elementVisibility })
                   .should('exist', { timeout: TIMEOUTS.elementVisibility });
-                cy.formDrag(element.key, element.value, index+1);
+                cy.formDrag(element.key, element.settings.label, index+1);
             });
             // cy.log('Verifying that form elements are disabled');
             // cy.loadSelector('warnAlert')
@@ -81,59 +81,7 @@ describe('RocketForm Management Tests', () => {
 
         // Fill out the form with test data
         cy.fixture('formData.json').then((data) => {
-          const formElements = Object.entries(data.elements);
-          formElements.forEach(([key,element], index) => {
-            switch (element.key) {
-                case 'text':
-                    cy.loadSelector('formItem')
-                      .contains('label', new RegExp(element.value, 'i'))
-                      .parent()
-                      .find(SELECTORS.formDescription)
-                      .type(element.data);
-                    break;
-                case 'email':
-                    cy.loadSelector('formItem')
-                      .contains('label', new RegExp(element.value, 'i'))
-                      .parent()
-                      .find(SELECTORS.formTitle)
-                      .type(element.data);
-                    break;
-                case 'rating':
-                    cy.loadSelector('formItem')
-                      .contains('label', new RegExp(element.value, 'i'))
-                      .parent()
-                      .find(`span:nth-child(${element.data})`)
-                      .click();
-                    break;
-                // case 'button':
-                //     cy.contains('button', element.value).click();
-                    // break;
-                case 'switch':
-                    cy.loadSelector('formItem')
-                      .contains('label', new RegExp(element.value, 'i'))
-                      .parent()
-                      .find(SELECTORS.toggleBtn)
-                      .click();
-                    break;
-                case 'input':
-                    cy.loadSelector('formItem')
-                      .contains('label', new RegExp(element.value, 'i'))
-                      .parent()
-                      .find(SELECTORS.formTitle)
-                      .type(element.data);
-                    break;
-                case 'checkbox':
-                    if ( element.data == true ) {
-                      cy.loadSelector('checkItem')
-                        .contains('span', new RegExp(element.value, 'i'))
-                        .parent()
-                        .click();
-                    }
-                    break;
-                default:
-                    cy.log('No action for element key: ' + element.key);
-            }
-          });
+          cy.fillForm(data.elements);
           cy.wait(1000);
           cy.intercept('POST', `${URLS.api}/submission`).as('sendRequest');
           cy.loadSelector('primaryBtn')

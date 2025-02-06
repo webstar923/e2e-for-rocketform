@@ -2,15 +2,15 @@
     "title": "Sample Form",
     "description": "This is a test form description",
     "elements": [
-        { "key": "text", "value": "Long text", "data": "This is my Long text" },
-        { "key": "email", "value": "Email", "data": "Sample@form.com" },
-        { "key": "rating", "value": "Rating", "data": 5 },
-        { "key": "button", "value": "Button" },
-        { "key": "dropdown", "value": "Dropdown" },
-        { "key": "calc", "value": "Calculation" },
-        { "key": "divider", "value": "Divider" },
-        { "key": "switch", "value": "Switch", "data": true},
-        { "key": "input", "value": "Input", "data": "This is my Input text" },
-        { "key": "checkbox", "value": "Checkbox", "data": true }
+        { "key": "text", "settings": { "label": "Long text"}, "data": "This is my Long text"},
+        { "key": "email", "settings": { "label": "Email"}, "data": "Sample@form.com"},
+        { "key": "rating", "settings": { "label": "Rating"}, "data": 5 },
+        { "key": "button", "settings": { "label": "Button"} },
+        { "key": "dropdown", "settings": { "label": "Dropdown"} },
+        { "key": "calc", "settings": { "label": "Calculation"} },
+        { "key": "divider", "settings": { "label": "Divider"} },
+        { "key": "switch", "settings": { "label": "Switch"}, "data": true},
+        { "key": "input", "settings": { "label": "Input"}, "data": "This is my Input text" },
+        { "key": "checkbox", "settings": { "label": "Checkbox"}, "data": true }
     ]
 }
