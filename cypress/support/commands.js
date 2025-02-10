@@ -754,6 +754,15 @@ Cypress.Commands.add('setButton', (settings) => {
     .click();
 });
 
+Cypress.Commands.add('setCalc', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.calc.defaultSettings.label + '"))')
+    .last()
+    .dblclick();
+  cy.setLabel(settings.label);
+  cy.setPlaceholder(settings.placeholder);
+});
+
 Cypress.Commands.add('setStripe', (settings) => {
   const {
     mode,

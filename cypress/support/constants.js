@@ -123,12 +123,12 @@ export const FORM_ELEMENTS = {
     divider: ['Divider', 'setDivider'],
     list: ['List', 'setList'],
     button: ['Button', 'setButton'],
-    calc: ['Calculation', ''],
-    country: ['Country', ''],
-    upload: ['File upload', ''],
-    rating: ['Rating', ''],
-    sign: ['Signature', ''],
-    selectColor: ['Select colour', ''],
+    calc: ['Calculation', 'setCalc'],
+    country: ['Country', 'setCountry'],
+    upload: ['File upload', 'setFileUpload'],
+    rating: ['Rating', 'setRating'],
+    sign: ['Signature', 'setSign'],
+    selectColor: ['Select colour', 'setColor'],
     stripe: ['Stripe Checkout', 'setStripe']
 };
 
@@ -297,6 +297,57 @@ export const AVAILABLE_FORM_ELEMENTS = {
         type: "Primary",
         className: null
       }  
+    },
+
+    calc: {
+      defaultSettings: {
+        label: "Form Calculation",
+        placeholder: "Calculated",
+      }  
+    },
+
+    country: {
+      defaultSettings: {
+        label: "Country",
+        placeholder: "",
+        clearable: false,
+      }  
+    },
+
+    upload: {
+      defaultSettings: {
+        label: "File",
+        uploadText: "",
+        multiple: false,
+        dragAndDrop: true,
+        limit: null,
+        accept: ""
+      }
+    },
+
+    rating: {
+      defaultSettings: {
+        label: "Rating",
+        clearable: false,
+        disabled: false,
+        showScore: false,
+        scoreTemp: "{value} points"
+      }
+    },
+
+    sign: {
+      defaultSettings: {
+        label: "Signature",
+        width: 560,
+        height: 100,
+      }
+    },
+
+    selectColor: {
+      defaultSettings: {
+        label: "Color Picker",
+        defaultValue: ""
+      }
     },
 
     stripe: {
