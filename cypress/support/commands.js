@@ -798,6 +798,25 @@ Cypress.Commands.add('setRating', (settings) => {
   cy.setOptWithTx(PAGE_OPERATIONS.scoreTemp, settings.scoreTemp);
 });
 
+Cypress.Commands.add('setSign', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.sign.defaultSettings.label + '"))')
+    .last()
+    .dblclick();
+  cy.setLabel(settings.label);
+  cy.setOptWithTx(PAGE_OPERATIONS.width, settings.width);
+  cy.setOptWithTx(PAGE_OPERATIONS.height, settings.height);
+});
+
+Cypress.Commands.add('setColor', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.selectColor.defaultSettings.label + '"))')
+    .last()
+    .dblclick();
+  cy.setLabel(settings.label);
+  cy.setOptWithTx(PAGE_OPERATIONS.defaultValue, settings.defaultValue);
+});
+
 Cypress.Commands.add('setStripe', (settings) => {
   const {
     mode,
