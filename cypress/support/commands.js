@@ -763,6 +763,41 @@ Cypress.Commands.add('setCalc', (settings) => {
   cy.setPlaceholder(settings.placeholder);
 });
 
+Cypress.Commands.add('setCountry', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.country.defaultSettings.label + '"))')
+    .last()
+    .dblclick();
+  cy.setLabel(settings.label);
+  cy.setPlaceholder(settings.placeholder);
+  cy.setOption('clearable', settings.clearable);
+});
+
+Cypress.Commands.add('setFileUpload', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.upload.defaultSettings.label + '"))')
+    .last()
+    .dblclick();
+  cy.setLabel(settings.label);
+  cy.setOptWithTx(PAGE_OPERATIONS.uploadText, settings.uploadText);
+  cy.setOption('multiple', settings.multiple);
+  cy.setOption('dragAndDrop', settings.dragAndDrop);
+  cy.configureFieldSettings('limit', settings.limit);
+  cy.setOptWithTx(PAGE_OPERATIONS.accept, settings.accept);
+});
+
+Cypress.Commands.add('setRating', (settings) => {
+  cy.get('form div')
+    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.rating.defaultSettings.label + '"))')
+    .last()
+    .dblclick();
+  cy.setLabel(settings.label);
+  cy.setOptByBool(PAGE_OPERATIONS.clearable, settings.clearable);
+  cy.setOptByBool(PAGE_OPERATIONS.disabled, settings.disabled);
+  cy.setOptByBool(PAGE_OPERATIONS.showScore, settings.showScore);
+  cy.setOptWithTx(PAGE_OPERATIONS.scoreTemp, settings.scoreTemp);
+});
+
 Cypress.Commands.add('setStripe', (settings) => {
   const {
     mode,
