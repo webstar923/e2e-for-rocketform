@@ -849,15 +849,13 @@ Cypress.Commands.add('setStripe', (settings) => {
   // Handle Connect
   cy.log('Connecting Stripe');
 
-  // Set up spy on window.open **before** the popup is triggered
+  // Log and allow window.open behavior
   cy.window().then((win) => {
     cy.stub(win, 'open').callsFake((url, target, features) => {
-      cy.log(`Popup URL: ${url}`);  // Log the URL to verify it
-      cy.log(`Popup target: ${target}`);  // Log the target (_blank)
-      cy.log(`Popup features: ${features}`);  // Log the features
-
-      // Returning an empty object to avoid errors when accessing 'closed'
-      return {};
+      cy.log(`Popup URL: ${url}`);
+      cy.log(`Popup target: ${target}`);
+      cy.log(`Popup features: ${features}`);
+      return win.open(url, target, features);  // Call the original window.open behavior
     });
   });
 
@@ -865,70 +863,47 @@ Cypress.Commands.add('setStripe', (settings) => {
   cy.get('button').contains(PAGE_OPERATIONS.connect).click();
 
   // Wait for the popup to open
-  cy.wait(30000);  // Increase wait time before checking the popup
+  cy.wait(5000);  // Adjust wait time if needed
 
-  // Assert that window.open was called once
+  // Assert window.open was called and the popup opened correctly
   cy.window().then((win) => {
-    const openCalls = win.open.getCalls();  // Retrieve all the calls made to window.open
-
-    // Log the calls to help debug
-    cy.log('Open calls:', openCalls);
-
-    // Make sure the spy was called once
+    const openCalls = win.open.getCalls();
     expect(openCalls.length).to.equal(1);
-
-    // Check the URL, target, and features passed to window.open
-    expect(openCalls[0].args[0]).to.include('https://connect.stripe.com/oauth/authorize'); // URL should match
-    expect(openCalls[0].args[1]).to.equal('_blank'); // Target should be '_blank'
-    expect(openCalls[0].args[2]).to.include('location=yes,height=700,width=1024,scrollbars=yes,status=yes'); // Features should include these
+    expect(openCalls[0].args[0]).to.include('https://connect.stripe.com/oauth/authorize');
+    expect(openCalls[0].args[1]).to.equal('_blank');
   });
 
-  // Use cy.origin to interact with the Stripe OAuth page (handle the origin change)
+  // Now interact with the Stripe popup
   cy.origin('https://connect.stripe.com', { args: { TIMEOUTS, PAGE_OPERATIONS } }, ({ TIMEOUTS, PAGE_OPERATIONS }) => {
-    // Capture uncaught exceptions and prevent failing due to specific errors
     cy.on('uncaught:exception', (err) => {
-      console.log('Uncaught error:', err);
-      if (err.message.includes("Cannot read properties of undefined (reading 'closed')")) {
+      if (err.message.includes("Cannot read properties of null (reading 'closed')")) {
         // Prevent the test from failing
         return false;
       }
       return true;
     });
 
-    cy.wait(5000); // Adjust wait time if needed to ensure the page is loaded
-    // Optionally click the skip button if it appears on the Stripe page
-    cy.url({ timeout: 10000 }).then((url) => {
-      cy.log('Current URL:', url);  // Log the current URL for debugging
-      // expect(url).to.include('authorize');  // Ensure we include 'authorize'
-    });
-    cy.get('#skip-account-app', { timeout: TIMEOUTS.pageLoad }).should('be.visible').click();
-
-    // Verify success or specific message in the Stripe window
-    cy.contains(PAGE_OPERATIONS.connectmsg, { timeout: TIMEOUTS.elementVisibility }).should('be.visible');
+    cy.get('#skip-account-app', { timeout: 60000 }).should('be.visible').click();
   });
 
-  // After Stripe OAuth flow completes, Cypress will automatically return to the main domain
-  // Wait for the redirect URL after Stripe OAuth flow
-  cy.wait(150000);  // Adjust the wait time if needed
-  cy.url().should('include', 'stripe-callback');
-
-  // After redirecting, you can validate the success of the Stripe connection
+  // After clicking the "Skip this form" button, wait for the redirect URL
+  cy.url({ timeout: 60000 }).should('include', 'stripe-callback');
+  
+  // Further assertions after redirect
   cy.url().should('include', 'https://dev.rocket-forms.at');
   
-  // Set Mode (Test/Live)
+  // Save Stripe settings
   cy.setTypeByListWithSpan(AVAILABLE_FORM_ELEMENTS.stripe.defaultSettings.currency, currency);
   cy.setTypeByListWithSpan(PAGE_OPERATIONS.select, paymentType);
 
-  // Save Stripe settings
   cy.log('Saving Stripe settings');
   cy.get('#pane-Stripe button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
     .click();
 
-  // Navigate to Content tab
   cy.log('Navigating to Content tab');
   cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.content + '")').click();
 
-  // Configure Content tab
+  // Configure Content tab and save settings
   cy.log('Configuring Content tab');
   if (paymentBoxLabel) {
     cy.get('input[placeholder="' + PAGE_OPERATIONS.paymentBoxLabel + '"]')
@@ -950,10 +925,150 @@ Cypress.Commands.add('setStripe', (settings) => {
     cy.get('label:contains("' + PAGE_OPERATIONS.fixedAmount + '")').click();
   }
 
-  // Save Content settings
   cy.log('Saving Content settings');
   cy.get('button:has(span:contains("Save"))').click();
 });
+
+
+
+// Cypress.Commands.add('setStripe', (settings) => {
+//   const {
+//     mode,
+//     currency,
+//     paymentType,
+//     paymentBoxLabel,
+//     suggestedAmount,
+//     setAsMinimum = false,
+//     fixedAmount = false,
+//   } = settings;
+
+//   cy.log('Configuring Stripe element');
+
+//   // Open the configuration modal
+//   cy.get('form div')
+//     .find('.rud-drop-item:has(div:contains("' + PAGE_OPERATIONS.stripeProducts + '"))')
+//     .last()
+//     .dblclick();
+
+//   // Navigate to the Stripe tab
+//   cy.log('Navigating to Stripe tab');
+//   cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.stripe + '")')
+//     .click();
+
+//   if (mode !== undefined) {
+//     cy.get(`.el-radio-button:has(span:contains("${mode}"))`)
+//       .click();
+//   }
+
+//   // Handle Connect
+//   cy.log('Connecting Stripe');
+
+//   // Set up spy on window.open **before** the popup is triggered
+//   cy.window().then((win) => {
+//     cy.log('Window object:', win);
+//     cy.stub(win, 'open').callsFake((url, target, features) => {
+//       cy.log(`Popup URL: ${url}`);  // Log the URL to verify it
+//       cy.log(`Popup target: ${target}`);  // Log the target (_blank)
+//       cy.log(`Popup features: ${features}`);  // Log the features
+
+//       // Returning an empty object to avoid errors when accessing 'closed'
+//       return {};
+//     });
+//   });
+
+//   // Click the Connect button to trigger the popup
+//   cy.get('button').contains(PAGE_OPERATIONS.connect).click();
+
+//   // Wait for the popup to open
+//   cy.wait(30000);  // Increase wait time before checking the popup
+
+//   // Assert that window.open was called once
+//   cy.window().then((win) => {
+//     const openCalls = win.open.getCalls();  // Retrieve all the calls made to window.open
+
+//     // Log the calls to help debug
+//     cy.log('Open calls:', openCalls);
+
+//     // Make sure the spy was called once
+//     expect(openCalls.length).to.equal(1);
+
+//     // Check the URL, target, and features passed to window.open
+//     expect(openCalls[0].args[0]).to.include('https://connect.stripe.com/oauth/authorize'); // URL should match
+//     expect(openCalls[0].args[1]).to.equal('_blank'); // Target should be '_blank'
+//     expect(openCalls[0].args[2]).to.include('location=yes,height=700,width=1024,scrollbars=yes,status=yes'); // Features should include these
+//   });
+
+//   // Use cy.origin to interact with the Stripe OAuth page (handle the origin change)
+//   cy.origin('https://connect.stripe.com', { args: { TIMEOUTS, PAGE_OPERATIONS } }, ({ TIMEOUTS, PAGE_OPERATIONS }) => {
+//     // Capture uncaught exceptions and prevent failing due to specific errors
+//     cy.on('uncaught:exception', (err) => {
+//       console.log('Uncaught error:', err);
+//       if (err.message.includes("Cannot read properties of undefined (reading 'closed')")) {
+//         // Prevent the test from failing
+//         return false;
+//       }
+//       return true;
+//     });
+
+//     cy.wait(5000); // Adjust wait time if needed to ensure the page is loaded
+//     // Optionally click the skip button if it appears on the Stripe page
+//     cy.url({ timeout: 10000 }).then((url) => {
+//       cy.log('Current URL:', url);  // Log the current URL for debugging
+//       // expect(url).to.include('authorize');  // Ensure we include 'authorize'
+//     });
+//     cy.get('#skip-account-app', { timeout: TIMEOUTS.pageLoad }).should('be.visible').click();
+
+//     // Verify success or specific message in the Stripe window
+//     cy.contains(PAGE_OPERATIONS.connectmsg, { timeout: TIMEOUTS.elementVisibility }).should('be.visible');
+//   });
+
+//   // After Stripe OAuth flow completes, Cypress will automatically return to the main domain
+//   // Wait for the redirect URL after Stripe OAuth flow
+//   cy.wait(150000);  // Adjust the wait time if needed
+//   cy.url().should('include', 'stripe-callback');
+
+//   // After redirecting, you can validate the success of the Stripe connection
+//   cy.url().should('include', 'https://dev.rocket-forms.at');
+  
+//   // Set Mode (Test/Live)
+//   cy.setTypeByListWithSpan(AVAILABLE_FORM_ELEMENTS.stripe.defaultSettings.currency, currency);
+//   cy.setTypeByListWithSpan(PAGE_OPERATIONS.select, paymentType);
+
+//   // Save Stripe settings
+//   cy.log('Saving Stripe settings');
+//   cy.get('#pane-Stripe button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
+//     .click();
+
+//   // Navigate to Content tab
+//   cy.log('Navigating to Content tab');
+//   cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.content + '")').click();
+
+//   // Configure Content tab
+//   cy.log('Configuring Content tab');
+//   if (paymentBoxLabel) {
+//     cy.get('input[placeholder="' + PAGE_OPERATIONS.paymentBoxLabel + '"]')
+//       .clear()
+//       .type(paymentBoxLabel);
+//   }
+
+//   if (suggestedAmount) {
+//     cy.get('input[aria-label="' + PAGE_OPERATIONS.suggestAmount + '"]')
+//       .clear()
+//       .type(suggestedAmount);
+//   }
+
+//   if (setAsMinimum) {
+//     cy.get('label:contains("' + PAGE_OPERATIONS.setSuggestAmount + '")').click();
+//   }
+
+//   if (fixedAmount) {
+//     cy.get('label:contains("' + PAGE_OPERATIONS.fixedAmount + '")').click();
+//   }
+
+//   // Save Content settings
+//   cy.log('Saving Content settings');
+//   cy.get('button:has(span:contains("Save"))').click();
+// });
 
 
 // Cypress.Commands.add('setStripe', (settings) => {

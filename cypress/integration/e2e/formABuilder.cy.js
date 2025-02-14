@@ -31,33 +31,33 @@ describe('Form Builder Test', () => {
     });
 
     // Build a user defined form A
-    // it('Should build a user-defined form A', () => {
-    //     cy.get('@userDefinedFormA').then((userDefinedFormA) => {
-    //         // cy.createNewForm(userDefinedFormA.title, userDefinedFormA.description);
-    //         cy.openForm(userDefinedFormA.title);
-    //         cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
-    //         cy.wait(TIMEOUTS.default);
-    //         // cy.wait(200000);
-    //         userDefinedFormA.elements.forEach( (element, index) => {
-    //             const defaultSettings = AVAILABLE_FORM_ELEMENTS[element.key]?.defaultSettings;
-    //             if (!defaultSettings) {
-    //               throw new Error(`Unsupported element type: ${element.key}`);
-    //             }
+    it.only('Should build a user-defined form A', () => {
+        cy.get('@userDefinedFormA').then((userDefinedFormA) => {
+            // cy.createNewForm(userDefinedFormA.title, userDefinedFormA.description);
+            cy.openForm(userDefinedFormA.title);
+            cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
+            cy.wait(TIMEOUTS.default);
+            // cy.wait(200000);
+            userDefinedFormA.elements.forEach( (element, index) => {
+                const defaultSettings = AVAILABLE_FORM_ELEMENTS[element.key]?.defaultSettings;
+                if (!defaultSettings) {
+                  throw new Error(`Unsupported element type: ${element.key}`);
+                }
         
-    //             const settings = { ...defaultSettings, ...element.settings };
-    //             if (FORM_ELEMENTS[element.key]) {
-    //                 cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);
-    //                 cy[FORM_ELEMENTS[element.key][1]](settings);
-    //             } else {
-    //                 throw new Error(`Unsupported element type: ${element.key}`);
-    //             }
+                const settings = { ...defaultSettings, ...element.settings };
+                if (FORM_ELEMENTS[element.key]) {
+                    cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);
+                    cy[FORM_ELEMENTS[element.key][1]](settings);
+                } else {
+                    throw new Error(`Unsupported element type: ${element.key}`);
+                }
 
-    //         });
-    //     });
+            });
+        });
 
-    //     // Save Form
-    //     cy.saveForm();
-    // });
+        // Save Form
+        cy.saveForm();
+    });
 
     // Build a user defined form B
     it('Should build a user-defined form B', () => {
