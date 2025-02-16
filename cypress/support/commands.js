@@ -146,6 +146,13 @@ Cypress.Commands.add('fillForm', (formElements) => {
               .find(SELECTORS.formTitle)
               .type(element.data);
             break;
+        case 'number':
+            cy.loadSelector('formItem')
+              .contains('label', new RegExp(element.settings.label, 'i'))
+              .parent()
+              .find(SELECTORS.formTitle)
+              .type(element.data);
+            break;
         case 'checkbox':
             if ( element.data == true ) {
               cy.loadSelector('checkItem')
@@ -153,6 +160,12 @@ Cypress.Commands.add('fillForm', (formElements) => {
                 .parent()
                 .click();
             }
+            break;
+        case 'country':
+          cy.get(`.el-select--default[label="${element.settings.label}"]`)
+            .find('ul')
+            .contains(element.data)
+            .click({force: true});
             break;
         default:
             cy.log('No action for element key: ' + element.key);
@@ -761,6 +774,23 @@ Cypress.Commands.add('setCalc', (settings) => {
     .dblclick();
   cy.setLabel(settings.label);
   cy.setPlaceholder(settings.placeholder);
+  cy.get('button')
+    .contains('Add Field')
+    .click();
+  settings.op.forEach(op => {
+    cy.get('div.rtw-cursor-pointer')
+      .contains(op.key)
+      .click({ force: true });
+    cy.get('.el-button.rtw-w-full')
+      .contains(op.symbol)
+      .click();
+  });
+  cy.get('form.el-form--label-top')
+    .find('button')
+    .contains('Save')
+    .click();
+  cy.loadSelector('closeBtn')
+    .click();
 });
 
 Cypress.Commands.add('setCountry', (settings) => {
@@ -771,6 +801,8 @@ Cypress.Commands.add('setCountry', (settings) => {
   cy.setLabel(settings.label);
   cy.setPlaceholder(settings.placeholder);
   cy.setOption('clearable', settings.clearable);
+  cy.loadSelector('closeBtn')
+  .click();
 });
 
 Cypress.Commands.add('setFileUpload', (settings) => {
@@ -784,6 +816,8 @@ Cypress.Commands.add('setFileUpload', (settings) => {
   cy.setOption('dragAndDrop', settings.dragAndDrop);
   cy.configureFieldSettings('limit', settings.limit);
   cy.setOptWithTx(PAGE_OPERATIONS.accept, settings.accept);
+  cy.loadSelector('closeBtn')
+  .click();
 });
 
 Cypress.Commands.add('setRating', (settings) => {
@@ -796,6 +830,8 @@ Cypress.Commands.add('setRating', (settings) => {
   cy.setOptByBool(PAGE_OPERATIONS.disabled, settings.disabled);
   cy.setOptByBool(PAGE_OPERATIONS.showScore, settings.showScore);
   cy.setOptWithTx(PAGE_OPERATIONS.scoreTemp, settings.scoreTemp);
+  cy.loadSelector('closeBtn')
+  .click();
 });
 
 Cypress.Commands.add('setSign', (settings) => {
@@ -806,6 +842,8 @@ Cypress.Commands.add('setSign', (settings) => {
   cy.setLabel(settings.label);
   cy.setOptWithTx(PAGE_OPERATIONS.width, settings.width);
   cy.setOptWithTx(PAGE_OPERATIONS.height, settings.height);
+  cy.loadSelector('closeBtn')
+  .click();
 });
 
 Cypress.Commands.add('setColor', (settings) => {
@@ -815,6 +853,8 @@ Cypress.Commands.add('setColor', (settings) => {
     .dblclick();
   cy.setLabel(settings.label);
   cy.setOptWithTx(PAGE_OPERATIONS.defaultValue, settings.defaultValue);
+  cy.loadSelector('closeBtn')
+  .click();
 });
 
 Cypress.Commands.add('setStripe', (settings) => {

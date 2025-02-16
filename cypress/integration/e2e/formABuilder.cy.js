@@ -43,7 +43,6 @@ describe('Form Builder Test', () => {
                 if (!defaultSettings) {
                   throw new Error(`Unsupported element type: ${element.key}`);
                 }
-        
                 const settings = { ...defaultSettings, ...element.settings };
                 if (FORM_ELEMENTS[element.key]) {
                     cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);

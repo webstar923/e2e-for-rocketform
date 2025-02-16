@@ -4,25 +4,13 @@
         "description": "This is a Advanced Sample Form",
         "elements": [
             {
-                "key": "input",
+                "key": "country",
                 "settings": {
-                    "label": "company name",
-                    "placeholder": "Enter the company name",
-                    "type": "text"
+                    "label": "Country",
+                    "placeholder": "Enter the Count",
+                    "clearable": false
                 },
-                "data": "This is my Input text"
-            },
-            {
-                "key": "stripe",
-                "settings": {
-                    "mode": "Test",
-                    "currency": "USD - United States Dollars",
-                    "paymentType": "User Defined Amount",
-                    "paymentBoxLabel": "My Product",
-                    "suggestedAmount": 300,
-                    "setAsMinimum": true,
-                    "fixedAmount": true
-                }
+                "data": "Austria"
             }
         ],
         "document": {
