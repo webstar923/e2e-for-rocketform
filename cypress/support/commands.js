@@ -161,12 +161,37 @@ Cypress.Commands.add('fillForm', (formElements) => {
                 .click();
             }
             break;
+        case 'upload':
+          if (element.settings.multiple) {
+            const files = element.data.map(filePath => ({
+              filePath
+            }));
+            cy.get('input[type="file"]').attachFile(files);
+          } else {
+            cy.get('input[type="file"]').attachFile({
+              filePath: element.data[0]
+            });
+          }
+          break;
         case 'country':
           cy.get(`.el-select--default[label="${element.settings.label}"]`)
             .find('ul')
             .contains(element.data)
             .click({force: true});
-            break;
+          break;
+        case 'sign':
+          cy.get('canvas')
+            .trigger('mousedown', { clientX: 50, clientY: 50, force: true  })  // Start drawing
+            .trigger('mousemove', { clientX: 150, clientY: 150, force: true  }) // Draw a diagonal line
+            .trigger('mousemove', { clientX: 250, clientY: 50, force: true  })  // Continue drawing
+            .trigger('mousemove', { clientX: 0, clientY: 50, force: true  })  // Continue drawing
+            .trigger('mousemove', { clientX: 50, clientY: 0, force: true  })  // Continue drawing
+            .trigger('mouseup', { force: true });
+          cy.get(`div[label="${element.settings.label}"]`)
+            .find('button')
+            .contains('Save')
+            .click(); 
+          break;
         default:
             cy.log('No action for element key: ' + element.key);
     }
