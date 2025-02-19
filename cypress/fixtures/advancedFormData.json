@@ -39,10 +39,10 @@
                 "key": "input",
                 "settings": {
                     "label": "Company Name",
-                    "placeholder": "Enter your full name",
+                    "placeholder": "Enter your company name",
                     "type": "text"
                 },
-                "data": "This is my Input text"
+                "data": "This is my company"
             },
             {
                 "key": "dateTime",
@@ -86,6 +86,324 @@
                         "item3": "Item3"
                     }
                 }
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "company name",
+                    "placeholder": "Enter the company name",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "stripe",
+                "settings": {
+                    "mode": "Test",
+                    "currency": "USD - United States Dollars",
+                    "paymentType": "User Defined Amount",
+                    "paymentBoxLabel": "My Product",
+                    "suggestedAmount": 300,
+                    "setAsMinimum": true,
+                    "fixedAmount": true
+                }
+            },
+            {
+                "key": "dateTime",
+                "settings": {
+                    "label": "Birthday",
+                    "placeholder": "Pick a your bithday",
+                    "type": "week",
+                    "format": "YY-MM-DD HH:mm:ss",
+                    "valFormat": "YY-MM-DD HH:mm:ss"
+                },
+                "data": "24-12-25 00:00:00"
+            },
+            {
+                "key": "image",
+                "settings": {
+                    "label": "Product Image",
+                    "url": "19/images/67715093c1aaa.jpeg",
+                    "type": "None",
+                    "lazy": true,
+                    "alt": "my image"
+                }
+            },
+            {
+                "key": "switch",
+                "settings": {
+                    "label": "On/Off",
+                    "activeText": "change the status",
+                    "inactiveText": "change the status",
+                    "width": "30",
+                    "prompt": true
+                }
+            },
+            {
+                "key": "divider",
+                "settings": {
+                    "borderStyle": "Dashed",
+                    "label": "divider",
+                    "lazy1": "Right",
+                    "lazy2": "Vertical"
+                }
+            },
+            {
+                "key": "list",
+                "settings": {
+                    "label": "Products List",
+                    "type": "Decimal",
+                    "items": {
+                        "item1": "Item1",
+                        "item2": "Item2",
+                        "item3": "Item3"
+                    }
+                }
+            },
+            {
+                "key": "button",
+                "settings": {
+                    "label": "Save",
+                    "type": "Success",
+                    "className": "success-btn"
+                }
+            },
+            {
+                "key": "text",
+                "settings": {
+                    "label": "Opinion",
+                    "placeholder": "Enter the text",
+                    "clearable": true,
+                    "autoComplete": true,
+                    "showWordLimit": true,
+                    "autoSize": true,
+                    "minLength": 2,
+                    "maxLength": 30,
+                    "rows": 3
+                },
+                "data": "I am a programmer. I like coding very well"
+            },
+            {
+                "key": "number",
+                "settings": {
+                    "label": "Count",
+                    "placeholder": "Enter the Count",
+                    "minValue": 0,
+                    "maxValue": 20,
+                    "step": 2
+                },
+                "data": 11
+            },
+            {
+                "key": "email",
+                "settings": {
+                    "label": "Your Email",
+                    "placeholder": "your email@hotmail.com",
+                    "recipient": true,
+                    "clearable": true,
+                    "autoComplete": true
+                },
+                "data": "secretstart1117@hotmail.com"
+            },
+            {
+                "key": "checkbox",
+                "settings": {
+                    "label": "Client"
+                },
+                "data": true
+            },
+            {
+                "key": "radio",
+                "settings": {
+                    "label": "Single Selection",
+                    "type": "Default",
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": "option1"
+            },
+            {
+                "key": "selection",
+                "settings": {
+                    "label": "Multiple Selection",
+                    "type": "Default",
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": [
+                    "option1",
+                    "option2"
+                ]
+            },
+            {
+                "key": "dropdown",
+                "settings": {
+                    "label": "Products List",
+                    "placeholder": "Choose a product",
+                    "clearable": true,
+                    "filterable": true,
+                    "multiple": true,
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": "option2"
+            },
+            {
+                "key": "range",
+                "settings": {
+                    "label": "Price",
+                    "minValue": 5,
+                    "maxValue": 70,
+                    "step": 2,
+                    "breakpoint": true
+                },
+                "data": 25
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "New address",
+                    "placeholder": "Enter the new address",
+                    "type": "text"
+                },
+                "data": "This is my address"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Postal code",
+                    "placeholder": "Enter the zip code",
+                    "type": "text"
+                },
+                "data": "This is my zip code"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "City",
+                    "placeholder": "Enter the city",
+                    "type": "text"
+                },
+                "data": "This is my city"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Land",
+                    "placeholder": "Enter the country",
+                    "type": "text"
+                },
+                "data": "This is our country"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "contact person",
+                    "placeholder": "Enter the name of the contact person",
+                    "type": "text"
+                },
+                "data": "This is my contact person"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "E-mail",
+                    "placeholder": "Enter the email address",
+                    "type": "text"
+                },
+                "data": "abc@abc.com"
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Telephone number",
+                    "placeholder": "Enter the phone number",
+                    "type": "text"
+                },
+                "data": "1234567890"
+            },
+            {
+                "key": "number",
+                "settings": {
+                    "label": "Calc1",
+                    "placeholder": "Enter the Count",
+                    "minValue": 0,
+                    "maxValue": 20,
+                    "step": 2
+                },
+                "data": 11
+            },
+            {
+                "key": "number",
+                "settings": {
+                    "label": "Calc2",
+                    "placeholder": "Enter the Count",
+                    "minValue": 0,
+                    "maxValue": 20,
+                    "step": 2
+                },
+                "data": 15
+            },
+            {
+                "key": "calc",
+                "settings":{
+                    "label": "My Calculation",
+                    "placeholder": "Enter the Calculation",
+                    "op":[
+                        {"key": "Calc1", "symbol": "+"},
+                        {"key": "Calc2", "symbol": "+"}
+                    ]
+                }
+            },
+            {
+                "key": "rating",
+                "settings": {
+                    "label": "Rating",
+                    "clearable": false,
+                    "disabled": false,
+                    "showScore": false,
+                    "scoreTemp": "{value} points"
+                },
+                "data": 4
+            },
+            {
+                "key": "upload",
+                "settings": {
+                    "label": "File",
+                    "uploadText": "Enter the Count",
+                    "multiple": true,
+                    "dragAndDrop": true,
+                    "limit":null,
+                    "accept":""
+                },
+                "data": [
+                    "mediaLib.json",
+                    "users.json"
+                ]
+            },
+            {
+                "key": "sign",
+                "settings": {
+                    "label": "Signature"
+                }
+            },
+            {
+                "key": "country",
+                "settings": {
+                    "label": "Country",
+                    "placeholder": "Enter the Count",
+                    "clearable": false
+                },
+                "data": "Austria"
             }
         ],
         "document": {
@@ -95,7 +413,7 @@
                 "show": true,
                 "eSign": true
             },
-            "elementOrder": [2, 1, 0],
+            "elementOrder": [6, 1, 0],
             "signature": "Standard A-Trust"
         },
         "stripeInfo": {

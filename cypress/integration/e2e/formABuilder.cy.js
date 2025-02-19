@@ -31,7 +31,7 @@ describe('Form Builder Test', () => {
     });
 
     // Build a user defined form A
-    it.only('Should build a user-defined form A', () => {
+    it('Should build a user-defined form A', () => {
         cy.get('@userDefinedFormA').then((userDefinedFormA) => {
             // cy.createNewForm(userDefinedFormA.title, userDefinedFormA.description);
             cy.openForm(userDefinedFormA.title);
@@ -43,6 +43,7 @@ describe('Form Builder Test', () => {
                 if (!defaultSettings) {
                   throw new Error(`Unsupported element type: ${element.key}`);
                 }
+
                 const settings = { ...defaultSettings, ...element.settings };
                 if (FORM_ELEMENTS[element.key]) {
                     cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);
@@ -59,7 +60,7 @@ describe('Form Builder Test', () => {
     });
 
     // Build a user defined form B
-    it('Should build a user-defined form B', () => {
+    it.only('Should build a user-defined form B', () => {
         cy.get('@userDefinedFormB').then((userDefinedFormB) => {
             // cy.createNewForm(userDefinedFormB.title, userDefinedFormB.description);
             cy.openForm(userDefinedFormB.title);
