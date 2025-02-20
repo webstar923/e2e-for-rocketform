@@ -24,7 +24,7 @@ E2E Test, Cypress
 
 # Technology Stack
 - Built with node version 18.19.1
-- Built with cypress version 13.16.0
+- Built with cypress version 14.0.3
 
 # Target Site
     https://rocket-forms.at/

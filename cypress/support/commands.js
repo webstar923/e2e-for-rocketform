@@ -813,7 +813,7 @@ Cypress.Commands.add('setCalc', (settings) => {
   cy.get('form.el-form--label-top')
     .find('button')
     .contains('Save')
-    .click();
+    .click({force: true});
   cy.loadSelector('closeBtn')
     .click();
 });
