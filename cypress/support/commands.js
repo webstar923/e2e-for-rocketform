@@ -832,7 +832,7 @@ Cypress.Commands.add('setCountry', (settings) => {
 
 Cypress.Commands.add('setFileUpload', (settings) => {
   cy.get('form div')
-    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.upload.defaultSettings.label + '"))')
+    .find('.rud-drop-item:has(div:contains("' + AVAILABLE_FORM_ELEMENTS.upload.defaultSettings.label + '"))')
     .last()
     .dblclick();
   cy.setLabel(settings.label);
@@ -861,7 +861,7 @@ Cypress.Commands.add('setRating', (settings) => {
 
 Cypress.Commands.add('setSign', (settings) => {
   cy.get('form div')
-    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.sign.defaultSettings.label + '"))')
+    .find('.rud-drop-item:has(div:contains("' + AVAILABLE_FORM_ELEMENTS.sign.defaultSettings.label + '"))')
     .last()
     .dblclick();
   cy.setLabel(settings.label);
@@ -873,7 +873,7 @@ Cypress.Commands.add('setSign', (settings) => {
 
 Cypress.Commands.add('setColor', (settings) => {
   cy.get('form div')
-    .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.selectColor.defaultSettings.label + '"))')
+    .find('.rud-drop-item:has(div:contains("' + AVAILABLE_FORM_ELEMENTS.selectColor.defaultSettings.label + '"))')
     .last()
     .dblclick();
   cy.setLabel(settings.label);
