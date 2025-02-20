@@ -88,27 +88,6 @@
                 }
             },
             {
-                "key": "input",
-                "settings": {
-                    "label": "company name",
-                    "placeholder": "Enter the company name",
-                    "type": "text"
-                },
-                "data": "This is my Input text"
-            },
-            {
-                "key": "stripe",
-                "settings": {
-                    "mode": "Test",
-                    "currency": "USD - United States Dollars",
-                    "paymentType": "User Defined Amount",
-                    "paymentBoxLabel": "My Product",
-                    "suggestedAmount": 300,
-                    "setAsMinimum": true,
-                    "fixedAmount": true
-                }
-            },
-            {
                 "key": "dateTime",
                 "settings": {
                     "label": "Birthday",
@@ -371,7 +350,7 @@
                     "clearable": false,
                     "disabled": false,
                     "showScore": false,
-                    "scoreTemp": "{value} points"
+                    "scoreTemp": "value points"
                 },
                 "data": 4
             },
