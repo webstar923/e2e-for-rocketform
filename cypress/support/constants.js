@@ -347,8 +347,8 @@ export const AVAILABLE_FORM_ELEMENTS = {
     sign: {
       defaultSettings: {
         label: "Signature",
-        width: 560,
-        height: 100,
+        width: 50,
+        height: 20,
       }
     },
 

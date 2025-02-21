@@ -105,6 +105,7 @@ Cypress.Commands.add('openForm', (formName) => {
 
 // Command to fill a form with data
 Cypress.Commands.add('fillForm', (formElements) => {
+  cy.wait(hoverDelay);
   const userFormElements = Object.entries(formElements);
   userFormElements.forEach(([key,element], index) => {
     switch (element.key) {
