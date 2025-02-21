@@ -66,7 +66,7 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
 // Command for draganddroping the form element
 Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.log(`"${key}" element drag and drop`);
-  cy.wait(1000);
+  cy.wait(2000);
   const target = count === 1 ? 'form div' : `form div .rud-drop-item:nth-child(${count-1})`;
   cy.loadSelector('formElement')
     .contains('span', element)
