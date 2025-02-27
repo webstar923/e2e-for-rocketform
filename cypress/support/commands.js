@@ -298,20 +298,47 @@ Cypress.Commands.add('assignPDF', (userForm) =>{
   }
   if (document.settings.file != undefined && document.settings.file != null) {
     cy.fixture('mediaLib').then((mediaLib) => {
-      const documentName = mediaLib.documents[document.settings.file];
       cy.get('button.el-button.el-button--info.is-circle')
         .scrollIntoView()
         .should('be.visible')
         .click();
-      cy.contains('div.el-tree-node', PAGE_OPERATIONS.documents)
-        .should('exist')
-        .click({ force: true });
-      cy.get(`div[title="${documentName}.pdf"]`)
-        .should('exist')
-        .click();
-      cy.contains('button', PAGE_OPERATIONS.select)
-        .should('exist')
-        .click();
+        cy.get('span.el-tree-node__label').then(($el) => {
+          if ($el.text().includes('Mdocuments')) {
+            cy.log('Element already exists, proceeding...');
+          } else {
+            cy.get('span.el-tree-node__label').contains('root').click();
+            cy.get('.el-dialog__body > div:nth-child(2) > div:first-child button:first-child')
+              .click();
+            cy.get('.el-form-item:has(label:contains("Folder Name"))')
+              .find('input')
+              .type('Mdocuments');
+            cy.get('button:has(span:contains("Create"))')
+              .click();
+          }
+          cy.contains('div.el-tree-node', 'Mdocuments')
+            .should('exist')
+            .click({ force: true });
+          cy.get('button[title="Upload Files"]').click();
+          cy.intercept('POST', '**/api/upload_file').as('uploadFileRequest');
+          cy.fixture('mediaLib').then((mediaLib) => {
+            const documentName = mediaLib.documents[document.settings.file];
+            cy.get('.upload-demo').find('input[type="file"]').attachFile('media/documents/'+ documentName);
+            cy.wait('@uploadFileRequest').then((interception) => {
+              const fileName = interception.response.body.file_name;
+              const realFileName = fileName.split('/').pop();
+              cy.wait(3000);
+              // cy.get('.el-dialog__header')
+              //   .find('button.el-dialog__headerbtn')
+              //   .click({force:true});
+              cy.get(`div[title="${realFileName}"]`)
+                .should('exist')
+                .click();
+              cy.contains('button', PAGE_OPERATIONS.select)
+                .should('exist')
+                .click();
+            });
+          });
+        }); 
     });
   }
   if (document.settings.show != undefined && document.settings.show != null) {
@@ -326,6 +353,57 @@ Cypress.Commands.add('assignPDF', (userForm) =>{
   });
   if (document.signature != undefined && document.signature != null) {
     cy.get('#tab-sig').click();
+    cy.get('#pane-sig > div').then(($div) => {
+      if ($div.text().includes(document.signature)) {
+        cy.log('Element already exists, proceeding...');
+      } else {
+        cy.contains('a', 'Create a new template').click();
+        cy.get('input.el-input__inner[placeholder="Name"]')
+          .clear()
+          .type(document.signature);
+          cy.get('textarea.el-textarea__inner[placeholder="Description"]')
+          .clear()
+          .type(document.signature);
+        cy.get('button.is-circle').click();
+        cy.get('span.el-tree-node__label').then(($el) => {
+          if ($el.text().includes('Msignature')) {
+            cy.log('Folder already exists, proceeding...');
+          } else {
+            cy.get('span.el-tree-node__label').contains('root').click();
+            cy.get('.el-dialog__body > div:nth-child(2) > div:first-child button:first-child')
+              .click();
+            cy.get('.el-form-item:has(label:contains("Folder Name"))')
+              .find('input')
+              .type('Msignature');
+            cy.get('button:has(span:contains("Create"))')
+              .click();
+          }
+          cy.get('span.el-tree-node__label').contains('Msignature').click({force: true});
+          cy.get('button[title="Upload Files"]').click();
+          cy.intercept('POST', '**/api/upload_file').as('uploadFileRequestSign');
+          cy.fixture('mediaLib').then((mediaLib) => {
+            const signatureName = mediaLib.signature[document.signature];
+            cy.get('.upload-demo').find('input[type="file"]').attachFile('media/signature/'+ signatureName);
+            cy.wait('@uploadFileRequestSign').then((interception) => {
+              const fileName = interception.response.body.file_name;
+              const realFileName = fileName.split('/').pop();
+              cy.wait(3000);
+              cy.get(`div[title="${realFileName}"]`)
+                .should('exist')
+                .click();
+              cy.contains('button', PAGE_OPERATIONS.select)
+                .should('exist')
+                .click();
+            });
+          });
+        });
+        cy.get('.el-checkbox__input').click();
+        cy.contains('button', 'Save').click();
+        cy.wait(2000);
+        cy.go('back');
+        cy.get('#tab-sig').click();
+      };
+    });
     cy.contains('div', document.signature)
       .should('exist')
       .drag(`div[label="${document.settings.title}"] .vue-pdf`);
@@ -371,6 +449,17 @@ Cypress.Commands.add('setPlaceholder', (val) => {
       .type(val);
   }
 });
+
+// Defines the types of form elements such as Input, Email, DataTime, etc.
+// Cypress.Commands.add('setElementType', ( item, type ) => {
+//   if (type !== undefined) {
+//     cy.get(`.el-select:has(span:contains("${item}"))`)
+//       .click();
+//     cy.get('.el-select-dropdown__item')
+//       .contains('span', type)
+//       .click();
+//   }
+// });
 
 // Set conditions by text input.
 Cypress.Commands.add('setOptWithTx', ( item, val ) => {
@@ -725,41 +814,38 @@ Cypress.Commands.add('setImage', (settings) => {
       .siblings()     
       .find('button') 
       .click();
-    cy.get('span.el-tree-node__label').then(($el) => {
-      if ($el.text().includes('Mimages')) {
-        cy.log('Element already exists, proceeding...');
-      } else {
-        cy.get('span.el-tree-node__label').contains('root').click();
-        cy.get('.el-dialog__body')  
-          .find('div')
-          .eq(1)
-          .find('div')  
-          .first() 
-          .find('button')  
-          .first()
-          .click();
-        cy.get('.el-form-item:has(label:contains("Folder Name"))')
-          .find('input')
-          .type('Mimages');
-        cy.get('button:has(span:contains("Create"))')
-          .click();
-      }
-      cy.get('span.el-tree-node__label').contains('Mimages').click({force: true});
-      cy.get('button[title="Upload Files"]').click();
-      cy.intercept('POST', '**/api/upload_file').as('uploadFileRequest');
-      cy.fixture('mediaLib').then((mediaLib) => {
-        const imageName = mediaLib.images[settings.url];
-        cy.get('.upload-demo').find('input[type="file"]').attachFile('media/images/'+ imageName);
-        cy.wait('@uploadFileRequest').then((interception) => {
-          const fileName = interception.response.body.file_name;
-          cy.get('button.el-dialog__headerbtn').click();
-          cy.get(`textarea[placeholder="${PAGE_OPERATIONS.extURL}"]`)
-            .clear()
-            .type(fileName);
+      cy.get('span.el-tree-node__label').then(($el) => {
+        if ($el.text().includes('Mimages')) {
+          cy.log('Element already exists, proceeding...');
+        } else {
+          cy.get('span.el-tree-node__label').contains('root').click();
+          cy.get('.el-dialog__body > div:nth-child(2) > div:first-child button:first-child')
+            .click();        
+          cy.get('.el-form-item:has(label:contains("Folder Name"))')
+            .find('input')
+            .type('Mimages');
+          cy.get('button:has(span:contains("Create"))')
+            .click();
+        }
+        cy.get('span.el-tree-node__label').contains('Mimages').click({force: true});
+        cy.get('button[title="Upload Files"]').click();
+        cy.intercept('POST', '**/api/upload_file').as('uploadFileRequest');
+        cy.fixture('mediaLib').then((mediaLib) => {
+          const imageName = mediaLib.images[settings.url];
+          cy.get('.upload-demo').find('input[type="file"]').attachFile('media/images/'+ imageName);
+          cy.wait('@uploadFileRequest').then((interception) => {
+            const fileName = interception.response.body.file_name;
+            cy.wait(3000);
+            cy.get('.el-dialog__header')
+              .find('button.el-dialog__headerbtn')
+              .click({force:true});
+            cy.get(`textarea[placeholder="${PAGE_OPERATIONS.extURL}"]`)
+              .clear()
+              .type(fileName);
+          });
         });
-      });
-    });               
-  }
+      }); 
+    }
   cy.setTypeByListWithSpan(PAGE_OPERATIONS.select, settings.type);
   cy.setOptByBool(PAGE_OPERATIONS.lazy, settings.lazy);
   cy.setOptWithTx(PAGE_OPERATIONS.alt, settings.alt);

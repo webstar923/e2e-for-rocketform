@@ -22,7 +22,20 @@
                 "file": "temp1",
                 "show": true,
                 "eSign": true
-            }
+            },
+            "elementOrder": [],
+            "signature": "Standard A-Trust"
+        },
+        "stripeInfo": {
+            "userName": "TestUser-8776166834",
+            "PW": "123456",
+            "email": "test@test.at",
+            "cardNumber": "4242424242424242",
+            "expireDate": "12/34",
+            "cvc": "123",
+            "cardholderName": "Test Name",
+            "country": "Austria",
+            "zip": ""
         }
     },
     "userFormB": {
