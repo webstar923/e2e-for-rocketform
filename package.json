@@ -11,10 +11,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@4tw/cypress-drag-drop": "^2.2.5",
-    "cypress": "^14.0.3",
+    "@4tw/cypress-drag-drop": "^2.3.0",
+    "cypress": "^14.1.0",
+    "cypress-file-upload": "^5.0.8",
     "cypress-iframe": "^1.0.1",
-    "cypress-real-events": "^1.13.0",
+    "cypress-real-events": "^1.14.0",
     "cypress-terminal-report": "^7.1.0",
     "mochawesome": "^7.1.3"
   }

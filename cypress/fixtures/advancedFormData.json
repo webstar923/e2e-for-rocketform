@@ -4,13 +4,16 @@
         "description": "This is a Advanced Sample Form",
         "elements": [
             {
-                "key": "country",
+                "key": "stripe",
                 "settings": {
-                    "label": "Country",
-                    "placeholder": "Enter the Count",
-                    "clearable": false
-                },
-                "data": "Austria"
+                    "mode": "Test",
+                    "currency": "USD - United States Dollars",
+                    "paymentType": "User Defined Amount",
+                    "paymentBoxLabel": "My Product",
+                    "suggestedAmount": 300,
+                    "setAsMinimum": true,
+                    "fixedAmount": true
+                }
             }
         ],
         "document": {
@@ -88,55 +91,13 @@
                 }
             },
             {
-                "key": "dateTime",
-                "settings": {
-                    "label": "Birthday",
-                    "placeholder": "Pick a your bithday",
-                    "type": "week",
-                    "format": "YY-MM-DD HH:mm:ss",
-                    "valFormat": "YY-MM-DD HH:mm:ss"
-                },
-                "data": "24-12-25 00:00:00"
-            },
-            {
                 "key": "image",
                 "settings": {
                     "label": "Product Image",
-                    "url": "19/images/67715093c1aaa.jpeg",
+                    "url": "temp1",
                     "type": "None",
                     "lazy": true,
                     "alt": "my image"
-                }
-            },
-            {
-                "key": "switch",
-                "settings": {
-                    "label": "On/Off",
-                    "activeText": "change the status",
-                    "inactiveText": "change the status",
-                    "width": "30",
-                    "prompt": true
-                }
-            },
-            {
-                "key": "divider",
-                "settings": {
-                    "borderStyle": "Dashed",
-                    "label": "divider",
-                    "lazy1": "Right",
-                    "lazy2": "Vertical"
-                }
-            },
-            {
-                "key": "list",
-                "settings": {
-                    "label": "Products List",
-                    "type": "Decimal",
-                    "items": {
-                        "item1": "Item1",
-                        "item2": "Item2",
-                        "item3": "Item3"
-                    }
                 }
             },
             {
@@ -248,69 +209,6 @@
                 "data": 25
             },
             {
-                "key": "input",
-                "settings": {
-                    "label": "New address",
-                    "placeholder": "Enter the new address",
-                    "type": "text"
-                },
-                "data": "This is my address"
-            },
-            {
-                "key": "input",
-                "settings": {
-                    "label": "Postal code",
-                    "placeholder": "Enter the zip code",
-                    "type": "text"
-                },
-                "data": "This is my zip code"
-            },
-            {
-                "key": "input",
-                "settings": {
-                    "label": "City",
-                    "placeholder": "Enter the city",
-                    "type": "text"
-                },
-                "data": "This is my city"
-            },
-            {
-                "key": "input",
-                "settings": {
-                    "label": "Land",
-                    "placeholder": "Enter the country",
-                    "type": "text"
-                },
-                "data": "This is our country"
-            },
-            {
-                "key": "input",
-                "settings": {
-                    "label": "contact person",
-                    "placeholder": "Enter the name of the contact person",
-                    "type": "text"
-                },
-                "data": "This is my contact person"
-            },
-            {
-                "key": "input",
-                "settings": {
-                    "label": "E-mail",
-                    "placeholder": "Enter the email address",
-                    "type": "text"
-                },
-                "data": "abc@abc.com"
-            },
-            {
-                "key": "input",
-                "settings": {
-                    "label": "Telephone number",
-                    "placeholder": "Enter the phone number",
-                    "type": "text"
-                },
-                "data": "1234567890"
-            },
-            {
                 "key": "number",
                 "settings": {
                     "label": "Calc1",
@@ -392,7 +290,7 @@
                 "show": true,
                 "eSign": true
             },
-            "elementOrder": [6, 1, 0],
+            "elementOrder": [9, 1, 0],
             "signature": "Standard A-Trust"
         },
         "stripeInfo": {

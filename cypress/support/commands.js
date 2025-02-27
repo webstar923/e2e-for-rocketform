@@ -1,3 +1,4 @@
+import 'cypress-file-upload';
 import { SELECTORS } from './selectors';
 import { URLS, TIMEOUTS, LOG_OUT_TEXT, LOGIN_BUTTON_TEXT, PAGE_OPERATIONS, FORM_ELEMENTS, AVAILABLE_FORM_ELEMENTS, FORM_HINT, MODAL_TITLE  } from './constants';
 
@@ -66,7 +67,7 @@ Cypress.Commands.add('createNewForm', (title = '', description = '') => {
 // Command for draganddroping the form element
 Cypress.Commands.add('formDrag', (key, element, count) => {
   cy.log(`"${key}" element drag and drop`);
-  cy.wait(2000);
+  cy.wait(2500);
   const target = count === 1 ? 'form div' : `form div .rud-drop-item:nth-child(${count-1})`;
   cy.loadSelector('formElement')
     .contains('span', element)
@@ -105,7 +106,7 @@ Cypress.Commands.add('openForm', (formName) => {
 
 // Command to fill a form with data
 Cypress.Commands.add('fillForm', (formElements) => {
-  cy.wait(hoverDelay);
+  cy.wait(TIMEOUTS.hoverDelay);
   const userFormElements = Object.entries(formElements);
   userFormElements.forEach(([key,element], index) => {
     switch (element.key) {
@@ -370,17 +371,6 @@ Cypress.Commands.add('setPlaceholder', (val) => {
       .type(val);
   }
 });
-
-// Defines the types of form elements such as Input, Email, DataTime, etc.
-// Cypress.Commands.add('setElementType', ( item, type ) => {
-//   if (type !== undefined) {
-//     cy.get(`.el-select:has(span:contains("${item}"))`)
-//       .click();
-//     cy.get('.el-select-dropdown__item')
-//       .contains('span', type)
-//       .click();
-//   }
-// });
 
 // Set conditions by text input.
 Cypress.Commands.add('setOptWithTx', ( item, val ) => {
@@ -728,9 +718,47 @@ Cypress.Commands.add('setImage', (settings) => {
     .dblclick();
   cy.setLabel(settings.label);
   if( settings.url !== null ) {
-    cy.get(`textarea[placeholder="${PAGE_OPERATIONS.extURL}"]`)
-      .clear()
-      .type(settings.url);
+    // cy.get(`textarea[placeholder="${PAGE_OPERATIONS.extURL}"]`)
+    //   .clear()
+    //   .type(settings.url);
+    cy.contains('label', 'Image URL')
+      .siblings()     
+      .find('button') 
+      .click();
+    cy.get('span.el-tree-node__label').then(($el) => {
+      if ($el.text().includes('Mimages')) {
+        cy.log('Element already exists, proceeding...');
+      } else {
+        cy.get('span.el-tree-node__label').contains('root').click();
+        cy.get('.el-dialog__body')  
+          .find('div')
+          .eq(1)
+          .find('div')  
+          .first() 
+          .find('button')  
+          .first()
+          .click();
+        cy.get('.el-form-item:has(label:contains("Folder Name"))')
+          .find('input')
+          .type('Mimages');
+        cy.get('button:has(span:contains("Create"))')
+          .click();
+      }
+      cy.get('span.el-tree-node__label').contains('Mimages').click({force: true});
+      cy.get('button[title="Upload Files"]').click();
+      cy.intercept('POST', '**/api/upload_file').as('uploadFileRequest');
+      cy.fixture('mediaLib').then((mediaLib) => {
+        const imageName = mediaLib.images[settings.url];
+        cy.get('.upload-demo').find('input[type="file"]').attachFile('media/images/'+ imageName);
+        cy.wait('@uploadFileRequest').then((interception) => {
+          const fileName = interception.response.body.file_name;
+          cy.get('button.el-dialog__headerbtn').click();
+          cy.get(`textarea[placeholder="${PAGE_OPERATIONS.extURL}"]`)
+            .clear()
+            .type(fileName);
+        });
+      });
+    });               
   }
   cy.setTypeByListWithSpan(PAGE_OPERATIONS.select, settings.type);
   cy.setOptByBool(PAGE_OPERATIONS.lazy, settings.lazy);

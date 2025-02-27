@@ -33,8 +33,8 @@ describe('Form Builder Test', () => {
     // Build a user defined form A
     it('Should build a user-defined form A', () => {
         cy.get('@userDefinedFormA').then((userDefinedFormA) => {
-            // cy.createNewForm(userDefinedFormA.title, userDefinedFormA.description);
-            cy.openForm(userDefinedFormA.title);
+            cy.createNewForm(userDefinedFormA.title, userDefinedFormA.description);
+            // cy.openForm(userDefinedFormA.title);
             cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
             cy.wait(TIMEOUTS.default);
             // cy.wait(200000);
@@ -112,7 +112,7 @@ describe('Form Builder Test', () => {
                 // Prevent the test from failing
                 return false;
               });
-              cy.wait(150000);
+              cy.wait(100000);
               cy.get('#email')
                 .clear()
                 .type(userDefinedFormB.stripeInfo.email);
