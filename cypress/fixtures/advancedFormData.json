@@ -303,7 +303,7 @@
                 "show": true,
                 "eSign": true
             },
-            "elementOrder": [9, 1, 0],
+            "elementOrder": [5,4],
             "signature": "Standard A-Trust"
         },
         "stripeInfo": {
