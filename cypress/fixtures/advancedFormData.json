@@ -23,7 +23,7 @@
         }
     },
     "userFormB": {
-        "title": "Form B",
+        "title": "Advanded Sample Form_B with connected Stripe",
         "description": "This is a Advanced Sample Form with pre-connected Stripe",
         "elements": [
             {
