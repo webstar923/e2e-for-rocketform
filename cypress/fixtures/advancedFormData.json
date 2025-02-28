@@ -43,6 +43,47 @@
         "description": "This is a Advanced Sample Form with pre-connected Stripe",
         "elements": [
             {
+                "key": "rating",
+                "settings": {
+                    "label": "Rating",
+                    "clearable": false,
+                    "disabled": false,
+                    "showScore": false,
+                    "scoreTemp": "value points"
+                },
+                "data": 4
+            },
+            {
+                "key": "upload",
+                "settings": {
+                    "label": "File",
+                    "uploadText": "Enter the Count",
+                    "multiple": true,
+                    "dragAndDrop": true,
+                    "limit":null,
+                    "accept":""
+                },
+                "data": [
+                    "mediaLib.json",
+                    "users.json"
+                ]
+            },
+            {
+                "key": "sign",
+                "settings": {
+                    "label": "Signature"
+                }
+            },
+            {
+                "key": "country",
+                "settings": {
+                    "label": "Country",
+                    "placeholder": "Enter the Count",
+                    "clearable": false
+                },
+                "data": "Austria"
+            },
+            {
                 "key": "input",
                 "settings": {
                     "label": "Full Name",
@@ -253,47 +294,6 @@
                         {"key": "Calc2", "symbol": "+"}
                     ]
                 }
-            },
-            {
-                "key": "rating",
-                "settings": {
-                    "label": "Rating",
-                    "clearable": false,
-                    "disabled": false,
-                    "showScore": false,
-                    "scoreTemp": "value points"
-                },
-                "data": 4
-            },
-            {
-                "key": "upload",
-                "settings": {
-                    "label": "File",
-                    "uploadText": "Enter the Count",
-                    "multiple": true,
-                    "dragAndDrop": true,
-                    "limit":null,
-                    "accept":""
-                },
-                "data": [
-                    "mediaLib.json",
-                    "users.json"
-                ]
-            },
-            {
-                "key": "sign",
-                "settings": {
-                    "label": "Signature"
-                }
-            },
-            {
-                "key": "country",
-                "settings": {
-                    "label": "Country",
-                    "placeholder": "Enter the Count",
-                    "clearable": false
-                },
-                "data": "Austria"
             }
         ],
         "document": {
