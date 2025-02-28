@@ -4,16 +4,13 @@
         "description": "This is a Advanced Sample Form",
         "elements": [
             {
-                "key": "stripe",
+                "key": "country",
                 "settings": {
-                    "mode": "Test",
-                    "currency": "USD - United States Dollars",
-                    "paymentType": "User Defined Amount",
-                    "paymentBoxLabel": "My Product",
-                    "suggestedAmount": 300,
-                    "setAsMinimum": true,
-                    "fixedAmount": true
-                }
+                    "label": "Country",
+                    "placeholder": "Enter the Count",
+                    "clearable": false
+                },
+                "data": "Austria"
             }
         ],
         "document": {
@@ -22,67 +19,13 @@
                 "file": "temp1",
                 "show": true,
                 "eSign": true
-            },
-            "elementOrder": [],
-            "signature": "Standard A-Trust"
-        },
-        "stripeInfo": {
-            "userName": "TestUser-8776166834",
-            "PW": "123456",
-            "email": "test@test.at",
-            "cardNumber": "4242424242424242",
-            "expireDate": "12/34",
-            "cvc": "123",
-            "cardholderName": "Test Name",
-            "country": "Austria",
-            "zip": ""
+            }
         }
     },
     "userFormB": {
-        "title": "Advanded Sample Form_B with connected Stripe",
+        "title": "Form B",
         "description": "This is a Advanced Sample Form with pre-connected Stripe",
         "elements": [
-            {
-                "key": "rating",
-                "settings": {
-                    "label": "Rating",
-                    "clearable": false,
-                    "disabled": false,
-                    "showScore": false,
-                    "scoreTemp": "value points"
-                },
-                "data": 4
-            },
-            {
-                "key": "upload",
-                "settings": {
-                    "label": "File",
-                    "uploadText": "Enter the Count",
-                    "multiple": true,
-                    "dragAndDrop": true,
-                    "limit":null,
-                    "accept":""
-                },
-                "data": [
-                    "mediaLib.json",
-                    "users.json"
-                ]
-            },
-            {
-                "key": "sign",
-                "settings": {
-                    "label": "Signature"
-                }
-            },
-            {
-                "key": "country",
-                "settings": {
-                    "label": "Country",
-                    "placeholder": "Enter the Count",
-                    "clearable": false
-                },
-                "data": "Austria"
-            },
             {
                 "key": "input",
                 "settings": {
@@ -91,76 +34,6 @@
                     "type": "text"
                 },
                 "data": "This is my Input text"
-            },
-            {
-                "key": "input",
-                "settings": {
-                    "label": "Company Name",
-                    "placeholder": "Enter your company name",
-                    "type": "text"
-                },
-                "data": "This is my company"
-            },
-            {
-                "key": "dateTime",
-                "settings": {
-                    "label": "Birthday",
-                    "placeholder": "Pick a your bithday",
-                    "type": "week",
-                    "format": "YY-MM-DD HH:mm:ss",
-                    "valFormat": "YY-MM-DD HH:mm:ss"
-                },
-                "data": "24-12-25 00:00:00"
-            },
-            {
-                "key": "switch",
-                "settings": {
-                    "label": "On/Off",
-                    "activeText": "change the status",
-                    "inactiveText": "change the status",
-                    "width": "30",
-                    "prompt": true
-                },
-                "data": true
-            },
-            {
-                "key": "divider",
-                "settings": {
-                    "borderStyle": "Dashed",
-                    "label": "divider",
-                    "lazy1": "Right",
-                    "lazy2": "Vertical"
-                }
-            },
-            {
-                "key": "list",
-                "settings": {
-                    "label": "Products List",
-                    "type": "Decimal",
-                    "items": {
-                        "item1": "Item1",
-                        "item2": "Item2",
-                        "item3": "Item3"
-                    }
-                }
-            },
-            {
-                "key": "image",
-                "settings": {
-                    "label": "Product Image",
-                    "url": "temp1",
-                    "type": "None",
-                    "lazy": true,
-                    "alt": "my image"
-                }
-            },
-            {
-                "key": "button",
-                "settings": {
-                    "label": "Save",
-                    "type": "Success",
-                    "className": "success-btn"
-                }
             },
             {
                 "key": "text",
@@ -178,26 +51,47 @@
                 "data": "I am a programmer. I like coding very well"
             },
             {
-                "key": "number",
+                "key": "list",
                 "settings": {
-                    "label": "Count",
-                    "placeholder": "Enter the Count",
-                    "minValue": 0,
-                    "maxValue": 20,
-                    "step": 2
-                },
-                "data": 11
+                    "label": "Products List",
+                    "type": "Decimal",
+                    "items": {
+                        "item1": "Item1",
+                        "item2": "Item2",
+                        "item3": "Item3"
+                    }
+                }
             },
             {
-                "key": "email",
+                "key": "dateTime",
                 "settings": {
-                    "label": "Your Email",
-                    "placeholder": "your email@hotmail.com",
-                    "recipient": true,
-                    "clearable": true,
-                    "autoComplete": true
+                    "label": "Birthday",
+                    "placeholder": "Pick a your bithday",
+                    "type": "week",
+                    "format": "YY-MM-DD HH:mm:ss",
+                    "valFormat": "YY-MM-DD HH:mm:ss"
                 },
-                "data": "secretstart1117@hotmail.com"
+                "data": "24-12-25 00:00:00"
+            },
+            {
+                "key": "image",
+                "settings": {
+                    "label": "Product Image",
+                    "url": "temp1",
+                    "type": "None",
+                    "lazy": true,
+                    "alt": "my image"
+                }
+            },
+            {
+                "key": "switch",
+                "settings": {
+                    "label": "On/Off",
+                    "activeText": "change the status",
+                    "inactiveText": "change the status",
+                    "width": "30",
+                    "prompt": true
+                }
             },
             {
                 "key": "checkbox",
@@ -294,6 +188,47 @@
                         {"key": "Calc2", "symbol": "+"}
                     ]
                 }
+            },
+            {
+                "key": "rating",
+                "settings": {
+                    "label": "Rating",
+                    "clearable": false,
+                    "disabled": false,
+                    "showScore": false,
+                    "scoreTemp": "value points"
+                },
+                "data": 4
+            },
+            {
+                "key": "upload",
+                "settings": {
+                    "label": "File",
+                    "uploadText": "Enter the Count",
+                    "multiple": true,
+                    "dragAndDrop": true,
+                    "limit":null,
+                    "accept":""
+                },
+                "data": [
+                    "mediaLib.json",
+                    "users.json"
+                ]
+            },
+            {
+                "key": "sign",
+                "settings": {
+                    "label": "Signature"
+                }
+            },
+            {
+                "key": "country",
+                "settings": {
+                    "label": "Country",
+                    "placeholder": "Enter the Count",
+                    "clearable": false
+                },
+                "data": "Austria"
             }
         ],
         "document": {
@@ -303,7 +238,7 @@
                 "show": true,
                 "eSign": true
             },
-            "elementOrder": [5,4],
+            "elementOrder": [0],
             "signature": "Standard A-Trust"
         },
         "stripeInfo": {
