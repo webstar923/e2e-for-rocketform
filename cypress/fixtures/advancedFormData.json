@@ -4,28 +4,17 @@
         "description": "This is a Advanced Sample Form",
         "elements": [
             {
-                "key": "country",
+                "key": "stripe",
                 "settings": {
-                    "label": "Country",
-                    "placeholder": "Enter the Count",
-                    "clearable": false
-                },
-                "data": "Austria"
-            }
-        ],
-        "document": {
-            "settings": {
-                "title": "Test Document",
-                "file": "temp1",
-                "show": true,
-                "eSign": true
-            }
-        }
-    },
-    "userFormB": {
-        "title": "Advanded Sample Form_B with connected Stripe",
-        "description": "This is a Advanced Sample Form with pre-connected Stripe",
-        "elements": [
+                    "mode": "Test",
+                    "currency": "USD - United States Dollars",
+                    "paymentType": "User Defined Amount",
+                    "paymentBoxLabel": "My Product",
+                    "suggestedAmount": 300,
+                    "setAsMinimum": true,
+                    "fixedAmount": true
+                }
+            },
             {
                 "key": "input",
                 "settings": {
@@ -238,7 +227,250 @@
                 "show": true,
                 "eSign": true
             },
-            "elementOrder": [0],
+            "elementOrder": [2,1],
+            "signature": "Standard A-Trust"
+        },
+        "stripeInfo": {
+            "userName": "TestUser-8776166834",
+            "PW": "123456",
+            "email": "test@test.at",
+            "cardNumber": "4242424242424242",
+            "expireDate": "12/34",
+            "cvc": "123",
+            "cardholderName": "Test Name",
+            "country": "Austria",
+            "zip": ""
+        }
+    },
+    "userFormB": {
+        "title": "Advanded Sample Form_B with connected Stripe",
+        "description": "This is a Advanced Sample Form with pre-connected Stripe",
+        "elements": [
+            {
+                "key": "stripe",
+                "settings": {
+                    "mode": "Test",
+                    "currency": "USD - United States Dollars",
+                    "paymentType": "User Defined Amount",
+                    "paymentBoxLabel": "My Product",
+                    "suggestedAmount": 300,
+                    "setAsMinimum": true,
+                    "fixedAmount": true
+                }
+            },
+            {
+                "key": "input",
+                "settings": {
+                    "label": "Full Name",
+                    "placeholder": "Enter your full name",
+                    "type": "text"
+                },
+                "data": "This is my Input text"
+            },
+            {
+                "key": "text",
+                "settings": {
+                    "label": "Opinion",
+                    "placeholder": "Enter the text",
+                    "clearable": true,
+                    "autoComplete": true,
+                    "showWordLimit": true,
+                    "autoSize": true,
+                    "minLength": 2,
+                    "maxLength": 30,
+                    "rows": 3
+                },
+                "data": "I am a programmer. I like coding very well"
+            },
+            {
+                "key": "list",
+                "settings": {
+                    "label": "Products List",
+                    "type": "Decimal",
+                    "items": {
+                        "item1": "Item1",
+                        "item2": "Item2",
+                        "item3": "Item3"
+                    }
+                }
+            },
+            {
+                "key": "dateTime",
+                "settings": {
+                    "label": "Birthday",
+                    "placeholder": "Pick a your bithday",
+                    "type": "week",
+                    "format": "YY-MM-DD HH:mm:ss",
+                    "valFormat": "YY-MM-DD HH:mm:ss"
+                },
+                "data": "24-12-25 00:00:00"
+            },
+            {
+                "key": "image",
+                "settings": {
+                    "label": "Product Image",
+                    "url": "temp1",
+                    "type": "None",
+                    "lazy": true,
+                    "alt": "my image"
+                }
+            },
+            {
+                "key": "switch",
+                "settings": {
+                    "label": "On/Off",
+                    "activeText": "change the status",
+                    "inactiveText": "change the status",
+                    "width": "30",
+                    "prompt": true
+                }
+            },
+            {
+                "key": "checkbox",
+                "settings": {
+                    "label": "Client"
+                },
+                "data": true
+            },
+            {
+                "key": "radio",
+                "settings": {
+                    "label": "Single Selection",
+                    "type": "Default",
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": "option1"
+            },
+            {
+                "key": "selection",
+                "settings": {
+                    "label": "Multiple Selection",
+                    "type": "Default",
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": [
+                    "option1",
+                    "option2"
+                ]
+            },
+            {
+                "key": "dropdown",
+                "settings": {
+                    "label": "Products List",
+                    "placeholder": "Choose a product",
+                    "clearable": true,
+                    "filterable": true,
+                    "multiple": true,
+                    "options": {
+                        "option1": "Option1",
+                        "option2": "Option2",
+                        "option3": "Option3"
+                    }
+                },
+                "data": "option2"
+            },
+            {
+                "key": "range",
+                "settings": {
+                    "label": "Price",
+                    "minValue": 5,
+                    "maxValue": 70,
+                    "step": 2,
+                    "breakpoint": true
+                },
+                "data": 25
+            },
+            {
+                "key": "number",
+                "settings": {
+                    "label": "Calc1",
+                    "placeholder": "Enter the Count",
+                    "minValue": 0,
+                    "maxValue": 20,
+                    "step": 2
+                },
+                "data": 11
+            },
+            {
+                "key": "number",
+                "settings": {
+                    "label": "Calc2",
+                    "placeholder": "Enter the Count",
+                    "minValue": 0,
+                    "maxValue": 20,
+                    "step": 2
+                },
+                "data": 15
+            },
+            {
+                "key": "calc",
+                "settings":{
+                    "label": "My Calculation",
+                    "placeholder": "Enter the Calculation",
+                    "op":[
+                        {"key": "Calc1", "symbol": "+"},
+                        {"key": "Calc2", "symbol": "+"}
+                    ]
+                }
+            },
+            {
+                "key": "rating",
+                "settings": {
+                    "label": "Rating",
+                    "clearable": false,
+                    "disabled": false,
+                    "showScore": false,
+                    "scoreTemp": "value points"
+                },
+                "data": 4
+            },
+            {
+                "key": "upload",
+                "settings": {
+                    "label": "File",
+                    "uploadText": "Enter the Count",
+                    "multiple": true,
+                    "dragAndDrop": true,
+                    "limit":null,
+                    "accept":""
+                },
+                "data": [
+                    "mediaLib.json",
+                    "users.json"
+                ]
+            },
+            {
+                "key": "sign",
+                "settings": {
+                    "label": "Signature"
+                }
+            },
+            {
+                "key": "country",
+                "settings": {
+                    "label": "Country",
+                    "placeholder": "Enter the Count",
+                    "clearable": false
+                },
+                "data": "Austria"
+            }
+        ],
+        "document": {
+            "settings": {
+                "title": "Test Document",
+                "file": "temp1",
+                "show": true,
+                "eSign": true
+            },
+            "elementOrder": [2,1],
             "signature": "Standard A-Trust"
         },
         "stripeInfo": {

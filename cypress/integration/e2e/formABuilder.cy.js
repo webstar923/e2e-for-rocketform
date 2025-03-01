@@ -32,121 +32,173 @@ describe('Form Builder Test', () => {
 
     // Build a user defined form A
     it('Should build a user-defined form A', () => {
-        cy.get('@userDefinedFormA').then((userDefinedFormA) => {
-            cy.createNewForm(userDefinedFormA.title, userDefinedFormA.description);
-            // cy.openForm(userDefinedFormA.title);
-            cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
-            cy.wait(TIMEOUTS.default);
-            // cy.wait(200000);
-            userDefinedFormA.elements.forEach( (element, index) => {
-                const defaultSettings = AVAILABLE_FORM_ELEMENTS[element.key]?.defaultSettings;
-                if (!defaultSettings) {
-                  throw new Error(`Unsupported element type: ${element.key}`);
-                }
-
-                const settings = { ...defaultSettings, ...element.settings };
-                if (FORM_ELEMENTS[element.key]) {
-                    cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);
-                    cy[FORM_ELEMENTS[element.key][1]](settings);
-                } else {
-                    throw new Error(`Unsupported element type: ${element.key}`);
-                }
-
-            });
-                    // Save Form
-        cy.saveForm();
-        cy.assignPDF(userDefinedFormA);
-        });
-
-
-    });
-
-    // Build a user defined form B
-    it.only('Should build a user-defined form B', () => {
-        cy.get('@userDefinedFormB').then((userDefinedFormB) => {
-            // cy.createNewForm(userDefinedFormB.title, userDefinedFormB.description);
-            cy.openForm(userDefinedFormB.title);
-            cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
-            cy.wait(TIMEOUTS.default);
-            userDefinedFormB.elements.forEach( (element, index) => {
-                const defaultSettings = AVAILABLE_FORM_ELEMENTS[element.key]?.defaultSettings;
-                if (!defaultSettings) {
-                  throw new Error(`Unsupported element type: ${element.key}`);
-                }
-        
-                const settings = { ...defaultSettings, ...element.settings };
-                if (FORM_ELEMENTS[element.key]) {
-                    cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 2);
-                    cy[FORM_ELEMENTS[element.key][1]](settings);
-                } else {
-                    throw new Error(`Unsupported element type: ${element.key}`);
-                }
-
-            });
-            // Save Form
-            cy.saveForm();
-            cy.assignPDF(userDefinedFormB);
-            cy.saveFormDocument();
-            cy.publishAndLinkForm();
-            cy.fillForm(userDefinedFormB.elements);
-            cy.wait(1000);
-            cy.loadSelector('primaryBtn')
-              .contains('span', PAGE_OPERATIONS.next)
-              .click();
-            cy.loadSelector('primaryBtn')
-              .contains('span', PAGE_OPERATIONS.signature)
-              .click();
-            cy.frameLoaded('iframe[src*="https://hs-abnahme.a-trust.at"]');
-            cy.iframe()
-              .find('#handynummer')
-              .clear()
-              .type(userDefinedFormB.stripeInfo.userName);
-            cy.iframe()
-              .find('#signaturpasswort')
-              .clear()
-              .type(userDefinedFormB.stripeInfo.PW);
-            cy.iframe()
-              .find('#Button_Identification')
-              .click();
-            cy.origin('https://checkout.stripe.com', { args: { userDefinedFormB } }, ({ userDefinedFormB }) => {
-              cy.on('uncaught:exception', (err, runnable) => {
-                console.log('Uncaught error:', err);
-                // Prevent the test from failing
-                return false;
-              });
-              cy.wait(100000);
-              cy.get('#email')
-                .clear()
-                .type(userDefinedFormB.stripeInfo.email);
-              cy.get('#cardNumber')
-                .clear()
-                .type(userDefinedFormB.stripeInfo.cardNumber);
-              cy.get('#cardExpiry')
-                .clear()
-                .type(userDefinedFormB.stripeInfo.expireDate);
-              cy.get('#cardCvc')
-                .clear()
-                .type(userDefinedFormB.stripeInfo.cvc);
-              cy.get('#billingName')
-                .clear()
-                .type(userDefinedFormB.stripeInfo.cardholderName);
-              cy.get('#billingCountry')
-                .select(userDefinedFormB.stripeInfo.country);
-              if (userDefinedFormB.stripeInfo.zip !== '') {
-                  cy.get('#billingPostalCode')
-                    .clear()
-                    .type(userDefinedFormB.stripeInfo.zip);
+      cy.get('@userDefinedFormA').then((userDefinedFormA) => {
+          cy.createNewForm(userDefinedFormA.title, userDefinedFormA.description);
+          // cy.openForm(userDefinedFormA.title);
+          cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
+          cy.wait(TIMEOUTS.default);
+          userDefinedFormA.elements.forEach( (element, index) => {
+              const defaultSettings = AVAILABLE_FORM_ELEMENTS[element.key]?.defaultSettings;
+              if (!defaultSettings) {
+                throw new Error(`Unsupported element type: ${element.key}`);
               }
-              cy.get('.SubmitButton')
-                .click();
+      
+              const settings = { ...defaultSettings, ...element.settings };
+              if (FORM_ELEMENTS[element.key]) {
+                  cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);
+                  cy[FORM_ELEMENTS[element.key][1]](settings);
+              } else {
+                  throw new Error(`Unsupported element type: ${element.key}`);
+              }
+
+          });
+          // Save Form
+          cy.saveForm();
+          cy.assignPDF(userDefinedFormA);
+          cy.saveFormDocument();
+          cy.publishAndLinkForm();
+          cy.fillForm(userDefinedFormA.elements);
+          cy.wait(1000);
+          cy.loadSelector('primaryBtn')
+            .contains('span', PAGE_OPERATIONS.next)
+            .click();
+          cy.loadSelector('primaryBtn')
+            .contains('span', PAGE_OPERATIONS.signature)
+            .click();
+          cy.frameLoaded('iframe[src*="https://hs-abnahme.a-trust.at"]');
+          cy.iframe()
+            .find('#handynummer')
+            .clear()
+            .type(userDefinedFormA.stripeInfo.userName);
+          cy.iframe()
+            .find('#signaturpasswort')
+            .clear()
+            .type(userDefinedFormA.stripeInfo.PW);
+          cy.iframe()
+            .find('#Button_Identification')
+            .click();
+          cy.origin('https://checkout.stripe.com', { args: { userDefinedFormA } }, ({ userDefinedFormA }) => {
+            cy.on('uncaught:exception', (err, runnable) => {
+              console.log('Uncaught error:', err);
+              // Prevent the test from failing
+              return false;
             });
-            cy.url().should('include', '?submitted');
-        });
-    });
-    // // Delete the created form
-    // it('Delete the user-defined form A', () => {
-    //     cy.get('@userDefinedForm').then((userDefinedForm) => {
-    //         cy.delForm(userDefinedForm.title);
+            cy.wait(100000);
+            cy.get('#email')
+              .clear()
+              .type(userDefinedFormA.stripeInfo.email);
+            cy.get('#cardNumber')
+              .clear()
+              .type(userDefinedFormA.stripeInfo.cardNumber);
+            cy.get('#cardExpiry')
+              .clear()
+              .type(userDefinedFormA.stripeInfo.expireDate);
+            cy.get('#cardCvc')
+              .clear()
+              .type(userDefinedFormA.stripeInfo.cvc);
+            cy.get('#billingName')
+              .clear()
+              .type(userDefinedFormA.stripeInfo.cardholderName);
+            cy.get('#billingCountry')
+              .select(userDefinedFormA.stripeInfo.country);
+            if (userDefinedFormA.stripeInfo.zip !== '') {
+                cy.get('#billingPostalCode')
+                  .clear()
+                  .type(userDefinedFormA.stripeInfo.zip);
+            }
+            cy.get('.SubmitButton')
+              .click();
+          });
+          cy.url().should('include', '?submitted');
+      });
+  });
+
+    // // Build a user defined form B
+    // it('Should build a user-defined form B', () => {
+    //     cy.get('@userDefinedFormB').then((userDefinedFormB) => {
+    //         cy.createNewForm(userDefinedFormB.title, userDefinedFormB.description);
+    //         // cy.openForm(userDefinedFormB.title);
+    //         cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
+    //         cy.wait(TIMEOUTS.default);
+    //         userDefinedFormB.elements.forEach( (element, index) => {
+    //             const defaultSettings = AVAILABLE_FORM_ELEMENTS[element.key]?.defaultSettings;
+    //             if (!defaultSettings) {
+    //               throw new Error(`Unsupported element type: ${element.key}`);
+    //             }
+        
+    //             const settings = { ...defaultSettings, ...element.settings };
+    //             if (FORM_ELEMENTS[element.key]) {
+    //                 cy.formDrag(element.key, FORM_ELEMENTS[element.key][0], index + 1);
+    //                 cy[FORM_ELEMENTS[element.key][1]](settings);
+    //             } else {
+    //                 throw new Error(`Unsupported element type: ${element.key}`);
+    //             }
+
+    //         });
+    //         // Save Form
+    //         cy.saveForm();
+    //         cy.assignPDF(userDefinedFormB);
+    //         cy.saveFormDocument();
+    //         cy.publishAndLinkForm();
+    //         cy.fillForm(userDefinedFormB.elements);
+    //         cy.wait(1000);
+    //         cy.loadSelector('primaryBtn')
+    //           .contains('span', PAGE_OPERATIONS.next)
+    //           .click();
+    //         cy.loadSelector('primaryBtn')
+    //           .contains('span', PAGE_OPERATIONS.signature)
+    //           .click();
+    //         cy.frameLoaded('iframe[src*="https://hs-abnahme.a-trust.at"]');
+    //         cy.iframe()
+    //           .find('#handynummer')
+    //           .clear()
+    //           .type(userDefinedFormB.stripeInfo.userName);
+    //         cy.iframe()
+    //           .find('#signaturpasswort')
+    //           .clear()
+    //           .type(userDefinedFormB.stripeInfo.PW);
+    //         cy.iframe()
+    //           .find('#Button_Identification')
+    //           .click();
+    //         cy.origin('https://checkout.stripe.com', { args: { userDefinedFormB } }, ({ userDefinedFormB }) => {
+    //           cy.on('uncaught:exception', (err, runnable) => {
+    //             console.log('Uncaught error:', err);
+    //             // Prevent the test from failing
+    //             return false;
+    //           });
+    //           cy.wait(100000);
+    //           cy.get('#email')
+    //             .clear()
+    //             .type(userDefinedFormB.stripeInfo.email);
+    //           cy.get('#cardNumber')
+    //             .clear()
+    //             .type(userDefinedFormB.stripeInfo.cardNumber);
+    //           cy.get('#cardExpiry')
+    //             .clear()
+    //             .type(userDefinedFormB.stripeInfo.expireDate);
+    //           cy.get('#cardCvc')
+    //             .clear()
+    //             .type(userDefinedFormB.stripeInfo.cvc);
+    //           cy.get('#billingName')
+    //             .clear()
+    //             .type(userDefinedFormB.stripeInfo.cardholderName);
+    //           cy.get('#billingCountry')
+    //             .select(userDefinedFormB.stripeInfo.country);
+    //           if (userDefinedFormB.stripeInfo.zip !== '') {
+    //               cy.get('#billingPostalCode')
+    //                 .clear()
+    //                 .type(userDefinedFormB.stripeInfo.zip);
+    //           }
+    //           cy.get('.SubmitButton')
+    //             .click();
+    //         });
+    //         cy.url().should('include', '?submitted');
     //     });
     // });
+    // Delete the created form
+    it('Delete the user-defined form A', () => {
+        cy.get('@userDefinedFormA').then((userDefinedForm) => {
+            cy.delForm(userDefinedForm.title);
+        });
+    });
 });
