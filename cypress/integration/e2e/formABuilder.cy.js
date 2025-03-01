@@ -77,11 +77,25 @@ describe('Form Builder Test', () => {
           cy.iframe()
             .find('#Button_Identification')
             .click();
-          cy.origin('https://checkout.stripe.com', { args: { userDefinedFormA } }, ({ userDefinedFormA }) => {
-            cy.on('uncaught:exception', (err, runnable) => {
-              console.log('Uncaught error:', err);
-              // Prevent the test from failing
+          cy.on('uncaught:exception', (err) => {
+            // Ignore specific Stripe-related errors
+            if (err.message.includes('expressCheckout Element') || 
+                err.message.includes('sync:during:user:test:execution')) {
               return false;
+            }
+            return true;
+          });    
+          cy.origin('https://checkout.stripe.com', { args: { userDefinedFormA } }, ({ userDefinedFormA }) => {
+            Cypress.on('uncaught:exception', (err, runnable) => {
+              // Ignore specific errors based on their message
+              if (err.message.includes("sync:during:user:test:execution failed to receive a response from the primary Cypress spec bridge")) {
+                return false; // Prevent Cypress from failing the test
+              }
+              
+              if (err.message.includes("expressCheckout Element didn't mount normally")) {
+                return false; // Prevent failure for this error
+              }
+              return true;
             });
             cy.wait(100000);
             cy.get('#email')
@@ -116,8 +130,8 @@ describe('Form Builder Test', () => {
     // // Build a user defined form B
     // it('Should build a user-defined form B', () => {
     //     cy.get('@userDefinedFormB').then((userDefinedFormB) => {
-    //         cy.createNewForm(userDefinedFormB.title, userDefinedFormB.description);
-    //         // cy.openForm(userDefinedFormB.title);
+    //         // cy.createNewForm(userDefinedFormB.title, userDefinedFormB.description);
+    //         cy.openForm(userDefinedFormB.title);
     //         cy.url({ timeout: TIMEOUTS.pageLoad }).should('match', /\/forms\/[a-f0-9-]{36}$/);
     //         cy.wait(TIMEOUTS.default);
     //         userDefinedFormB.elements.forEach( (element, index) => {
