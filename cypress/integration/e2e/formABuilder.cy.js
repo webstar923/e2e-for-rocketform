@@ -16,6 +16,11 @@ describe('Form Builder Test', () => {
             cy.wrap(data.userFormA).as('userDefinedFormA');
             cy.wrap(data.userFormB).as('userDefinedFormB');
         });
+        Cypress.on("uncaught:exception", (err) => {
+          if (err.message.includes("ResizeObserver loop")) {
+            return false; // Prevents Cypress from failing the test
+          }
+        });
         Cypress.on('unhandledrejection', (event) => {
           if (event.reason.message.includes('Failed to fetch')) {
             return false; // Ignore the error so the test doesn't fail

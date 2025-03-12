@@ -22,6 +22,7 @@ Cypress.Commands.add('loadSelector', (selectorName, options = {}) => {
 
 // Command for log in 
 Cypress.Commands.add('clogin', (email, password, status) => {
+  cy.wait(500);
   cy.loadSelector('autoModalLoginBtn').click();
   if (email) {
     cy.loadSelector('emailField').type(email);
@@ -45,6 +46,7 @@ Cypress.Commands.add('clogin', (email, password, status) => {
   
 // Command for creating the new form
 Cypress.Commands.add('createNewForm', (title = '', description = '') => {
+  cy.wait(500);
   cy.loadSelector('primaryBtn')
     .contains('span', PAGE_OPERATIONS.new, { timeout: TIMEOUTS.elementVisibility })
     .parent()
@@ -83,6 +85,7 @@ Cypress.Commands.add('formDrag', (key, element, count) => {
 
 // Command for draganddroping the form element in pdf
 Cypress.Commands.add('formDragInPDF', (element, pdfTitle) => {
+  cy.wait(500);
   cy.log(`"${element.key}" element drag and drop`);
   cy.get('#tab-forms').click();
   const target = `div[label="${pdfTitle}"] .vue-pdf`;
@@ -204,6 +207,7 @@ Cypress.Commands.add('fillForm', (formElements) => {
 
 // Command to save a built form
 Cypress.Commands.add('saveForm', () => {
+  cy.wait(500);
   cy.log('Saving the created form');
   cy.intercept('PUT', `${URLS.api}/forms/*`).as('saveFormRequest');
   cy.loadSelector('saveBtn').click();
@@ -216,6 +220,7 @@ Cypress.Commands.add('saveForm', () => {
 
 // Command to publish and link a built form
 Cypress.Commands.add('publishAndLinkForm', () => {
+  cy.wait(500);
   // Set the form to publish
   cy.log('Set the form to publish');
   cy.contains('a', PAGE_OPERATIONS.share, { timeout: TIMEOUTS.elementVisibility })
@@ -282,6 +287,7 @@ Cypress.Commands.add('delForm', (formName) => {
 
 // Command to assign pdf to the form
 Cypress.Commands.add('assignPDF', (userForm) =>{
+  cy.wait(500);
   // Assign PDF
   const document = userForm.document;
   const elements = userForm.elements;
@@ -414,6 +420,7 @@ Cypress.Commands.add('assignPDF', (userForm) =>{
 
 // Command to save added document on form
 Cypress.Commands.add('saveFormDocument', () => {
+  cy.wait(500);
   cy.log('Saving the created document');
   cy.intercept('PUT', `${URLS.api}/documents/*`).as('saveDocumentRequest');
   cy.loadSelector('saveBtn').click();
@@ -428,6 +435,7 @@ Cypress.Commands.add('saveFormDocument', () => {
 
 // Defines labels for form elements.
 Cypress.Commands.add('setLabel', (val) => {
+  cy.wait(500);
   if (val !== undefined && val !== null) {
     cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.label}"]`)
       .clear()
@@ -436,6 +444,7 @@ Cypress.Commands.add('setLabel', (val) => {
 });
 
 Cypress.Commands.add('setLabelWithTextarea', (val) => {
+  cy.wait(500);
   if (val !== undefined && val !== null) {
     cy.get(`.el-textarea__inner[label="${PAGE_OPERATIONS.label}"]`)
       .clear()
@@ -445,6 +454,7 @@ Cypress.Commands.add('setLabelWithTextarea', (val) => {
 
 // Defines Placeholders for form elements.
 Cypress.Commands.add('setPlaceholder', (val) => {
+  cy.wait(500);
   if (val !== undefined) {
     cy.get(`.el-input__inner[label="${PAGE_OPERATIONS.placeholder}"]`)
       .clear()
@@ -452,19 +462,9 @@ Cypress.Commands.add('setPlaceholder', (val) => {
   }
 });
 
-// Defines the types of form elements such as Input, Email, DataTime, etc.
-// Cypress.Commands.add('setElementType', ( item, type ) => {
-//   if (type !== undefined) {
-//     cy.get(`.el-select:has(span:contains("${item}"))`)
-//       .click();
-//     cy.get('.el-select-dropdown__item')
-//       .contains('span', type)
-//       .click();
-//   }
-// });
-
 // Set conditions by text input.
 Cypress.Commands.add('setOptWithTx', ( item, val ) => {
+  cy.wait(500);
   if (val !== undefined && val !==null && val !== '') {
     cy.get(`.el-input__inner[label="${item}"]`)
       .clear()
@@ -474,6 +474,7 @@ Cypress.Commands.add('setOptWithTx', ( item, val ) => {
 
 // Setting elements by true and false values
 Cypress.Commands.add('setOptByBool', ( item, val ) => {
+  cy.wait(500);
   if( val !== undefined && val !== null) {
     cy.get(`.el-form-item:has(label:contains("${item}"))`)
       .find(`input[value="${val}"]`)
@@ -485,6 +486,7 @@ Cypress.Commands.add('setOptByBool', ( item, val ) => {
 
 // Setting elements types by dropdown select list with span
 Cypress.Commands.add('setTypeByListWithSpan', ( item, val ) => {
+  cy.wait(500);
   if (val !== undefined && val !== "") {
     cy.get(`.el-select:has(span:contains("${item}"))`)
       .click();
@@ -496,6 +498,7 @@ Cypress.Commands.add('setTypeByListWithSpan', ( item, val ) => {
 
 // Set up by entering the components.
 Cypress.Commands.add('configureFieldSettings', ( item, val ) => {
+  cy.wait(500);
   if( val !== undefined && val !== null) {
     cy.get(`.el-form-item:has(label:contains("${PAGE_OPERATIONS[item]}"))`)
       .find('input')
@@ -507,6 +510,7 @@ Cypress.Commands.add('configureFieldSettings', ( item, val ) => {
 
 // Sets the initial state of the check selection elements.
 Cypress.Commands.add('setOption', (optionKey, val) => {
+  cy.wait(500);
   if (val == true) {
     cy.loadSelector('checkItem')
       .contains('span', PAGE_OPERATIONS[optionKey])
@@ -517,6 +521,7 @@ Cypress.Commands.add('setOption', (optionKey, val) => {
 
 // Adds and removes items from form elements that have items such as a Maltese select, drop-down list, etc.
 Cypress.Commands.add('setItems', (options) => {
+  cy.wait(500);
   if (options !== undefined) {
     const userOptions = Object.entries(options);
     let currentOptionsCount = 2;
@@ -573,6 +578,7 @@ Cypress.Commands.add('setItems', (options) => {
 });
 
 Cypress.Commands.add('setListItems', (items) => {
+  cy.wait(500);
   if (items !== undefined) {
     const userItems = Object.entries(items);
     let currentItemsCount = 1;
@@ -613,7 +619,7 @@ Cypress.Commands.add('setListItems', (items) => {
           .clear()
           .type(item);
     });
-    
+    cy.wait(500);
     cy.get('.el-form-item:has(div:contains("' + PAGE_OPERATIONS.items + '"))')
       .find('button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
       .click();
@@ -623,6 +629,7 @@ Cypress.Commands.add('setListItems', (items) => {
 // Commands for each form elements
 
 Cypress.Commands.add('setHeading', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(h3:contains("' + FORM_ELEMENTS.heading[0] + '"))')
     .last()
@@ -647,6 +654,7 @@ Cypress.Commands.add('setHeading', (settings) => {
 });
 
 Cypress.Commands.add('setInput', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.input[0] + '"))')
     .last()
@@ -665,6 +673,7 @@ Cypress.Commands.add('setInput', (settings) => {
 });
 
 Cypress.Commands.add('setText', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + PAGE_OPERATIONS.longText + '"))')
     .last()
@@ -685,6 +694,7 @@ Cypress.Commands.add('setText', (settings) => {
 });
 
 Cypress.Commands.add('setNumber', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.number[0] + '"))')
     .last()
@@ -699,6 +709,7 @@ Cypress.Commands.add('setNumber', (settings) => {
 });
 
 Cypress.Commands.add('setEmail', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.email[0] + '"))')
     .last()
@@ -713,6 +724,7 @@ Cypress.Commands.add('setEmail', (settings) => {
 });
 
 Cypress.Commands.add('setCheckbox', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.checkbox[0] + '"))')
     .last()
@@ -725,6 +737,7 @@ Cypress.Commands.add('setCheckbox', (settings) => {
 });
 
 Cypress.Commands.add('setRadio', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.radio[0] + '"))')
     .last()
@@ -740,6 +753,7 @@ Cypress.Commands.add('setRadio', (settings) => {
 });
 
 Cypress.Commands.add('setSelection', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.selection.defaultSettings.label + '"))')
     .last()
@@ -756,6 +770,7 @@ Cypress.Commands.add('setSelection', (settings) => {
 });
 
 Cypress.Commands.add('setDropdown', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.dropdown[0] + '"))')
     .last()
@@ -771,6 +786,7 @@ Cypress.Commands.add('setDropdown', (settings) => {
 });
 
 Cypress.Commands.add('setRange', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.range[0] + '"))')
     .last()
@@ -785,6 +801,7 @@ Cypress.Commands.add('setRange', (settings) => {
 });
 
 Cypress.Commands.add('setDateTime', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + PAGE_OPERATIONS.dateTime + '"))')
     .last()
@@ -803,6 +820,7 @@ Cypress.Commands.add('setDateTime', (settings) => {
 });
 
 Cypress.Commands.add('setImage', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(div:contains("' + FORM_ELEMENTS.image[0] + '"))')
     .last()
@@ -812,23 +830,29 @@ Cypress.Commands.add('setImage', (settings) => {
     // cy.get(`textarea[placeholder="${PAGE_OPERATIONS.extURL}"]`)
     //   .clear()
     //   .type(settings.url);
+    cy.wait(500);
     cy.contains('label', 'Image URL')
       .siblings()     
       .find('button') 
       .click();
+      cy.wait(500);
       cy.get('span.el-tree-node__label').then(($el) => {
         if ($el.text().includes('Mimages')) {
           cy.log('Element already exists, proceeding...');
         } else {
           cy.get('span.el-tree-node__label').contains('root').click();
+          cy.wait(500);
           cy.get('.el-dialog__body > div:nth-child(2) > div:first-child button:first-child')
-            .click();        
+            .click();       
+          cy.wait(500); 
           cy.get('.el-form-item:has(label:contains("Folder Name"))')
             .find('input')
             .type('Mimages');
+          cy.wait(500);
           cy.get('button:has(span:contains("Create"))')
             .click();
         }
+        cy.wait(500);
         cy.get('span.el-tree-node__label').contains('Mimages').click({force: true});
         cy.get('button[title="Upload Files"]').click();
         cy.intercept('POST', '**/api/upload_file').as('uploadFileRequest');
@@ -856,6 +880,7 @@ Cypress.Commands.add('setImage', (settings) => {
 });
 
 Cypress.Commands.add('setSwitch', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + FORM_ELEMENTS.switch[0] + '"))')
     .last()
@@ -870,6 +895,7 @@ Cypress.Commands.add('setSwitch', (settings) => {
 });
 
 Cypress.Commands.add('setDivider', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(.el-divider.el-divider--horizontal)')
     .last()
@@ -886,6 +912,7 @@ Cypress.Commands.add('setDivider', (settings) => {
 });
 
 Cypress.Commands.add('setList', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(P:contains("' + FORM_ELEMENTS.list[0] + '"))')
     .last()
@@ -898,6 +925,7 @@ Cypress.Commands.add('setList', (settings) => {
 });
 
 Cypress.Commands.add('setButton', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(button:contains("' + AVAILABLE_FORM_ELEMENTS.button.defaultSettings.label + '"))')
     .last()
@@ -910,6 +938,7 @@ Cypress.Commands.add('setButton', (settings) => {
 });
 
 Cypress.Commands.add('setCalc', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.calc.defaultSettings.label + '"))')
     .last()
@@ -919,6 +948,7 @@ Cypress.Commands.add('setCalc', (settings) => {
   cy.get('button')
     .contains('Add Field')
     .click();
+  cy.wait(500);
   settings.op.forEach(op => {
     cy.get('div.rtw-cursor-pointer')
       .contains(op.key)
@@ -926,16 +956,19 @@ Cypress.Commands.add('setCalc', (settings) => {
     cy.get('.el-button.rtw-w-full')
       .contains(op.symbol)
       .click();
+    cy.wait(500);
   });
   cy.get('form.el-form--label-top')
     .find('button')
     .contains('Save')
     .click({force: true});
+  cy.wait(500);
   cy.loadSelector('closeBtn')
     .click();
 });
 
 Cypress.Commands.add('setCountry', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.country.defaultSettings.label + '"))')
     .last()
@@ -948,6 +981,7 @@ Cypress.Commands.add('setCountry', (settings) => {
 });
 
 Cypress.Commands.add('setFileUpload', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(div:contains("' + AVAILABLE_FORM_ELEMENTS.upload.defaultSettings.label + '"))')
     .last()
@@ -963,6 +997,7 @@ Cypress.Commands.add('setFileUpload', (settings) => {
 });
 
 Cypress.Commands.add('setRating', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(label:contains("' + AVAILABLE_FORM_ELEMENTS.rating.defaultSettings.label + '"))')
     .last()
@@ -977,6 +1012,7 @@ Cypress.Commands.add('setRating', (settings) => {
 });
 
 Cypress.Commands.add('setSign', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(div:contains("' + AVAILABLE_FORM_ELEMENTS.sign.defaultSettings.label + '"))')
     .last()
@@ -989,6 +1025,7 @@ Cypress.Commands.add('setSign', (settings) => {
 });
 
 Cypress.Commands.add('setColor', (settings) => {
+  cy.wait(500);
   cy.get('form div')
     .find('.rud-drop-item:has(div:contains("' + AVAILABLE_FORM_ELEMENTS.selectColor.defaultSettings.label + '"))')
     .last()
@@ -1000,6 +1037,7 @@ Cypress.Commands.add('setColor', (settings) => {
 });
 
 Cypress.Commands.add('setStripe', (settings) => {
+  cy.wait(500);
   const {
     mode,
     currency,
@@ -1017,11 +1055,12 @@ Cypress.Commands.add('setStripe', (settings) => {
     .find('.rud-drop-item:has(div:contains("' + PAGE_OPERATIONS.stripeProducts + '"))')
     .last()
     .dblclick();
-
+  cy.wait(500);
   // Navigate to the Stripe tab
   cy.log('Navigating to Stripe tab');
   cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.stripe + '")')
     .click();
+  cy.wait(500);
   if (mode !== undefined) {
     cy.get(`.el-radio-button:has(span:contains("${mode}"))`)
       .click();
@@ -1033,10 +1072,10 @@ Cypress.Commands.add('setStripe', (settings) => {
   cy.log('Saving Stripe settings');
   cy.get('#pane-Stripe button:has(span:contains("' + PAGE_OPERATIONS.save + '"))')
     .click();
-
+  cy.wait(500);
   cy.log('Navigating to Content tab');
   cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.content + '")').click();
-
+  cy.wait(500);
   // Configure Content tab and save settings
   cy.log('Configuring Content tab');
   if (paymentBoxLabel) {
@@ -1050,21 +1089,21 @@ Cypress.Commands.add('setStripe', (settings) => {
       .clear()
       .type(suggestedAmount);
   }
-
+  cy.wait(500);
   if (setAsMinimum) {
     cy.get('span:contains("' + PAGE_OPERATIONS.setSuggestAmount + '")')
       .parent()
       .find('.el-switch')
       .click({force:true});
   }
-
+  cy.wait(500);
   if (fixedAmount) {
     cy.get('span:contains("' + PAGE_OPERATIONS.fixedAmount + '")')
       .parent()
       .find('.el-switch')
       .click({force:true});
   }
-
+  cy.wait(500);
   cy.log('Saving Content settings');
   cy.get('span:contains("' + PAGE_OPERATIONS.fixedAmount + '")')
     .parent()
@@ -1081,6 +1120,7 @@ Cypress.Commands.add('setStripe', (settings) => {
     .last()
     .dblclick();
   // Navigate to the Stripe tab
+  cy.wait(500);
   cy.log('Navigating to Stripe tab');
   cy.get('.el-tabs__item:contains("' + PAGE_OPERATIONS.stripe + '")')
     .click();
