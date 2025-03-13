@@ -481,7 +481,7 @@
             "expireDate": "12/34",
             "cvc": "123",
             "cardholderName": "Test Name",
-            "country": "Austria",
+            "country": "AT",
             "zip": ""
         }
     }
