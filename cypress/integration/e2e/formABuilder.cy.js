@@ -119,7 +119,7 @@ describe('Form Builder Test', () => {
               .clear()
               .type(userDefinedFormA.stripeInfo.cardholderName);
             cy.get('#billingCountry')
-              .select(userDefinedFormA.stripeInfo.country);
+              .select(userDefinedFormA.stripeInfo.country, { force: true });
             if (userDefinedFormA.stripeInfo.zip !== '') {
                 cy.get('#billingPostalCode')
                   .clear()
